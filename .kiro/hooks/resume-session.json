@@ -1,6 +1,14 @@
 {
-  "name": "Resume Session (Briefing)",
-  "description": "Faz a leitura silenciosa do AGENTS.md, MEMORY.md e LORE_DATA.md e entrega um resumo de até 6 linhas com o ponto de parada.",
-  "trigger": "manual",
-  "instructions": "Faça a leitura silenciosa de AGENTS.md, MEMORY.md e LORE_DATA.md. NÃO modifique nenhum arquivo. Responda apenas com um resumo de até 6 linhas contendo: (1) Último marco concluído, (2) Bloqueios ativos, e (3) Próxima tarefa prioritária exata."
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Resume Session (Briefing)",
+      "description": "Faz a leitura silenciosa do AGENTS.md, MEMORY.md e LORE_DATA.md e entrega um resumo de até 6 linhas com o ponto de parada.",
+      "trigger": "SessionStart",
+      "action": {
+        "type": "agent",
+        "prompt": "Faça a leitura silenciosa de AGENTS.md, MEMORY.md e LORE_DATA.md. NÃO modifique nenhum arquivo. Responda apenas com um resumo de até 6 linhas contendo: (1) Último marco concluído, (2) Bloqueios ativos, e (3) Próxima tarefa prioritária exata."
+      }
+    }
+  ]
 }
