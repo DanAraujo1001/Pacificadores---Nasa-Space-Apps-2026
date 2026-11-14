@@ -157,7 +157,7 @@ export function GameScreen() {
 
       {/* Painel de diálogo compacto — cobre só a base do personagem */}
       <div
-        className="relative z-20 -mt-[12vh] flex flex-1 flex-col items-center justify-end gap-4 bg-[#0E0C0F] px-4 pb-8 pt-3"
+        className="relative z-20 -mt-[12vh] flex flex-1 flex-col items-center justify-start gap-4 bg-[#0E0C0F] px-4 pb-6 pt-5"
         onClick={revealFullText}
       >
         <DialogueBox
