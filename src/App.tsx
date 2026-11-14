@@ -1,3 +1,5 @@
+import { LoadingScreen } from "./components/vn/LoadingScreen";
+import { MenuScreen } from "./components/vn/MenuScreen";
 import { useGameStore } from "./store/useGameStore";
 
 const THEME_BY_WORLD = {
@@ -8,11 +10,13 @@ const THEME_BY_WORLD = {
 
 export function App() {
   const currentWorld = useGameStore((state) => state.currentWorld);
+  const currentScreen = useGameStore((state) => state.currentScreen);
   const themeClass = THEME_BY_WORLD[currentWorld];
 
   return (
-    <main
-      className={`${themeClass} min-h-screen bg-background text-foreground`}
-    />
+    <main className={`${themeClass} min-h-screen bg-background text-foreground`}>
+      {currentScreen === "loading" ? <LoadingScreen /> : null}
+      {currentScreen === "menu" ? <MenuScreen /> : null}
+    </main>
   );
 }
