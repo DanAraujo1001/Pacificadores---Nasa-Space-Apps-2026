@@ -1,3 +1,4 @@
+import { GameScreen } from "./components/vn/GameScreen";
 import { LoadingScreen } from "./components/vn/LoadingScreen";
 import { MenuScreen } from "./components/vn/MenuScreen";
 import { useGameStore } from "./store/useGameStore";
@@ -17,6 +18,7 @@ export function App() {
     <main className={`${themeClass} min-h-screen bg-background text-foreground`}>
       {currentScreen === "loading" ? <LoadingScreen /> : null}
       {currentScreen === "menu" ? <MenuScreen /> : null}
+      {currentScreen === "playing" ? <GameScreen /> : null}
     </main>
   );
 }
