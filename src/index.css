@@ -17,3 +17,46 @@
     font-family: "JetBrains Mono", monospace;
   }
 }
+
+@property --play-shine-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes play-shine-spin {
+  to {
+    --play-shine-angle: 360deg;
+  }
+}
+
+.play-shine-border {
+  position: relative;
+  display: inline-flex;
+  border-radius: 4px;
+  border: 2px solid currentColor;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.play-shine-border::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background: conic-gradient(
+    from var(--play-shine-angle),
+    transparent 0%,
+    transparent 58%,
+    currentColor 66%,
+    #ffffff 72%,
+    currentColor 78%,
+    transparent 86%,
+    transparent 100%
+  );
+  animation: play-shine-spin 2.8s linear infinite;
+}
+
+.play-shine-border > * {
+  position: relative;
+  z-index: 1;
+}

@@ -1,5 +1,11 @@
 export type WorldId = 'ship' | 'moon' | 'mars';
 
+/** Equipamento / estágio de missão visitável. */
+export type StageId = 'eagle' | 'lrv' | 'spirit' | 'phoenix';
+
+/** Situação do nó de diálogo atual (também usada pela trilha). */
+export type DialoguePhase = 'normal' | 'clear' | 'game-over';
+
 /**
  * Eventos narrativos que disparam uma trilha sonora específica.
  * Cada estágio e ato do roteiro (echoes_of_astra_game_script.md) é um evento.
