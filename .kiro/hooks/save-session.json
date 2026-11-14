@@ -1,0 +1,6 @@
+{
+  "name": "Save Checkpoint (MEMORY.md)",
+  "description": "Inspeciona as alterações recentes do workspace, atualiza o MEMORY.md seguindo o padrão de checkpoint e mantém o log de marcos append-only.",
+  "trigger": "manual",
+  "instructions": "Inspecione os arquivos modificados neste workspace. Atualize a seção 'Estado Atual' do arquivo MEMORY.md com o que foi concluído e os próximos passos. Adicione uma linha com o timestamp atual na seção 'Log de Marcos' (append-only) e confirme ao usuário que o checkpoint foi salvo."
+}
