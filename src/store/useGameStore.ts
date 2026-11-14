@@ -1,13 +1,13 @@
-import { create } from 'zustand';
-import { type WorldId } from '../types/novel.ts';
+import { create } from "zustand";
+import type { WorldId } from "../types/novel";
 
-export type ScreenState = 'loading' | 'menu' | 'playing';
+export type ScreenState = "loading" | "menu" | "playing" | "dialogue";
 
 /** Qual equipamento (estágio) o jogador está visitando no momento. */
-export type StageId = 'eagle' | 'lrv' | 'spirit' | 'phoenix';
+export type StageId = "eagle" | "lrv" | "spirit" | "phoenix";
 
 /** Situação do nó de diálogo atual, usada para escolher a trilha. */
-export type DialoguePhase = 'normal' | 'clear' | 'game-over';
+export type DialoguePhase = "normal" | "clear" | "game-over";
 
 interface GameState {
   currentScreen: ScreenState;
@@ -23,10 +23,10 @@ interface GameState {
 }
 
 export const useGameStore = create<GameState>((set) => ({
-  currentScreen: 'loading',
-  currentWorld: 'ship',
+  currentScreen: "loading",
+  currentWorld: "ship",
   currentStage: null,
-  dialoguePhase: 'normal',
+  dialoguePhase: "normal",
   setScreen: (screen) => set({ currentScreen: screen }),
   setWorld: (world) => set({ currentWorld: world }),
   setStage: (stage) => set({ currentStage: stage }),
