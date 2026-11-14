@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import type { WorldId } from "../types/novel";
 
-export type ScreenState = "loading" | "menu" | "playing";
+export type ScreenState = "loading" | "menu" | "playing" | "dialogue";
 
 interface GameState {
   currentScreen: ScreenState;

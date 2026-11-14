@@ -5,10 +5,10 @@ import { useGameStore } from "../../store/useGameStore";
 import { ChoiceButton } from "./ChoiceButton";
 import { DialogueBox } from "./DialogueBox";
 import { ThemeIcon } from "./ThemeIcon";
+import { useTypewriterText } from "./useTypewriterText";
 
 const STAGE_BG = "/assets/backgrounds/bg-example.png";
 const PLAYER_SPRITE = "/assets/sprites/player/player-normal.png";
-const TYPEWRITER_MS = 28;
 
 const MOCK_CHOICES: DialogueChoice[] = [
   {
@@ -53,39 +53,18 @@ export function GameScreen() {
   const [node, setNode] = useState<DialogueNode>(INITIAL_NODE);
   const [bgFailed, setBgFailed] = useState(false);
   const [spriteFailed, setSpriteFailed] = useState(false);
-  const [visibleText, setVisibleText] = useState("");
-  const [textComplete, setTextComplete] = useState(false);
+
+  const { visibleText, textComplete, skipToFullText } = useTypewriterText(
+    node.text,
+    node.id,
+  );
 
   useEffect(() => {
     setWorld("mars");
   }, [setWorld]);
 
-  useEffect(() => {
-    setVisibleText("");
-    setTextComplete(false);
-
-    let index = 0;
-    const full = node.text;
-    const timer = window.setInterval(() => {
-      index += 1;
-      setVisibleText(full.slice(0, index));
-      if (index >= full.length) {
-        window.clearInterval(timer);
-        setTextComplete(true);
-      }
-    }, TYPEWRITER_MS);
-
-    return () => window.clearInterval(timer);
-  }, [node.id, node.text]);
-
   const hasChoices = (node.choices?.length ?? 0) > 0;
   const showChoices = hasChoices && textComplete;
-
-  const revealFullText = () => {
-    if (textComplete) return;
-    setVisibleText(node.text);
-    setTextComplete(true);
-  };
 
   const handleChoice = (choice: DialogueChoice) => {
     const response = MOCK_RESPONSES[choice.nextNodeId];
@@ -102,10 +81,10 @@ export function GameScreen() {
   return (
     <section
       className="relative flex min-h-screen w-full flex-col bg-[#0E0C0F] text-foreground"
-      onClick={revealFullText}
+      onClick={() => skipToFullText()}
       onKeyDown={(event) => {
         if (event.key === "Enter" || event.key === " ") {
-          revealFullText();
+          skipToFullText();
         }
       }}
       role="presentation"
@@ -158,7 +137,6 @@ export function GameScreen() {
       {/* Painel de diálogo compacto — cobre só a base do personagem */}
       <div
         className="relative z-20 -mt-[12vh] flex flex-1 flex-col items-center justify-start gap-4 bg-[#0E0C0F] px-4 pb-6 pt-5"
-        onClick={revealFullText}
       >
         <DialogueBox
           speakerName="Name Person"
