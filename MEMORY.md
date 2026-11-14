@@ -23,4 +23,10 @@
 
 ## Log de Marcos
 - [2026-11-14] Criação do `AGENTS.md` e alinhamento da identidade visual (Cores: `#0E0C0F` base, `#EC8501` nave, `#6FCEC6` Lua, `#CD4116` Marte).
+<<<<<<< Updated upstream
 - [2026-11-14 17:59] Trilha sonora automática reativa ao `useGameStore` (audioAutoplay + playEventMusic), pastas de assets criadas e `howler` instalado; build/lint/typecheck ok.
+=======
+- [2026-11-14 17:53] Telas VN cinematográficas: loading, GameScreen com opções, GameDialogueScreen só diálogo, typewriter com skip e continue stars temáticos.
+- [2026-11-14 17:59] Trilha sonora automática reativa ao `useGameStore` (audioAutoplay + playEventMusic), pastas de assets criadas e `howler` instalado; build/lint/typecheck ok.
+- [2026-11-14 20:38] `MEMORY.md` sincronizado com a `origin/main` (Opção A) na branch `dev/arthur`; seção `Estado Atual` adotada da main.
+>>>>>>> Stashed changes
