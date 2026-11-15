@@ -11,7 +11,7 @@ export const ACT1_INTRO_SCENE: LinearScene = {
   id: 'act1-intro',
   world: 'ship',
   backgroundAsset: BACKGROUND_ASSETS.hubShip,
-  backgroundPlaceholderLabel: 'Act 1 — Hub (ship: Moon & Mars)',
+  backgroundPlaceholderLabel: 'Act 1: Hub (ship: Moon & Mars)',
   lines: [
     {
       id: 'act1-intro-eco',

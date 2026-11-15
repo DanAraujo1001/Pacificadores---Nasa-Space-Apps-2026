@@ -14,7 +14,7 @@ export const PHOENIX_STAGE: StageScript = {
   world: 'mars',
   characterId: 'phoenix',
   backgroundAsset: BACKGROUND_ASSETS.stagePhoenix,
-  backgroundPlaceholderLabel: 'Stage — Phoenix (Martian arctic)',
+  backgroundPlaceholderLabel: 'Stage: Phoenix (Martian arctic)',
   steps: [
     {
       kind: 'choice',
@@ -201,6 +201,7 @@ export const PHOENIX_STAGE: StageScript = {
     {
       id: 'phoenix-clear-item',
       speakerId: 'eco',
+      isItemDescription: true,
       text: 'Item Obtained: Martian Ice Core. Phoenix Mars Lander. Landed on the Martian arctic plains (Vastitas Borealis) on May 25, 2008. Using a robotic arm to trench and analyze soil and ice, it confirmed the presence of water ice on Mars. It operated for 157 sols, its last communication on November 2, 2008, before the darkness of Martian winter and dwindling solar power brought the mission to an end.',
     },
     {

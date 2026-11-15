@@ -17,7 +17,7 @@ export const EAGLE_STAGE: StageScript = {
   world: 'moon',
   characterId: 'eagle',
   backgroundAsset: BACKGROUND_ASSETS.stageEagle,
-  backgroundPlaceholderLabel: 'Stage — Eagle (Sea of Tranquility)',
+  backgroundPlaceholderLabel: 'Stage: Eagle (Sea of Tranquility)',
   steps: [
     {
       kind: 'choice',
@@ -103,7 +103,7 @@ export const EAGLE_STAGE: StageScript = {
       choices: [
         {
           id: 'eagle-c2-a',
-          label: '“It was just the two astronauts—the heroes of the mission.”',
+          label: '“It was just the two astronauts, the heroes of the mission.”',
           correct: false,
           outcomeLines: [
             {
@@ -169,7 +169,7 @@ export const EAGLE_STAGE: StageScript = {
             {
               id: 'eagle-c3-a-1',
               speakerId: 'eagle',
-              text: 'Do not pity me. I was not left behind—I stayed. (systems shut down)',
+              text: 'Do not pity me. I was not left behind. I stayed. (systems shut down)',
             },
             {
               id: 'eagle-c3-a-2',
@@ -220,7 +220,7 @@ export const EAGLE_STAGE: StageScript = {
     {
       id: 'eagle-clear-2',
       speakerId: 'eagle',
-      text: 'When the time came to leave, my upper half carried them back up. My lower half—the descent stage—stayed right here to serve as a launchpad. I am still here, standing guard over the place where it all began.',
+      text: 'When the time came to leave, my upper half carried them back up. My lower half, the descent stage, stayed right here to serve as a launchpad. I am still here, standing guard over the place where it all began.',
     },
     {
       id: 'eagle-clear-3',
@@ -230,6 +230,7 @@ export const EAGLE_STAGE: StageScript = {
     {
       id: 'eagle-clear-item',
       speakerId: 'eco',
+      isItemDescription: true,
       text: 'Item Obtained: Tranquility Base Plaque. Eagle Descent Stage (Apollo 11). The lunar module that landed in the Sea of Tranquility on July 20, 1969. Its descent stage remains on the Moon as an abandoned launchpad, carrying a plaque stating that humans came in peace for all mankind. The ascent stage (the upper half) lifted off, docked with the command module Columbia, and was later jettisoned into lunar orbit; after signal loss it is believed to have crashed on the lunar surface, with its exact impact site never confirmed (NASA estimates Mare Crisium, roughly 800 km / 500 miles from Tranquility Base).',
     },
     {

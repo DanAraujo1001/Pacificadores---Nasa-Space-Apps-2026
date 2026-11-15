@@ -31,10 +31,10 @@ const MOCK_CHOICES: DialogueChoice[] = [
 
 const MOCK_RESPONSES: Record<string, { text: string }> = {
   "node-response-01": {
-    text: "Poeira fina, basáltica. Leituras batem com as amostras históricas — a superfície ainda guarda o que foi deixado para trás.",
+    text: "Poeira fina, basáltica. Leituras batem com as amostras históricas. A superfície ainda guarda o que foi deixado para trás.",
   },
   "node-response-02": {
-    text: "Sinal fraco, mas estável. O estágio de descida responde em eco analógico — como se ainda esperasse um uplink.",
+    text: "Sinal fraco, mas estável. O estágio de descida responde em eco analógico, como se ainda esperasse um uplink.",
   },
   "node-response-03": {
     text: "Sem vento. Sem atmosfera. Só o ruído térmico do meu traje e a memória de um primeiro passo.",

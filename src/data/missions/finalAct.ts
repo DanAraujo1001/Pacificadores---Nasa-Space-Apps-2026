@@ -14,7 +14,7 @@ export const FINAL_ACT_SCENE: LinearScene = {
   id: 'final-act',
   world: 'ship',
   backgroundAsset: BACKGROUND_ASSETS.finalAct,
-  backgroundPlaceholderLabel: 'Final Act — Resolution',
+  backgroundPlaceholderLabel: 'Final Act: Resolution',
   lines: [
     {
       id: 'final-eco-1',

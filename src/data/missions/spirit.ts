@@ -15,7 +15,7 @@ export const SPIRIT_STAGE: StageScript = {
   world: 'mars',
   characterId: 'spirit',
   backgroundAsset: BACKGROUND_ASSETS.stageSpirit,
-  backgroundPlaceholderLabel: 'Stage — Spirit (Gusev Crater)',
+  backgroundPlaceholderLabel: 'Stage: Spirit (Gusev Crater)',
   steps: [
     {
       kind: 'choice',
@@ -209,6 +209,7 @@ export const SPIRIT_STAGE: StageScript = {
     {
       id: 'spirit-clear-item',
       speakerId: 'eco',
+      isItemDescription: true,
       text: 'Item Obtained: Spirit\'s Solar Panel. Mars Exploration Rover “Spirit” (MER-A). Landed in Gusev Crater on January 4, 2004. Engineered for a ~90-sol (Martian-day) prime mission, it operated for over six years, uncovering evidence of ancient wet environments on Mars. In 2009, it became embedded in soft soil. Last communication was received on March 22, 2010 (Sol 2210), and NASA declared the mission complete on May 25, 2011.',
     },
     {

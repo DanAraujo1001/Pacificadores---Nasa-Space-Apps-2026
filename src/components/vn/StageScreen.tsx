@@ -19,6 +19,7 @@ import { CharacterSprite } from "./CharacterSprite";
 import { DialogueBox } from "./DialogueBox";
 import { DialoguePanel } from "./DialoguePanel";
 import { SceneBackground } from "./SceneBackground";
+import { useSplitItemLines } from "./useSplitItemLines";
 import { useTypewriterText } from "./useTypewriterText";
 
 interface StageScreenProps {
@@ -50,9 +51,16 @@ const INITIAL_POSITION: StagePosition = {
   chosen: null,
 };
 
-/** Retorna as falas ativas para a posição atual. */
-function linesFor(script: StageScript, pos: StagePosition): ScriptLine[] {
-  if (pos.phase === "clear") return script.clearLines;
+/**
+ * Retorna as falas ativas para a posição atual. Na fase `clear`, usa as falas
+ * já EXPANDIDAS (descrições de item divididas em partes), passadas por `clearLines`.
+ */
+function linesFor(
+  script: StageScript,
+  pos: StagePosition,
+  clearLines: ScriptLine[],
+): ScriptLine[] {
+  if (pos.phase === "clear") return clearLines;
 
   const step = script.steps[pos.stepIndex];
   if (pos.phase === "outcome") return pos.chosen?.outcomeLines ?? [];
@@ -69,7 +77,14 @@ export function StageScreen({ script, onClear, onGameOver }: StageScreenProps) {
   const playerName = useGameStore((state) => state.playerName);
   const [pos, setPos] = useState<StagePosition>(INITIAL_POSITION);
 
-  const lines = linesFor(script, pos);
+  // Descrições de item (Stage Clear) são divididas em várias falas por medição
+  // real, para caberem na fonte padrão sem reduzir nem cortar.
+  const { lines: splitClearLines } = useSplitItemLines(
+    script.clearLines,
+    playerName,
+  );
+
+  const lines = linesFor(script, pos, splitClearLines);
   const line = lines[pos.lineIndex] ?? lines[0];
   const step: StageStep | undefined = script.steps[pos.stepIndex];
 
@@ -232,6 +247,7 @@ export function StageScreen({ script, onClear, onGameOver }: StageScreenProps) {
           speakerName={speakerName}
           text={visibleText}
           measureText={fullText}
+          isItemDescription={line?.isItemDescription}
           showContinueHint={textComplete && !showChoices}
           choices={
             showChoices && step?.kind === "choice"

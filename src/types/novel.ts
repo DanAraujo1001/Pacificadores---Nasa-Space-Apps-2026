@@ -69,6 +69,14 @@ export interface ScriptLine {
   entersCharacterId?: CharacterId;
   /** Quando true, o personagem indicado sai de cena após esta fala. */
   exitsCharacterId?: CharacterId;
+  /**
+   * Quando true, esta fala é uma DESCRIÇÃO DE ITEM. Descrições usam o mesmo
+   * tamanho de fonte dos diálogos comuns (sem redução automática) e, se não
+   * couberem inteiras na barra, são DIVIDIDAS em várias falas consecutivas
+   * (em pontos finais de frase), em tempo de render, por medição real do layout.
+   * O texto não é alterado — só dividido. Ver `useSplitItemLines`.
+   */
+  isItemDescription?: boolean;
 }
 
 /** Roteiro de uma cena linear (prólogo/epílogo). */
