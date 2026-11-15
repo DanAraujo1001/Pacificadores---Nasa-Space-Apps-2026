@@ -125,10 +125,10 @@
 ### Stage Clear (Success): The LRVs' Story
 * **LRV:** Wanna know how it went down? Before us, astronauts could only explore as far as their boots could carry them. With us, they cruised way farther and hauled back awesome rocks from places nobody had ever reached!
 * **LRV:** And at the end, once the job was done, they parked us right here. All three of us. Still waiting for a parking ticket!
-* **LRV:** Here, take this. It’s a piece of me, so you never forget the crew.
+* **LRV:** Here, take this. It’s the treasure we hauled back together, so you never forget the crew.
 
-> **Item Obtained:** LRV Wire-Mesh Wheel  
-> **Item Description:** Lunar Roving Vehicle (LRV). Battery-powered four-wheeled rover used during the Apollo 15, 16, and 17 missions (1971-1972). It folded up to be stowed in the descent stage of the lunar module and ran on two non-rechargeable 36-volt silver-zinc batteries, with an individual electric motor on each wheel. Its wheels were made of woven steel-wire mesh with titanium chevrons for traction on lunar dust. All three rovers remain parked on the Moon. They vastly expanded the range astronauts could explore and collect samples from (about 65 km / 40 miles on battery power).
+> **Item Obtained:** Genesis Rock, Big Muley & Orange Soil  
+> **Item Description:** Three famous samples the Lunar Roving Vehicles helped astronauts reach and bring home. The Genesis Rock, an ancient piece of the Moon's early crust, was collected by Apollo 15 in 1971. Big Muley, the largest rock returned by any Apollo mission (about 11.7 kg), was picked up by Apollo 16 in 1972. The Orange Soil, tiny beads of volcanic glass, was found by Apollo 17 at Shorty Crater in 1972. With the rovers, crews drove far beyond their landing sites and hauled back treasures from places no one had reached before.
 
 * **LRV:** When you head back home, tell everyone the Moon had a hot rod, and it lived its best life!
 
@@ -180,8 +180,8 @@
 * **SPIRIT:** In 2009, my wheels got trapped in soft sand. I tried to pull myself free, but the Martian winter rolled in and my solar panels couldn't catch enough sunlight. I fell asleep. And I never woke up.
 * **SPIRIT:** Don’t be sad. I gave it everything I had, and that was enough. Take this, so my journey can live on.
 
-> **Item Obtained:** Spirit's Solar Panel  
-> **Item Description:** Mars Exploration Rover “Spirit” (MER-A). Landed in Gusev Crater on January 4, 2004. Engineered for a ~90-sol (Martian-day) prime mission, it operated for over six years, uncovering evidence of ancient wet environments on Mars. In 2009, it became embedded in soft soil. Last communication was received on March 22, 2010 (Sol 2210), and NASA declared the mission complete on May 25, 2011.
+> **Item Obtained:** Pure Silica Mars  
+> **Item Description:** Nearly pure silica soil uncovered by the Mars Exploration Rover “Spirit” (MER-A) at Home Plate, in the Columbia Hills of Gusev Crater, in 2007. Spirit landed on January 4, 2004 for a ~90-sol (Martian-day) prime mission and kept working for over six years. This bright, silica-rich soil is some of the strongest evidence that hot water once flowed on Mars, the kind of hydrothermal setting where life can take hold. Spirit's last communication came on March 22, 2010 (Sol 2210), and NASA declared the mission complete on May 25, 2011.
 
 * **SPIRIT:** If you ever look up at a starry night, remember: a little robot dreamed up there for you.
 

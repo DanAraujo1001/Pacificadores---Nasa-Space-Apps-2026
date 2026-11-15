@@ -22,7 +22,7 @@ Any dialogue, date, or technical detail generated for the robots must strictly r
 - **Historical Status:** Battery-powered four-wheeled rovers used during the Apollo 15, 16, and 17 missions. Each rover folded up to be stowed in the descent stage of the lunar module and was powered by two non-rechargeable 36-volt silver-zinc batteries, with an individual electric drive motor on each wheel. The wheels were made of woven steel-wire mesh with titanium chevrons for traction on lunar dust. All three rovers remain parked on the Moon. They vastly expanded the range astronauts could explore and collect samples from (a range of about 65 km / 40 miles on battery power).
 - **In-Game Personality:** Playful, chatty, and bursting with energy — like kids who never grew up. They speak as a collective (the three buggies). They love adventure, jokes, and being treated like buddies. They hate formality and can't stand being seen as mere "tools." Upbeat, almost youthful voice.
 - **Scientific/Emotional Topics:** The origami-style folding to fit inside the lunar module; the expansion of humanity's exploration range on the Moon; the joy of the mission and the wait for new visitors.
-- **Associated Item:** LRV Wire-Mesh Wheel.
+- **Associated Item:** Genesis Rock, Big Muley & Orange Soil (one item, one icon). Three famous samples the rovers helped astronauts reach and bring home: the Genesis Rock, an ancient piece of the Moon's early crust (Apollo 15, 1971); Big Muley, the largest rock returned by any Apollo mission, about 11.7 kg (Apollo 16, 1972); the Orange Soil, tiny beads of volcanic glass found at Shorty Crater (Apollo 17, 1972).
 
 ---
 
@@ -32,7 +32,7 @@ Any dialogue, date, or technical detail generated for the robots must strictly r
 - **Historical Status:** Engineered for a ~90-sol (Martian-day) prime mission, it operated for over six years, finding evidence of ancient wet environments on Mars (rocks and soil shaped by water). In 2009 it became embedded in soft soil; it tried to pull itself free, but the Martian winter rolled in and its solar panels couldn't catch enough sunlight. Last communication was received on March 22, 2010 (Sol 2210); NASA ended recovery efforts and declared the mission complete on May 25, 2011.
 - **In-Game Personality:** Serene, poetic, and sleepy. Relentlessly persistent, yet never dramatic. Values hope and genuine warmth. Refuses pity and hates being seen as a "failure." Soft, drowsy voice.
 - **Scientific/Emotional Topics:** The search for signs of water on Mars; persistence far beyond the designed lifespan; the dignity of a journey that comes to an end; "keep moving forward" even when everyone doubts.
-- **Associated Item:** Spirit's Solar Panel.
+- **Associated Item:** Pure Silica Mars. Nearly pure silica soil Spirit uncovered at Home Plate, in the Columbia Hills of Gusev Crater, in 2007: some of the strongest evidence that hot water (a hydrothermal setting) once existed on Mars.
 
 ---
 

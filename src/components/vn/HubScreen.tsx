@@ -10,6 +10,7 @@ import {
   getEquipment,
 } from "../../config/destinations.ts";
 import { BACKGROUND_ASSETS } from "../../config/sceneAssets.ts";
+import { SCENE } from "../../config/dialogueBox.ts";
 import type {
   DestinationConfig,
   DestinationId,
@@ -138,13 +139,19 @@ function DestinationChoice({
   const [backgroundFailed, setBackgroundFailed] = useState(false);
   const [hoveredId, setHoveredId] = useState<DestinationId | null>(null);
   const hovered = DESTINATIONS.find((dest) => dest.id === hoveredId);
-  const caption = hovered ? hovered.label : "Select a planet";
+  const caption = hovered ? hovered.label : "Select a destination";
   const captionColor = hovered ? PLANET_ACCENT[hovered.id] : undefined;
 
   return (
-    <section className="relative flex min-h-svh w-full flex-col items-center justify-center overflow-hidden bg-[#0E0C0F] text-foreground">
+    <section className="relative flex min-h-svh w-full flex-col items-center overflow-hidden bg-[#0E0C0F] text-foreground">
       <h1 className="sr-only">Choose a destination</h1>
-      <div className="flex w-full translate-y-6 flex-col items-center gap-3">
+      {/* Painel preto superior padronizado (igual às demais cenas do jogo). */}
+      <div
+        className="w-full shrink-0 bg-[#0E0C0F]"
+        style={{ height: SCENE.TOP_BAR_HEIGHT }}
+        aria-hidden="true"
+      />
+      <div className="flex w-full flex-1 flex-col items-center justify-center gap-3">
         <div className="relative aspect-[1519/569] w-full">
           {backgroundFailed ? (
             <div
@@ -332,24 +339,29 @@ function EquipmentScene({
 
   return (
     <section className="relative flex min-h-screen w-full flex-col overflow-hidden bg-[#0E0C0F] text-foreground">
-      <div className="flex shrink-0 items-center gap-4 px-6 pb-4 pt-6 md:gap-5 md:px-8">
-        <HomeButton inline />
-        <div className="flex flex-col">
-          <p className="font-display text-xl font-bold uppercase tracking-wide text-primary">
-            {destination.label}
-          </p>
-          <p className="font-mono text-xs uppercase tracking-widest text-primary/80">
-            {done}/{total} explored
-          </p>
-        </div>
-      </div>
-
-      <div className="relative z-0 h-[min(70vh,780px)] w-full shrink-0 overflow-hidden">
+      {/* Área da cena: MESMA proporção das demais telas (config central). */}
+      <div
+        className="relative z-0 w-full shrink-0 overflow-hidden"
+        style={{ height: SCENE.UPPER_PANEL_HEIGHT }}
+      >
         <SceneBackground
           key={destination.backgroundAsset}
           src={destination.backgroundAsset}
           placeholderLabel={destination.backgroundPlaceholderLabel}
         />
+
+        {/* HUD do destino como sobreposição (não consome altura da cena). */}
+        <div className="absolute inset-x-0 top-0 z-10 flex items-center gap-4 px-6 pb-4 pt-6 md:gap-5 md:px-8">
+          <HomeButton inline />
+          <div className="flex flex-col">
+            <p className="font-display text-xl font-bold uppercase tracking-wide text-primary">
+              {destination.label}
+            </p>
+            <p className="font-mono text-xs uppercase tracking-widest text-primary/80">
+              {done}/{total} explored
+            </p>
+          </div>
+        </div>
 
         {destination.stageIds.map((stageId) => {
           const equipment = getEquipment(stageId);
@@ -366,6 +378,7 @@ function EquipmentScene({
         })}
       </div>
 
+      {/* Barra inferior (mesma zona da barra de diálogo das cenas). */}
       <div className="relative z-20 flex flex-1 items-center justify-center bg-[#0E0C0F] px-4">
         <Button
           variant="ghost"

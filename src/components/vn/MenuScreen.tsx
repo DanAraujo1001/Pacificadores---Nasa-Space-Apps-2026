@@ -1,12 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@heroui/react";
+import { hasProgress } from "../../engine/saveSystem";
 import { useGameStore } from "../../store/useGameStore";
 import { HomeLinksPanel } from "./HomeLinksPanel";
 import { InventoryPanel } from "./InventoryPanel";
 import { ThemeIcon } from "./ThemeIcon";
 
 const HOME_IMAGE = "/assets/images/image-home-teste.png";
+
+/** Botão secundário da Home: mesmo estilo do botão "Menu" (contorno primário). */
+const SECONDARY_BUTTON_CLASS =
+  "h-12 min-w-[160px] cursor-pointer rounded-sm border border-primary bg-transparent px-6 text-primary transition-colors hover:bg-primary hover:text-primary-foreground data-[hovered=true]:bg-primary data-[hovered=true]:text-primary-foreground";
 
 const enterContainer = {
   hidden: {},
@@ -30,9 +35,22 @@ const enterItem = {
 export function MenuScreen() {
   const fadeToScreen = useGameStore((state) => state.fadeToScreen);
   const setWorld = useGameStore((state) => state.setWorld);
-  const resetProgress = useGameStore((state) => state.resetProgress);
-  const unlockedMemoryIds = useGameStore((state) => state.unlockedMemoryIds);
+  const startNewGame = useGameStore((state) => state.startNewGame);
+  const continueGame = useGameStore((state) => state.continueGame);
+  // Há partida salva para retomar? (save inválido já é descartado pelo módulo.)
+  const [hasSave, setHasSave] = useState(() => hasProgress());
+  const [confirmingNewGame, setConfirmingNewGame] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const beginNewGame = () => {
+    setConfirmingNewGame(false);
+    startNewGame();
+    fadeToScreen("name-entry");
+  };
+
+  const handleContinue = () => {
+    if (!continueGame()) setHasSave(false);
+  };
   const [imageFailed, setImageFailed] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
 
@@ -96,7 +114,7 @@ export function MenuScreen() {
                     fadeToScreen(screen);
                   }}
                 />
-                <InventoryPanel unlockedMemoryIds={unlockedMemoryIds} />
+                <InventoryPanel />
               </motion.div>
             ) : null}
           </AnimatePresence>
@@ -121,18 +139,74 @@ export function MenuScreen() {
           </p>
         </motion.div>
 
-        <motion.div variants={enterItem} className="play-shine-border text-primary">
-          <Button
-            variant="primary"
-            size="lg"
-            onPress={() => {
-              resetProgress();
-              fadeToScreen("name-entry");
-            }}
-            className="min-h-14 min-w-[260px] cursor-pointer rounded-sm border-0 bg-[#0E0C0F] px-12 py-5 text-lg font-semibold text-white transition-colors hover:bg-primary/90 data-[hovered=true]:bg-primary/90"
-          >
-            Play
-          </Button>
+        <motion.div variants={enterItem} className="flex flex-col items-center gap-4">
+          <AnimatePresence mode="wait" initial={false}>
+            {confirmingNewGame ? (
+              <motion.div
+                key="confirm-new-game"
+                className="flex w-[min(92vw,22rem)] flex-col items-center gap-4 rounded-sm border border-primary bg-content1/95 p-5 text-center"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                role="alertdialog"
+                aria-label="Start a new game?"
+              >
+                <p className="text-sm text-foreground/80">
+                  Start a new game? Your saved progress will be overwritten.
+                  Your Memories are kept.
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onPress={() => setConfirmingNewGame(false)}
+                    className={SECONDARY_BUTTON_CLASS}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    onPress={beginNewGame}
+                    className="h-12 cursor-pointer rounded-sm border-0 bg-primary px-6 font-semibold text-primary-foreground transition-colors hover:bg-primary/90 data-[hovered=true]:bg-primary/90"
+                  >
+                    New Game
+                  </Button>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="home-actions"
+                className="flex flex-col items-center gap-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="play-shine-border text-primary">
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    onPress={hasSave ? handleContinue : beginNewGame}
+                    className="min-h-14 min-w-[260px] cursor-pointer rounded-sm border-0 bg-[#0E0C0F] px-12 py-5 text-lg font-semibold text-white transition-colors hover:bg-primary/90 data-[hovered=true]:bg-primary/90"
+                  >
+                    {hasSave ? "Continue" : "Play"}
+                  </Button>
+                </div>
+                {hasSave ? (
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onPress={() => setConfirmingNewGame(true)}
+                    className={SECONDARY_BUTTON_CLASS}
+                  >
+                    New Game
+                  </Button>
+                ) : null}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       </motion.div>
 

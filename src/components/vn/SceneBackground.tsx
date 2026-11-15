@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { SCENE } from "../../config/dialogueBox";
 
 interface SceneBackgroundProps {
   /** Caminho do asset de fundo. null força o placeholder. */
@@ -30,9 +31,12 @@ export function SceneBackground({ src, placeholderLabel }: SceneBackgroundProps)
     );
   }
 
+  // Rótulo logo abaixo da faixa preta superior (config central), fora do centro
+  // da cena: não fica sob o item em destaque nem sob os sprites.
   return (
     <div
-      className="absolute inset-0 flex items-center justify-center bg-[#1A161D]"
+      className="absolute inset-0 flex items-start justify-center bg-[#1A161D]"
+      style={{ paddingTop: SCENE.PLACEHOLDER_LABEL_TOP }}
       aria-hidden="true"
     >
       <span className="font-mono text-xs uppercase tracking-widest text-primary/50">

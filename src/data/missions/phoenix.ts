@@ -1,13 +1,14 @@
 import type { StageScript } from '../../types/novel';
 import { BACKGROUND_ASSETS } from '../../config/sceneAssets';
+import { itemObtainedText } from '../items';
 
 /**
  * STAGE 4: MARS — PHOENIX.
  *
  * Falas VERBATIM do roteiro-fonte (echoes_of_astra_game_script.md).
  *
- * Setting: The Martian Arctic plains. A three-legged lander with fan-shaped
- * solar arrays, dusted with a thin layer of frost.
+ * Setting: A vast Martian plain of rust-red, rock-strewn terrain stretching to
+ * a flat horizon, under a hazy orange sky with a blazing Sun low in the corner.
  */
 export const PHOENIX_STAGE: StageScript = {
   stageId: 'phoenix',
@@ -207,7 +208,8 @@ export const PHOENIX_STAGE: StageScript = {
       id: 'phoenix-clear-item',
       speakerId: 'eco',
       isItemDescription: true,
-      text: 'Item Obtained: Martian Ice Core. Phoenix Mars Lander. Landed on the Martian arctic plains (Vastitas Borealis) on May 25, 2008. Using a robotic arm to trench and analyze soil and ice, it confirmed the presence of water ice on Mars. It operated for 157 sols, its last communication on November 2, 2008, before the darkness of Martian winter and dwindling solar power brought the mission to an end.',
+      itemId: 'item-phoenix',
+      text: itemObtainedText('item-phoenix'),
     },
     {
       id: 'phoenix-clear-farewell',

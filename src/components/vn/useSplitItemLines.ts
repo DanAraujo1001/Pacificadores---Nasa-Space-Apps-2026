@@ -6,6 +6,11 @@ import type { ScriptLine } from "../../types/novel";
 interface SplitResult {
   lines: ScriptLine[];
   midSentenceSplitIds: string[];
+  /**
+   * true depois da primeira medição real (as partes já são as definitivas).
+   * Usado para retomar o save na parte exata de uma fala dividida.
+   */
+  ready: boolean;
 }
 
 /**
@@ -37,6 +42,7 @@ export function useSplitItemLines(
   const [result, setResult] = useState<SplitResult>({
     lines,
     midSentenceSplitIds: [],
+    ready: false,
   });
 
   useLayoutEffect(() => {
@@ -45,7 +51,7 @@ export function useSplitItemLines(
       // Sincroniza o resultado medido com o estado (medição real exige setState
       // no efeito de layout; mesmo padrão de `useTypewriterText`).
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setResult({ lines, midSentenceSplitIds: [] });
+      setResult({ lines, midSentenceSplitIds: [], ready: true });
       return;
     }
 
@@ -100,10 +106,11 @@ export function useSplitItemLines(
             exitsCharacterId:
               index === parts.length - 1 ? line.exitsCharacterId : undefined,
             isItemDescription: true,
+            itemId: line.itemId,
           });
         });
       }
-      setResult({ lines: out, midSentenceSplitIds });
+      setResult({ lines: out, midSentenceSplitIds, ready: true });
     };
 
     compute();
@@ -121,10 +128,17 @@ export function useSplitItemLines(
   return result;
 }
 
-/** Separa o texto em frases, preservando a pontuação final de cada uma. */
+/**
+ * Separa o texto em frases, preservando a pontuação final de cada uma.
+ * Só há fim de frase quando `.`, `?` ou `!` vem seguido de espaço: números
+ * decimais ("11.7 kg") e abreviações coladas não quebram a frase. Nenhum
+ * trecho do texto é descartado (a junção das frases devolve o texto original).
+ */
 function toSentences(text: string): string[] {
-  const matches = text.match(/[^.!?]+[.!?]+(?:\s+|$)|[^.!?]+$/g);
-  return (matches ?? [text]).map((s) => s.trim()).filter(Boolean);
+  return text
+    .split(/(?<=[.!?])\s+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
 }
 
 /**

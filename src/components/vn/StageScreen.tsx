@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   getCharacter,
   getCharacterSpriteSrc,
@@ -6,8 +6,13 @@ import {
   resolveProtagonistName,
   withProtagonistName,
 } from "../../config/characters";
+import { SCENE } from "../../config/dialogueBox";
 import type { SpriteExpression } from "../../config/sceneAssets";
-import { useGameStore } from "../../store/useGameStore";
+import { getItemById } from "../../data/items";
+import {
+  useGameStore,
+  type StagePositionSave,
+} from "../../store/useGameStore";
 import type {
   CharacterId,
   ScriptLine,
@@ -18,6 +23,7 @@ import type {
 import { CharacterSprite } from "./CharacterSprite";
 import { DialogueBox } from "./DialogueBox";
 import { DialoguePanel } from "./DialoguePanel";
+import { ItemReward } from "./ItemReward";
 import { SceneBackground } from "./SceneBackground";
 import { useSplitItemLines } from "./useSplitItemLines";
 import { useTypewriterText } from "./useTypewriterText";
@@ -52,6 +58,61 @@ const INITIAL_POSITION: StagePosition = {
 };
 
 /**
+ * Converte a posição salva em posição do estágio, validando contra o roteiro.
+ * Qualquer dado inconsistente (passo/opção inexistente) cai no início do passo,
+ * nunca num estado inválido. Na fase `clear`, o índice exato da parte dividida é
+ * resolvido depois, pelo id da fala (ver `resumeLineId`).
+ */
+function restorePosition(
+  script: StageScript,
+  saved: StagePositionSave | null,
+): StagePosition {
+  if (!saved || saved.stageId !== script.stageId) return INITIAL_POSITION;
+  if (saved.phase === "clear") {
+    return { stepIndex: saved.stepIndex, lineIndex: saved.lineIndex, phase: "clear", chosen: null };
+  }
+  const step = script.steps[saved.stepIndex];
+  if (!step) return INITIAL_POSITION;
+  if (saved.phase === "outcome") {
+    const chosen =
+      step.kind === "choice"
+        ? step.choices.find((choice) => choice.id === saved.chosenId)
+        : undefined;
+    if (!chosen) {
+      return { stepIndex: saved.stepIndex, lineIndex: 0, phase: "step", chosen: null };
+    }
+    return {
+      stepIndex: saved.stepIndex,
+      lineIndex: Math.min(saved.lineIndex, chosen.outcomeLines.length - 1),
+      phase: "outcome",
+      chosen,
+    };
+  }
+  return {
+    stepIndex: saved.stepIndex,
+    lineIndex: Math.min(saved.lineIndex, step.lines.length - 1),
+    phase: "step",
+    chosen: null,
+  };
+}
+
+/** Índice da fala salva nas falas já divididas (parte exata, ou a 1ª parte). */
+function resolveLineIndex(
+  lines: ScriptLine[],
+  lineId: string,
+  fallbackIndex: number,
+): number {
+  const exact = lines.findIndex((ln) => ln.id === lineId);
+  if (exact >= 0) return exact;
+  const base = lineId.replace(/-part-\d+$/, "");
+  const sameLine = lines.findIndex(
+    (ln) => ln.id === base || ln.id.startsWith(`${base}-part-`),
+  );
+  if (sameLine >= 0) return sameLine;
+  return Math.max(0, Math.min(fallbackIndex, lines.length - 1));
+}
+
+/**
  * Retorna as falas ativas para a posição atual. Na fase `clear`, usa as falas
  * já EXPANDIDAS (descrições de item divididas em partes), passadas por `clearLines`.
  */
@@ -75,18 +136,71 @@ function linesFor(
  */
 export function StageScreen({ script, onClear, onGameOver }: StageScreenProps) {
   const playerName = useGameStore((state) => state.playerName);
-  const [pos, setPos] = useState<StagePosition>(INITIAL_POSITION);
+  const grantItem = useGameStore((state) => state.grantItem);
+  const recordChoice = useGameStore((state) => state.recordChoice);
+  const setStagePosition = useGameStore((state) => state.setStagePosition);
+  // Retomada do save: posição salva lida UMA vez, na montagem.
+  const [pos, setPos] = useState<StagePosition>(() =>
+    restorePosition(script, useGameStore.getState().stagePosition),
+  );
+  // Na fase `clear`, a parte exata de uma fala dividida só é conhecida depois
+  // da medição; guarda o id salvo até lá.
+  const [resumeLineId, setResumeLineId] = useState<string | null>(() => {
+    const saved = useGameStore.getState().stagePosition;
+    return saved?.stageId === script.stageId && saved.phase === "clear"
+      ? saved.lineId
+      : null;
+  });
 
   // Descrições de item (Stage Clear) são divididas em várias falas por medição
   // real, para caberem na fonte padrão sem reduzir nem cortar.
-  const { lines: splitClearLines } = useSplitItemLines(
+  const { lines: splitClearLines, ready: splitReady } = useSplitItemLines(
     script.clearLines,
     playerName,
   );
 
   const lines = linesFor(script, pos, splitClearLines);
+
+  // Ajuste de estado durante o render (padrão oficial do React): assim que as
+  // partes forem definitivas, posiciona na parte salva, antes de pintar.
+  if (resumeLineId !== null && pos.phase === "clear" && splitReady) {
+    const index = resolveLineIndex(lines, resumeLineId, pos.lineIndex);
+    setResumeLineId(null);
+    if (index !== pos.lineIndex) setPos({ ...pos, lineIndex: index });
+  }
+
   const line = lines[pos.lineIndex] ?? lines[0];
   const step: StageStep | undefined = script.steps[pos.stepIndex];
+  const rewardItem = line?.itemId ? getItemById(line.itemId) : undefined;
+  const lineId = line?.id ?? null;
+  const itemId = line?.itemId;
+
+  // Save automático: registra a posição exata a cada avanço/escolha.
+  useEffect(() => {
+    if (resumeLineId !== null) return;
+    setStagePosition({
+      stageId: script.stageId,
+      stepIndex: pos.stepIndex,
+      phase: pos.phase,
+      lineIndex: pos.lineIndex,
+      lineId,
+      chosenId: pos.chosen?.id ?? null,
+    });
+  }, [
+    resumeLineId,
+    setStagePosition,
+    script.stageId,
+    pos.stepIndex,
+    pos.phase,
+    pos.lineIndex,
+    pos.chosen,
+    lineId,
+  ]);
+
+  // Item obtido: concedido uma única vez (idempotente no store e nos Memories).
+  useEffect(() => {
+    if (itemId) grantItem(itemId);
+  }, [itemId, grantItem]);
 
   const displayName = resolveProtagonistName(playerName);
   const fullText = withProtagonistName(line?.text ?? "", playerName);
@@ -139,6 +253,7 @@ export function StageScreen({ script, onClear, onGameOver }: StageScreenProps) {
     : script.backgroundPlaceholderLabel;
 
   const handleChoice = (choice: StageChoice) => {
+    if (step) recordChoice(script.stageId, step.id, choice.id);
     setPos((current) => ({
       ...current,
       phase: "outcome",
@@ -217,6 +332,16 @@ export function StageScreen({ script, onClear, onGameOver }: StageScreenProps) {
           src={script.backgroundAsset}
           placeholderLabel={script.backgroundPlaceholderLabel}
         />
+
+        {/* Painel preto superior (letterbox), igual às cenas lineares e ao hub. */}
+        <div
+          className="absolute inset-x-0 top-0 z-10 bg-[#0E0C0F]"
+          style={{ height: SCENE.TOP_BAR_HEIGHT }}
+          aria-hidden="true"
+        />
+
+        {/* Tela de ITEM OBTIDO: item no centro com raios, atrás dos sprites. */}
+        {rewardItem ? <ItemReward item={rewardItem} /> : null}
 
         {onStage.map((characterId) => {
           const character = getCharacter(characterId);

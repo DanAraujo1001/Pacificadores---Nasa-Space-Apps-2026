@@ -1,5 +1,6 @@
 import type { StageScript } from '../../types/novel';
 import { BACKGROUND_ASSETS } from '../../config/sceneAssets';
+import { itemObtainedText } from '../items';
 
 /**
  * STAGE 3: MARS — SPIRIT.
@@ -215,7 +216,8 @@ export const SPIRIT_STAGE: StageScript = {
       id: 'spirit-clear-item',
       speakerId: 'eco',
       isItemDescription: true,
-      text: 'Item Obtained: Spirit\'s Solar Panel. Mars Exploration Rover “Spirit” (MER-A). Landed in Gusev Crater on January 4, 2004. Engineered for a ~90-sol (Martian-day) prime mission, it operated for over six years, uncovering evidence of ancient wet environments on Mars. In 2009, it became embedded in soft soil. Last communication was received on March 22, 2010 (Sol 2210), and NASA declared the mission complete on May 25, 2011.',
+      itemId: 'item-spirit',
+      text: itemObtainedText('item-spirit'),
     },
     {
       id: 'spirit-clear-farewell',

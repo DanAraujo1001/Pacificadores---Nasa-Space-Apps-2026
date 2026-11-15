@@ -105,15 +105,23 @@ export const ALL_SPRITE_PATHS: string[] = Object.values(CHARACTER_SPRITES).flatM
   (pack) => Object.values(pack),
 );
 
-/** Atalhos legados: sempre a expressão `normal`. */
-export const SPRITE_ASSETS = {
-  protagonist: CHARACTER_SPRITES.protagonist.normal,
-  eco: CHARACTER_SPRITES.eco.normal,
-  grandpaTadeu: CHARACTER_SPRITES.grandpaTadeu.normal,
-  eagle: CHARACTER_SPRITES.eagle.normal,
-  lrv: CHARACTER_SPRITES.lrv.normal,
-  spirit: CHARACTER_SPRITES.spirit.normal,
-  phoenix: CHARACTER_SPRITES.phoenix.normal,
+/**
+ * Ícones/sprites dos ITENS de conquista (um por estágio). Caminhos centrais:
+ * basta colocar o arquivo final na pasta indicada com o nome esperado e a troca
+ * é automática, sem mexer no código. Enquanto o arquivo não existir, a UI usa um
+ * placeholder neutro com o nome do item (ver `ItemReward` / `MemorySlot`).
+ *
+ * ASSETS PENDENTES (nome, pasta, formato sugerido, proporção):
+ *  - eagle:   public/assets/items/item-eagle.png    (PNG com transparência, quadrado 1:1)
+ *  - lrv:     public/assets/items/item-lrv.png       (PNG, 1:1) — 1 sprite p/ as 3 pedras
+ *  - spirit:  public/assets/items/item-spirit.png    (PNG, 1:1)
+ *  - phoenix: public/assets/items/item-phoenix.png   (PNG, 1:1)
+ */
+export const ITEM_ICON_ASSETS = {
+  eagle: "/assets/items/item-eagle.png",
+  lrv: "/assets/items/item-lrv.png",
+  spirit: "/assets/items/item-spirit.png",
+  phoenix: "/assets/items/item-phoenix.png",
 } as const;
 
 /** Planetas clicáveis nas janelas da cabine. */

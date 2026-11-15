@@ -6,6 +6,7 @@ import {
   resolveProtagonistName,
   withProtagonistName,
 } from "../../config/characters";
+import { SCENE } from "../../config/dialogueBox";
 import { PROLOGUE_SCENE } from "../../data/missions/prologue";
 import { useGameStore } from "../../store/useGameStore";
 import type { SpriteExpression } from "../../config/sceneAssets";
@@ -33,7 +34,18 @@ export function LinearSceneScreen({
 }: LinearSceneScreenProps) {
   const setWorld = useGameStore((state) => state.setWorld);
   const playerName = useGameStore((state) => state.playerName);
-  const [lineIndex, setLineIndex] = useState(0);
+  const setScenePosition = useGameStore((state) => state.setScenePosition);
+  // Retomada do save: começa na fala salva se for esta mesma cena.
+  const [lineIndex, setLineIndex] = useState(() => {
+    const saved = useGameStore.getState().scenePosition;
+    if (saved?.sceneId !== scene.id) return 0;
+    return Math.min(saved.lineIndex, scene.lines.length - 1);
+  });
+
+  // Save automático: registra a fala atual a cada avanço.
+  useEffect(() => {
+    setScenePosition({ sceneId: scene.id, lineIndex });
+  }, [setScenePosition, scene.id, lineIndex]);
 
   const line = scene.lines[lineIndex] ?? scene.lines[0];
   const displayName = resolveProtagonistName(playerName);
@@ -113,6 +125,14 @@ export function LinearSceneScreen({
           key={scene.backgroundAsset ?? "bg-placeholder"}
           src={scene.backgroundAsset}
           placeholderLabel={scene.backgroundPlaceholderLabel}
+        />
+
+        {/* Painel preto superior (letterbox), igual ao topo do hub do Ato 1.
+            Fica por cima do fundo, abaixo dos sprites/HUD. */}
+        <div
+          className="absolute inset-x-0 top-0 z-10 bg-[#0E0C0F]"
+          style={{ height: SCENE.TOP_BAR_HEIGHT }}
+          aria-hidden="true"
         />
 
         {onStage.map((characterId) => {
