@@ -22,7 +22,10 @@ export function App() {
   const themeClass = THEME_BY_WORLD[currentWorld];
   const homeInScene =
     currentScreen === "playing" && hubPhase === "select-equipment";
-  const showHome = currentScreen !== "menu" && !homeInScene;
+  const showHome =
+    currentScreen !== "menu" &&
+    currentScreen !== "loading" &&
+    !homeInScene;
 
   return (
     <main className={`${themeClass} relative min-h-screen bg-background text-foreground`}>
