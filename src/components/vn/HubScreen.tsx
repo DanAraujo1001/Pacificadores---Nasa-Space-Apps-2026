@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@heroui/react";
 // Extensão explícita: os `.js` emitidos ao lado do fonte faziam o Vite
@@ -14,6 +14,14 @@ import type { DestinationConfig, DestinationId, StageId } from "../../types/nove
 import { EquipmentMarker } from "./EquipmentMarker.tsx";
 import { HomeButton } from "./HomeButton";
 import { SceneBackground } from "./SceneBackground";
+
+const HUB_FADE_S = 0.45;
+
+type HubVeilPhase = "cover" | "reveal";
+
+type HubTransition =
+  | { type: "to"; id: DestinationId }
+  | { type: "back" };
 
 interface HubScreenProps {
   /** true quando a sub-fase é a seleção de equipamento do destino escolhido. */
@@ -44,6 +52,27 @@ export function HubScreen({
     (state) => state.selectedDestination,
   );
   const completedStageIds = useGameStore((state) => state.completedStageIds);
+  const [veil, setVeil] = useState<HubVeilPhase | null>(null);
+  const pendingTransition = useRef<HubTransition | null>(null);
+
+  const beginTransition = (transition: HubTransition) => {
+    if (veil) return;
+    pendingTransition.current = transition;
+    setVeil("cover");
+  };
+
+  const finishVeilStep = () => {
+    if (veil === "cover") {
+      const pending = pendingTransition.current;
+      if (!pending) return;
+      pendingTransition.current = null;
+      if (pending.type === "to") onSelectDestination(pending.id);
+      else onBackToDestinations();
+      setVeil("reveal");
+      return;
+    }
+    if (veil === "reveal") setVeil(null);
+  };
 
   // O tema reage ao destino escolhido (Lua/Marte); na visão de destino, nave.
   useEffect(() => {
@@ -59,62 +88,74 @@ export function HubScreen({
       ? getDestination(selectedDestination)
       : undefined;
 
-  if (destination) {
-    return (
-      <EquipmentScene
-        destination={destination}
-        completedStageIds={completedStageIds}
-        onSelectStage={onSelectStage}
-        onBackToDestinations={onBackToDestinations}
-      />
-    );
-  }
-
   return (
-    <section className="relative flex min-h-screen w-full flex-col overflow-hidden bg-[#0E0C0F] text-foreground">
-      <div className="relative z-0 flex-1 overflow-hidden">
-        <SceneBackground
-          key={BACKGROUND_ASSETS.hubShip}
-          src={BACKGROUND_ASSETS.hubShip}
-          placeholderLabel="Hub: Ship (Moon & Mars)"
+    <>
+      {destination ? (
+        <EquipmentScene
+          destination={destination}
+          completedStageIds={completedStageIds}
+          onSelectStage={onSelectStage}
+          onBackToDestinations={() => beginTransition({ type: "back" })}
         />
-      </div>
+      ) : (
+        <section className="relative flex min-h-screen w-full flex-col overflow-hidden bg-[#0E0C0F] text-foreground">
+          <div className="relative z-0 flex-1 overflow-hidden">
+            <SceneBackground
+              key={BACKGROUND_ASSETS.hubShip}
+              src={BACKGROUND_ASSETS.hubShip}
+              placeholderLabel="Hub: Ship (Moon & Mars)"
+            />
+          </div>
 
-      <div className="relative z-20 flex shrink-0 flex-col items-center gap-6 bg-[#0E0C0F]/95 px-4 pb-10 pt-6 backdrop-blur-md">
-        <p className="font-display text-lg font-bold uppercase tracking-wide text-primary">
-          Choose a destination
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-6">
-          {DESTINATIONS.map((dest) => {
-            const total = dest.stageIds.length;
-            const done = dest.stageIds.filter((id) =>
-              completedStageIds.includes(id),
-            ).length;
-            return (
-              <motion.div
-                key={dest.id}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onPress={() => onSelectDestination(dest.id)}
-                  className="flex h-auto min-w-[200px] cursor-pointer flex-col items-center gap-1 rounded-sm border border-primary bg-content1/60 px-8 py-5 text-primary transition-colors hover:bg-primary/15 data-[hovered=true]:bg-primary/15"
-                >
-                  <span className="font-display text-xl font-bold uppercase tracking-wide">
-                    {dest.label}
-                  </span>
-                  <span className="font-mono text-xs text-primary/70">
-                    {done}/{total} explored
-                  </span>
-                </Button>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
+          <div className="relative z-20 flex shrink-0 flex-col items-center gap-6 bg-[#0E0C0F]/95 px-4 pb-10 pt-6 backdrop-blur-md">
+            <p className="font-display text-lg font-bold uppercase tracking-wide text-primary">
+              Choose a destination
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-6">
+              {DESTINATIONS.map((dest) => {
+                const total = dest.stageIds.length;
+                const done = dest.stageIds.filter((id) =>
+                  completedStageIds.includes(id),
+                ).length;
+                return (
+                  <motion.div
+                    key={dest.id}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      onPress={() =>
+                        beginTransition({ type: "to", id: dest.id })
+                      }
+                      className="flex h-auto min-w-[200px] cursor-pointer flex-col items-center gap-1 rounded-sm border border-primary bg-content1/60 px-8 py-5 text-primary transition-colors hover:bg-primary/15 data-[hovered=true]:bg-primary/15"
+                    >
+                      <span className="font-display text-xl font-bold uppercase tracking-wide">
+                        {dest.label}
+                      </span>
+                      <span className="font-mono text-xs text-primary/70">
+                        {done}/{total} explored
+                      </span>
+                    </Button>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+      {veil ? (
+        <motion.div
+          className="pointer-events-auto fixed inset-0 z-[80] bg-[#0E0C0F]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: veil === "cover" ? 1 : 0 }}
+          transition={{ duration: HUB_FADE_S, ease: "easeInOut" }}
+          onAnimationComplete={finishVeilStep}
+          aria-hidden="true"
+        />
+      ) : null}
+    </>
   );
 }
 
