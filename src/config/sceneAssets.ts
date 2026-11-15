@@ -17,6 +17,8 @@ export const BACKGROUND_ASSETS = {
   act0Attic: "/assets/backgrounds/act0-attic.png",
   /** ACT 1 — hub na nave: Lua e Marte à vista pela janela. */
   hubShip: "/assets/backgrounds/act1-hub-ship.png",
+  /** Escolha de destino: cabine sem os planetas nas janelas. */
+  chooseDestination: "/assets/backgrounds/choose-dstn-bg.png",
   /** Escolha de equipamento na superfície lunar. */
   chooseMoon: "/assets/backgrounds/bg-moon-choose.png",
   /** Escolha de equipamento na superfície de Marte. */
@@ -108,6 +110,12 @@ export const SPRITE_ASSETS = {
   phoenix: CHARACTER_SPRITES.phoenix.normal,
 } as const;
 
+/** Planetas clicáveis nas janelas da cabine. */
+export const DESTINATION_ICON_ASSETS = {
+  moon: "/assets/icons/moon-choice.svg",
+  mars: "/assets/icons/mars-choice.svg",
+} as const;
+
 /** Ícones clicáveis na cena de escolha de equipamento. */
 export const EQUIPMENT_ICON_ASSETS = {
   eagle: "/assets/icons/eagle-icon.svg",
@@ -118,7 +126,9 @@ export const EQUIPMENT_ICON_ASSETS = {
 
 /** Fundos e ícones da cena de escolha (preload). */
 export const CHOOSE_SCENE_ASSETS: string[] = [
+  BACKGROUND_ASSETS.chooseDestination,
   BACKGROUND_ASSETS.chooseMoon,
   BACKGROUND_ASSETS.chooseMars,
+  ...Object.values(DESTINATION_ICON_ASSETS),
   ...Object.values(EQUIPMENT_ICON_ASSETS),
 ];
