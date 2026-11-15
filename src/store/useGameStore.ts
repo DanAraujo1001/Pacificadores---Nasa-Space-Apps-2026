@@ -11,7 +11,8 @@ export type ScreenState =
   | "story-loading"
   | "prologue"
   | "playing"
-  | "dialogue";
+  | "dialogue"
+  | "team";
 
 /**
  * Sub-fase do Ato 1 (tela `playing`):

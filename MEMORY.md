@@ -10,12 +10,15 @@
   - **Cena de equipamento** (`HubScreen` + `EquipmentMarker`): fundos Lua/Marte, ícones no solo, progresso `0/2 explored`, concluídos bloqueados, link `← Destinations`. Home inline no canto.
   - **Tela de contato** (`StageLoadingScreen`) antes de cada equipamento.
   - **Barra de diálogo fixa** (`DialoguePanel` / `dialogueBox.ts`): escolhas dentro da barra, auto-fit, sprites congelados; `playerName` em falas/nameplate/escolhas.
+  - **Tela Team** (`TeamScreen`): aberta pelo botão Team do menu (fade), botão Back volta ao menu sem resetar; 4 molduras `PhotoFrame` (estilo Memories, maiores) com fotos `.jpeg` recortadas no rosto (`object-cover`+`object-top`); nomes + links LinkedIn/GitHub (`SocialLink`, nova aba, `noopener`, hover invertendo cor com o quadrado); dados em `data/team.ts`, caminhos/tamanhos em `config/teamAssets.ts`.
+  - **Final Act** mostra o sprite do protagonista (Vanguard) à esquerda do início ao fim, via flag `LinearScene.protagonistAlwaysOnStage`; `FinalScreen` sem rótulo de placeholder no fundo.
   - Sprites reais (player, eco, grandpa, eagle, lrv, spirit, phoenix) + expressões proud/sad; Vite resolve `.tsx`/`.ts` antes de `.js`.
   - Áudio automático (`resolveEvent`).
 - **O que falta (Próximos passos imediatos):**
   1. Backgrounds reais dos estágios/final em `public/assets/backgrounds/` + faixas em `public/assets/music/`.
-  2. Completar `LORE_DATA.md` onde ainda houver lacunas.
-  3. Não versionar `.js` emitidos ao lado dos `.ts`/`.tsx`.
+  2. (Team concluído: os 4 integrantes com foto .jpeg e links LinkedIn/GitHub ativos.)
+  3. Completar `LORE_DATA.md` onde ainda houver lacunas.
+  4. Não versionar `.js` emitidos ao lado dos `.ts`/`.tsx`.
 
 ## Bugs / Bloqueios Conhecidos
 - Lint pré-existente em `useTypewriterText.ts` / `HomeTransitionVeil.tsx` (`react-hooks/set-state-in-effect`), não tratado.
@@ -40,3 +43,11 @@
 - [2026-11-15 03:11] Tela final sem o rótulo "Final Screen" do placeholder de fundo (`backgroundPlaceholderLabel` vazio); build/lint ok.
 - [2026-11-15 03:14] Checkpoint: estado confirmado, sem novas mudanças de código desde o marco anterior.
 - [2026-11-15 04:06] Cena de equipamento (Lua/Marte) com ícones no solo, Destinations, tela de contato na cor do planeta e Home inline.
+- [2026-11-15 13:19] Final Act: sprite do protagonista (Vanguard) agora aparece (flag `protagonistAlwaysOnStage` em `LinearScene`; consumida pelo `LinearSceneScreen`); sem alterar o roteiro; build/lint ok.
+- [2026-11-15 13:40] Tela Team criada (4 molduras estilo Memories maiores, nomes, LinkedIn/GitHub); botão Team ligado à navegação; ícones SVG linkedin/github; fotos pendentes em public/assets/team/; build/lint ok.
+- [2026-11-15 13:51] Checkpoint: tela Team concluída; `Estado Atual` e próximos passos atualizados (fotos/URLs da equipe pendentes); build/lint ok.
+- [2026-11-15 14:02] Team: fotos `.jpeg` ligadas (config), rosto enquadrado (`object-top`), hover dos ícones LinkedIn/GitHub invertendo cor com o quadrado, URLs do Victor adicionadas; falta Lucas (foto+links); build/lint ok.
+- [2026-11-15 14:08] Checkpoint: estado confirmado (Team com fotos `.jpeg`, rosto enquadrado e hover invertido); pendência única: Lucas (foto + links).
+- [2026-11-15 14:14] Team: URLs do Lucas (LinkedIn/GitHub) adicionadas; os 4 integrantes agora com foto e links ativos; build/lint ok.
+- [2026-11-15 14:20] Checkpoint: estado confirmado, sem novas mudanças de código desde o marco anterior (Team completa).
+- [2026-11-15 14:22] Checkpoint: estado confirmado, sem novas mudanças de código (pendente apenas commit das alterações da Team + fix do Final Act).

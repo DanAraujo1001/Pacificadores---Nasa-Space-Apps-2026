@@ -15,6 +15,9 @@ export const FINAL_ACT_SCENE: LinearScene = {
   world: 'ship',
   backgroundAsset: BACKGROUND_ASSETS.finalAct,
   backgroundPlaceholderLabel: 'Final Act: Resolution',
+  // O protagonista (Vanguard) está em cena do início ao fim do Final Act
+  // (usa o capacete, conversa com a Eco e depois com o Avô). Sempre à esquerda.
+  protagonistAlwaysOnStage: true,
   lines: [
     {
       id: 'final-eco-1',

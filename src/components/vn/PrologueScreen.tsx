@@ -39,15 +39,18 @@ export function LinearSceneScreen({
 
   // Quem já entrou em cena e ainda não saiu, até a fala atual (inclusive).
   // Deriva de `entersCharacterId` / `exitsCharacterId`, garantindo continuidade.
+  // Quando a cena marca `protagonistAlwaysOnStage`, o protagonista está presente
+  // do início ao fim (ex.: Final Act), sem precisar de `entersCharacterId`.
   const onStage = useMemo<CharacterId[]>(() => {
     const present = new Set<CharacterId>();
+    if (scene.protagonistAlwaysOnStage) present.add("protagonist");
     for (let i = 0; i <= lineIndex && i < scene.lines.length; i += 1) {
       const current = scene.lines[i];
       if (current.entersCharacterId) present.add(current.entersCharacterId);
       if (current.exitsCharacterId) present.delete(current.exitsCharacterId);
     }
     return [...present];
-  }, [scene.lines, lineIndex]);
+  }, [scene.lines, lineIndex, scene.protagonistAlwaysOnStage]);
 
   const fullText = withProtagonistName(line.text, playerName);
   const { visibleText, textComplete, skipToFullText } = useTypewriterText(
