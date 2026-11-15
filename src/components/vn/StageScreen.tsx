@@ -1,6 +1,12 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { getCharacter, withProtagonistName } from "../../config/characters";
+import {
+  getCharacter,
+  getCharacterSpriteSrc,
+  withProtagonistName,
+} from "../../config/characters";
+import type { SpriteExpression } from "../../config/sceneAssets";
+import { useGameStore } from "../../store/useGameStore";
 import type {
   CharacterId,
   ScriptLine,
@@ -60,17 +66,26 @@ function linesFor(script: StageScript, pos: StagePosition): ScriptLine[] {
  * `ChoiceButton` e `useTypewriterText`, mantendo o mesmo visual do jogo.
  */
 export function StageScreen({ script, onClear, onGameOver }: StageScreenProps) {
+  const playerName = useGameStore((state) => state.playerName);
   const [pos, setPos] = useState<StagePosition>(INITIAL_POSITION);
 
   const lines = linesFor(script, pos);
   const line = lines[pos.lineIndex] ?? lines[0];
   const step: StageStep | undefined = script.steps[pos.stepIndex];
 
-  const fullText = withProtagonistName(line?.text ?? "");
+  const displayName = playerName.trim() || undefined;
+  const fullText = withProtagonistName(line?.text ?? "", displayName);
   const { visibleText, textComplete, skipToFullText } = useTypewriterText(
     fullText,
     line?.id ?? "empty",
   );
+
+  const outcomeExpression: SpriteExpression =
+    pos.phase === "outcome" && pos.chosen
+      ? pos.chosen.correct
+        ? "proud"
+        : "sad"
+      : "normal";
 
   // Continuidade: quem está em cena até a fala atual. O protagonista está
   // sempre presente (lado esquerdo); os equipamentos entram via `entersCharacterId`.
@@ -105,7 +120,9 @@ export function StageScreen({ script, onClear, onGameOver }: StageScreenProps) {
 
   const speaker = line?.speakerId ? getCharacter(line.speakerId) : null;
   const speakerName =
-    speaker?.displayName ?? script.backgroundPlaceholderLabel;
+    speaker?.id === "protagonist"
+      ? displayName ?? speaker.displayName
+      : (speaker?.displayName ?? script.backgroundPlaceholderLabel);
 
   const handleChoice = (choice: StageChoice) => {
     setPos((current) => ({
@@ -190,11 +207,18 @@ export function StageScreen({ script, onClear, onGameOver }: StageScreenProps) {
         {onStage.map((characterId) => {
           const character = getCharacter(characterId);
           if (!character) return null;
+          const expression =
+            character.id === line?.speakerId ? outcomeExpression : "normal";
+          const spriteSrc = getCharacterSpriteSrc(character.id, expression);
+          const label =
+            character.id === "protagonist"
+              ? displayName ?? character.placeholderLabel
+              : character.placeholderLabel;
           return (
             <CharacterSprite
-              key={`${character.id}:${character.spriteAsset ?? "placeholder"}`}
-              src={character.spriteAsset}
-              name={character.placeholderLabel}
+              key={`${character.id}:${spriteSrc ?? "placeholder"}`}
+              src={spriteSrc}
+              name={label}
               side={character.side}
               active={line?.speakerId === character.id}
             />

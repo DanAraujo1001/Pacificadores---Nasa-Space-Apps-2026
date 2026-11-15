@@ -1,9 +1,4 @@
-const PLAYER_SPRITES = [
-  "/assets/sprites/player/player-normal.png",
-  "/assets/sprites/player/player-proud.png",
-  "/assets/sprites/player/player-sad.png",
-  "/assets/sprites/player/player-glitch.png",
-] as const;
+import { ALL_SPRITE_PATHS } from "../config/sceneAssets";
 
 const LOADING_ICONS = [
   "/assets/icons/icon-base.svg",
@@ -33,7 +28,7 @@ async function waitForFonts(): Promise<void> {
 export async function preloadAssets(): Promise<void> {
   await Promise.all([
     ...LOADING_ICONS.map(loadImage),
-    ...PLAYER_SPRITES.map(loadImage),
+    ...ALL_SPRITE_PATHS.map(loadImage),
     waitForFonts(),
   ]);
 }
