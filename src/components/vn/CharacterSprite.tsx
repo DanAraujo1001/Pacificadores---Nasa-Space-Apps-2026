@@ -11,6 +11,11 @@ interface CharacterSpriteProps {
   side: CharacterSide;
   /** Destaca o personagem que está falando (os demais ficam esmaecidos). */
   active?: boolean;
+  /**
+   * Ajuste vertical fino, só deste sprite, sobre o offset padrão. Valor CSS
+   * positivo (ex.: "2rem") ABAIXA o sprite; negativo sobe. Ausente = offset padrão.
+   */
+  bottomNudge?: string;
 }
 
 /**
@@ -34,11 +39,18 @@ export function CharacterSprite({
   name,
   side,
   active = true,
+  bottomNudge,
 }: CharacterSpriteProps) {
   // O estado de erro é resetado na troca de sprite pela `key` no componente pai.
   const [failed, setFailed] = useState(false);
 
   const showImage = src !== null && !failed;
+
+  // Offset padrão compartilhado; um nudge por personagem só ABAIXA/sobe este
+  // sprite, sem mexer no alinhamento dos demais.
+  const bottom = bottomNudge
+    ? `calc(${SPRITE.BOTTOM_OFFSET} - ${bottomNudge})`
+    : SPRITE.BOTTOM_OFFSET;
 
   return (
     // Ancorado pela BASE num ponto acima do topo da barra de diálogo
@@ -46,7 +58,7 @@ export function CharacterSprite({
     // escala e margem lateral para todos (config central `SPRITE`).
     <motion.div
       className={`pointer-events-none absolute z-10 flex items-end ${SIDE_CLASSES[side]}`}
-      style={{ bottom: SPRITE.BOTTOM_OFFSET }}
+      style={{ bottom }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: active ? 1 : 0.45, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}

@@ -12,8 +12,9 @@
   - **Barra de diálogo fixa** (`DialoguePanel` / `dialogueBox.ts`): escolhas dentro da barra, auto-fit, sprites congelados; `playerName` em falas/nameplate/escolhas.
   - Sprites reais (player, eco, grandpa, eagle, lrv, spirit, phoenix) + expressões proud/sad; Vite resolve `.tsx`/`.ts` antes de `.js`.
   - Áudio automático (`resolveEvent`).
+  - **Backgrounds reais ligados:** Ato 0 (Attic) → `Grandpa's_House.webp`; Ato 1 (Hub ship) → `rocket_background.webp`; Stage Eagle → `Mare_Tranquillitatis.webp`; Stage LRVs → `Shorty_Crater.webp`; Stage Spirit → `Gusev_Crater.webp`; Stage Phoenix → `Vastitas_Borealis.webp`, todos via `BACKGROUND_ASSETS` em `src/config/sceneAssets.ts` (apóstrofo URL-encoded `%27`). `object-cover` mantém o layout.
 - **O que falta (Próximos passos imediatos):**
-  1. Backgrounds reais dos estágios/final em `public/assets/backgrounds/` + faixas em `public/assets/music/`.
+  1. Backgrounds reais dos estágios/final restantes em `public/assets/backgrounds/` + faixas em `public/assets/music/`.
   2. Completar `LORE_DATA.md` onde ainda houver lacunas.
   3. Não versionar `.js` emitidos ao lado dos `.ts`/`.tsx`.
 
@@ -40,3 +41,10 @@
 - [2026-11-15 03:11] Tela final sem o rótulo "Final Screen" do placeholder de fundo (`backgroundPlaceholderLabel` vazio); build/lint ok.
 - [2026-11-15 03:14] Checkpoint: estado confirmado, sem novas mudanças de código desde o marco anterior.
 - [2026-11-15 04:06] Cena de equipamento (Lua/Marte) com ícones no solo, Destinations, tela de contato na cor do planeta e Home inline.
+- [2026-11-15 05:30] Backgrounds reais dos Atos 0 e 1: `act0Attic`→`Grandpa's_House.webp`, `hubShip`→`Rocket_Transition.webp` em `sceneAssets.ts` (apóstrofo `%27`); build/typecheck ok, layout intacto (`object-cover`).
+- [2026-11-15 05:40] Sprite da ECO corrigido: `eco.normal` → `/assets/sprites/eco/Eco.png` (arquivo real) em `sceneAssets.ts`; build/typecheck ok.
+- [2026-11-15 05:48] Background do Stage Spirit (Gusev Crater) ligado: `stageSpirit` → `/assets/backgrounds/Gusev_Crater.webp` em `sceneAssets.ts`; build/typecheck ok, layout intacto (`object-cover`).
+- [2026-11-15 05:55] Background do Stage Phoenix (Martian arctic) ligado: `stagePhoenix` → `/assets/backgrounds/Vastitas_Borealis.webp` em `sceneAssets.ts`; build/typecheck ok, layout intacto (`object-cover`).
+- [2026-11-15 06:02] Background do Ato 1 (Hub ship) trocado para `rocket_background.webp` (`hubShip` em `sceneAssets.ts`); build/typecheck ok, layout intacto.
+- [2026-11-15 06:10] Backgrounds dos stages lunares ligados: Eagle (Sea of Tranquility) → `Mare_Tranquillitatis.webp`, LRVs (lunar plain) → `Shorty_Crater.webp` em `sceneAssets.ts`; build/typecheck ok, layout intacto.
+- [2026-11-15 06:25] Nudge vertical por personagem (`spriteBottomNudge` em `CharacterConfig`): ECO abaixada 2.5rem em relação à base da barra; `CharacterSprite` aceita `bottomNudge` e PrologueScreen/StageScreen repassam. Demais sprites inalterados; build/typecheck ok (lint só com os 3 erros pré-existentes).

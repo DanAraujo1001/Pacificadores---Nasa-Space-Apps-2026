@@ -81,6 +81,8 @@ export const CHARACTERS: Record<
     side: "right",
     spriteAsset: resolveCharacterSprite("eco"),
     placeholderLabel: "ECO",
+    // Abaixa um pouco a ECO em relação à base da barra de diálogo.
+    spriteBottomNudge: "2.5rem",
   },
   narrator: {
     id: "narrator",

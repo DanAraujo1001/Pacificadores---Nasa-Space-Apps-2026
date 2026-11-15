@@ -14,9 +14,9 @@
 
 export const BACKGROUND_ASSETS = {
   /** ACT 0 — sótão com fotos antigas, maquetes e um capacete; chove lá fora. */
-  act0Attic: "/assets/backgrounds/act0-attic.png",
+  act0Attic: "/assets/backgrounds/Grandpa%27s_House.webp",
   /** ACT 1 — hub na nave: Lua e Marte à vista pela janela. */
-  hubShip: "/assets/backgrounds/act1-hub-ship.png",
+  hubShip: "/assets/backgrounds/rocket_background.webp",
   /** Escolha de destino: cabine sem os planetas nas janelas. */
   chooseDestination: "/assets/backgrounds/choose-dstn-bg.png",
   /** Escolha de equipamento na superfície lunar. */
@@ -24,13 +24,13 @@ export const BACKGROUND_ASSETS = {
   /** Escolha de equipamento na superfície de Marte. */
   chooseMars: "/assets/backgrounds/bg-mars-choose.png",
   /** STAGE 1 — Mar da Tranquilidade (Eagle / Apollo 11). */
-  stageEagle: "/assets/backgrounds/stage-eagle-tranquility.png",
+  stageEagle: "/assets/backgrounds/Mare_Tranquillitatis.webp",
   /** STAGE 2 — planície lunar com as três buggies (LRVs). */
-  stageLrv: "/assets/backgrounds/stage-lrv-plain.png",
+  stageLrv: "/assets/backgrounds/Shorty_Crater.webp",
   /** STAGE 3 — Cratera Gusev, Marte (Spirit). */
-  stageSpirit: "/assets/backgrounds/stage-spirit-gusev.png",
+  stageSpirit: "/assets/backgrounds/Gusev_Crater.webp",
   /** STAGE 4 — planície ártica marciana (Phoenix). */
-  stagePhoenix: "/assets/backgrounds/stage-phoenix-arctic.png",
+  stagePhoenix: "/assets/backgrounds/Vastitas_Borealis.webp",
   /** FINAL ACT — Lua e Marte juntas, artefatos flutuando ao redor; depois sótão. */
   finalAct: "/assets/backgrounds/final-act-resolution.png",
   /** TELA FINAL — fundo do encerramento ("Abandoned, Yet Never Forgotten."). */
@@ -56,7 +56,7 @@ export const CHARACTER_SPRITES = {
     glitch: "/assets/sprites/player/player-glitch.png",
   },
   eco: {
-    normal: "/assets/sprites/eco/eco-normal.png",
+    normal: "/assets/sprites/eco/Eco.png",
   },
   grandpaTadeu: {
     normal: "/assets/sprites/grandpa-tadeu/grandpa-normal.png",

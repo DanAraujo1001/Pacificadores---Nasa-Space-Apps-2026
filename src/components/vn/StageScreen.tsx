@@ -235,6 +235,7 @@ export function StageScreen({ script, onClear, onGameOver }: StageScreenProps) {
               name={label}
               side={character.side}
               active={line?.speakerId === character.id}
+              bottomNudge={character.spriteBottomNudge}
             />
           );
         })}

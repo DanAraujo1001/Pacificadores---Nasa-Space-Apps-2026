@@ -54,6 +54,13 @@ export interface CharacterConfig {
   spriteAsset: string | null;
   /** Texto mostrado no placeholder quando o sprite não existe. */
   placeholderLabel: string;
+  /**
+   * Ajuste vertical fino, só deste personagem, da BASE do sprite em relação ao
+   * offset padrão (`SPRITE.BOTTOM_OFFSET`). Um valor CSS positivo (ex.: "2rem")
+   * ABAIXA o sprite (reduz o offset); negativo sobe. Opcional: quando ausente,
+   * usa o offset padrão compartilhado por todos. Não altera a posição dos demais.
+   */
+  spriteBottomNudge?: string;
 }
 
 /** Uma fala de uma cena linear (sem escolhas), como o Ato 0. */

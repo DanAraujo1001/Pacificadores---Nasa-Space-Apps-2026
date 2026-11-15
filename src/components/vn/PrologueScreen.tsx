@@ -113,6 +113,7 @@ export function LinearSceneScreen({
               name={label}
               side={character.side}
               active={line.speakerId === character.id}
+              bottomNudge={character.spriteBottomNudge}
             />
           );
         })}
