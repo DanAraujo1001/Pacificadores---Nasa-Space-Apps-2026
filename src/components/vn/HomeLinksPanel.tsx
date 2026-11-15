@@ -17,7 +17,6 @@ const LINKS: ReadonlyArray<{
 }> = [
   { id: "team", label: "Team", screen: "team" },
   { id: "pitch", label: "Pitch video", href: "#pitch" },
-  { id: "credits", label: "Credits", href: "#credits" },
 ];
 
 export function HomeLinksPanel({ onNavigate }: HomeLinksPanelProps) {
