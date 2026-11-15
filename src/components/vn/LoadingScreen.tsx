@@ -42,7 +42,7 @@ export function LoadingScreen() {
       className="relative min-h-screen w-full bg-background text-foreground"
     >
       <div
-        className="absolute bottom-6 right-6"
+        className="absolute bottom-16 right-6"
         style={{ width: ICON_SIZE_PX, height: ICON_SIZE_PX }}
       >
         {iconFailed ? (
