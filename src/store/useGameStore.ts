@@ -2,7 +2,12 @@ import { create } from "zustand";
 import { getMemoryByStageId } from "../data/memories";
 import type { DialoguePhase, StageId, WorldId } from "../types/novel";
 
-export type ScreenState = "loading" | "menu" | "playing" | "dialogue";
+export type ScreenState =
+  | "loading"
+  | "menu"
+  | "prologue"
+  | "playing"
+  | "dialogue";
 
 export type { StageId, DialoguePhase };
 

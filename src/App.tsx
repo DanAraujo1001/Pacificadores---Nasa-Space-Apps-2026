@@ -2,6 +2,7 @@ import { GameDialogueScreen } from "./components/vn/GameDialogueScreen";
 import { GameScreen } from "./components/vn/GameScreen";
 import { LoadingScreen } from "./components/vn/LoadingScreen";
 import { MenuScreen } from "./components/vn/MenuScreen";
+import { PrologueScreen } from "./components/vn/PrologueScreen";
 import { useGameStore } from "./store/useGameStore";
 
 const THEME_BY_WORLD = {
@@ -19,6 +20,7 @@ export function App() {
     <main className={`${themeClass} min-h-screen bg-background text-foreground`}>
       {currentScreen === "loading" ? <LoadingScreen /> : null}
       {currentScreen === "menu" ? <MenuScreen /> : null}
+      {currentScreen === "prologue" ? <PrologueScreen /> : null}
       {currentScreen === "playing" ? <GameScreen /> : null}
       {currentScreen === "dialogue" ? <GameDialogueScreen /> : null}
     </main>
