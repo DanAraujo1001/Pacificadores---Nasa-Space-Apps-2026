@@ -186,6 +186,16 @@ export interface DestinationConfig {
   label: string;
   /** Estágios/equipamentos disponíveis neste destino. */
   stageIds: StageId[];
+  /** Fundo da cena de escolha de equipamento. */
+  backgroundAsset: string;
+  /** Rótulo do placeholder se o fundo ainda não existir. */
+  backgroundPlaceholderLabel: string;
+}
+
+/** Ponto do ícone na cena, em porcentagem da viewport (ex.: "28%"). */
+export interface EquipmentHotspot {
+  left: string;
+  top: string;
 }
 
 /** Metadados de um equipamento para o hub (ícone + rótulo). */
@@ -193,6 +203,11 @@ export interface EquipmentConfig {
   stageId: StageId;
   label: string;
   world: DestinationId;
-  /** Ícone clicável do equipamento no hub (pode não existir ainda). */
+  /** Ícone clicável do equipamento no cenário (pode não existir ainda). */
   iconAsset: string | null;
+  /** Onde o marcador senta no solo: tela larga e tela estreita. */
+  hotspot: {
+    desktop: EquipmentHotspot;
+    narrow: EquipmentHotspot;
+  };
 }

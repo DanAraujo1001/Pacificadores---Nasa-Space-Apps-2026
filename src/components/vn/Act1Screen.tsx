@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { useGameStore } from "../../store/useGameStore";
-import { ALL_STAGE_IDS } from "../../config/destinations";
+import { ALL_STAGE_IDS, getEquipment } from "../../config/destinations";
 import { ACT1_INTRO_SCENE } from "../../data/missions/act1Intro";
 import { FINAL_ACT_SCENE } from "../../data/missions/finalAct";
 import { getStageScript } from "../../data/missions";
@@ -9,13 +9,15 @@ import { FinalScreen } from "./FinalScreen";
 import { GameOverScreen } from "./GameOverScreen";
 import { HubScreen } from "./HubScreen";
 import { LinearSceneScreen } from "./PrologueScreen";
+import { StageLoadingScreen } from "./StageLoadingScreen";
 import { StageScreen } from "./StageScreen";
 
 /**
  * Orquestrador do Ato 1 (renderizado na tela `playing`).
  *
- * Fluxo: intro (ECO) → seleção de destino → seleção de equipamento → estágio →
- * volta ao hub. Quando todos os estágios estão concluídos, vai para o Final Act.
+ * Fluxo: intro (ECO) → seleção de destino → seleção de equipamento →
+ * tela de contato → estágio → volta ao hub. Quando todos os estágios estão
+ * concluídos, vai para o Final Act.
  *
  * O progresso (estágios concluídos) vive no store; estágios concluídos ficam
  * bloqueados no hub. Game over não conclui o estágio (permite tentar de novo).
@@ -32,6 +34,10 @@ export function Act1Screen() {
   const setDialoguePhase = useGameStore((state) => state.setDialoguePhase);
   const completedStageIds = useGameStore((state) => state.completedStageIds);
   const setScreen = useGameStore((state) => state.setScreen);
+  const setWorld = useGameStore((state) => state.setWorld);
+
+  // Equipamento escolhido, ainda na tela de contato (não persiste).
+  const [enteringStage, setEnteringStage] = useState<StageId | null>(null);
 
   // Game over é efêmero (não persiste): só um overlay para "tentar de novo".
   const [gameOver, setGameOver] = useState(false);
@@ -47,13 +53,26 @@ export function Act1Screen() {
 
   const handleSelectStage = (stage: StageId) => {
     // Guarda extra: nunca entrar num estágio já concluído.
-    if (completedStageIds.includes(stage)) return;
+    if (completedStageIds.includes(stage) || enteringStage) return;
+    setWorld(getEquipment(stage).world);
+    setEnteringStage(stage);
+  };
+
+  const handleStageReady = useCallback(() => {
+    const stage = enteringStage;
+    if (!stage || useGameStore.getState().pendingFadeTo) return;
     setStage(stage);
     setDialoguePhase("normal");
     setGameOver(false);
     setStageRunId((id) => id + 1);
+    setEnteringStage(null);
     setHubPhase("stage");
-  };
+  }, [
+    enteringStage,
+    setDialoguePhase,
+    setHubPhase,
+    setStage,
+  ]);
 
   const returnToHub = () => {
     setStage(null);
@@ -120,6 +139,18 @@ export function Act1Screen() {
       <LinearSceneScreen
         scene={FINAL_ACT_SCENE}
         onComplete={() => setShowFinalScreen(true)}
+      />
+    );
+  }
+
+  if (enteringStage) {
+    const equipment = getEquipment(enteringStage);
+    const script = getStageScript(enteringStage);
+    return (
+      <StageLoadingScreen
+        equipmentLabel={equipment.label}
+        backgroundAsset={script.backgroundAsset}
+        onComplete={handleStageReady}
       />
     );
   }

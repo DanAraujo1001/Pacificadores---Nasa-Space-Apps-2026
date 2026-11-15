@@ -1,5 +1,5 @@
 import type { DestinationConfig, EquipmentConfig, StageId } from '../types/novel';
-import { EQUIPMENT_ICON_ASSETS } from './sceneAssets';
+import { BACKGROUND_ASSETS, EQUIPMENT_ICON_ASSETS } from './sceneAssets';
 
 /**
  * Fonte única dos destinos (Lua / Marte) e dos equipamentos de cada um.
@@ -12,11 +12,15 @@ export const DESTINATIONS: DestinationConfig[] = [
     id: 'moon',
     label: 'The Moon',
     stageIds: ['eagle', 'lrv'],
+    backgroundAsset: BACKGROUND_ASSETS.chooseMoon,
+    backgroundPlaceholderLabel: 'The Moon — choose equipment',
   },
   {
     id: 'mars',
     label: 'Mars',
     stageIds: ['spirit', 'phoenix'],
+    backgroundAsset: BACKGROUND_ASSETS.chooseMars,
+    backgroundPlaceholderLabel: 'Mars — choose equipment',
   },
 ];
 
@@ -27,24 +31,40 @@ export const EQUIPMENT: Record<StageId, EquipmentConfig> = {
     label: 'Eagle',
     world: 'moon',
     iconAsset: EQUIPMENT_ICON_ASSETS.eagle,
+    hotspot: {
+      desktop: { left: '28%', top: '56%' },
+      narrow: { left: '24%', top: '62%' },
+    },
   },
   lrv: {
     stageId: 'lrv',
     label: 'LRV',
     world: 'moon',
     iconAsset: EQUIPMENT_ICON_ASSETS.lrv,
+    hotspot: {
+      desktop: { left: '58%', top: '60%' },
+      narrow: { left: '74%', top: '66%' },
+    },
   },
   spirit: {
     stageId: 'spirit',
     label: 'Spirit',
     world: 'mars',
     iconAsset: EQUIPMENT_ICON_ASSETS.spirit,
+    hotspot: {
+      desktop: { left: '30%', top: '58%' },
+      narrow: { left: '24%', top: '64%' },
+    },
   },
   phoenix: {
     stageId: 'phoenix',
     label: 'Phoenix',
     world: 'mars',
     iconAsset: EQUIPMENT_ICON_ASSETS.phoenix,
+    hotspot: {
+      desktop: { left: '64%', top: '56%' },
+      narrow: { left: '74%', top: '60%' },
+    },
   },
 };
 

@@ -1,33 +1,27 @@
 # MEMORY.md — Estado Atual do Projeto
 
 ## Estado Atual
-- **Fase:** Jogo completo de ponta a ponta (Ato 0 → Ato 1 → Final Act → tela final) com barra de diálogo estática/fixa e refinamentos de UX de diálogo e escolhas.
+- **Fase:** Jogo completo (Ato 0 → Ato 1 → Final Act → FinalScreen); equipamento escolhido na cena do planeta; barra de diálogo fixa.
 - **O que está pronto:**
   - Stack Vite + React + TypeScript + Tailwind + HeroUI + Zustand + Framer Motion (+ Howler).
   - Temas dinâmicos por planeta em `src/hero.ts` (`space-default` / `space-moon` / `space-mars`).
-  - `LoadingScreen` + `MenuScreen` (Play → callsign); arte `image-home-teste.png` no bottom-direita (pulso + glow amarelo).
-  - Fluxo: `NameEntryScreen` → `StoryLoadingScreen` → `PrologueScreen` → `Act1Screen` (intro→hub→estágio→**Final Act**→**FinalScreen**); `HomeButton` + `HomeTransitionVeil`; persist `playerName` + `unlockedMemoryIds`.
-  - **Ato 0 / Ato 1 / Final Act** com roteiros tipados e progresso (`completedStageIds`, `hubPhase`, etc.).
-  - **`FinalScreen.tsx`**: encerramento automático ("Abandoned, Yet Never Forgotten." na fonte do título, Space Grotesk) → volta ao menu; memories/ícones já aparecem atualizados. Sem rótulo de placeholder no fundo (só cor sólida até existir `final-screen.png`).
-  - **Nome do jogador** (`playerName`) aplicado em todas as cenas (falas, nameplate e escolhas), com fallback `Vanguard` (`resolveProtagonistName` / `getSpeakerDisplayName`).
-  - **Barra de diálogo fixa e estática** (config única em `src/config/dialogueBox.ts`): `DialoguePanel` com `position: fixed`, altura `PANEL_HEIGHT` (= base + 6rem) — painel grande que ENGOLE ~4.5rem da base do sprite (estilo Monster Prom; sprite fica atrás via z-index, sem se mover). Sem reflow.
-  - **Fonte do diálogo padronizada:** fala, descrições de item e opções usam o MESMO tamanho (17px; `FONT_MAX_PX = CHOICE_FONT_MAX_PX`); auto-fit só como proteção de borda (mín. 14px) em telas pequenas.
-  - **Sem travessões** em diálogos, roteiro (`echoes_of_astra_game_script.md`) e textos de UI: substituídos por vírgula/ponto/dois-pontos, mantendo o sentido; intervalo `1971-1972` com hífen.
-  - **Escolhas dentro da barra** (DialogueBox), com estrelas laterais na cor do planeta; auto-fit do bloco inteiro (nome+fala+opções) por medição real; avanço desativado durante a escolha.
-  - **Descrições de item** (`isItemDescription`): usam a fonte padrão (sem redução) e são divididas em várias falas por medição real em fins de frase (`useSplitItemLines`), sem alterar o texto.
-  - **Sprites congelados**: `SPRITE.BOTTOM_OFFSET` ancorado em `BASE_PANEL_HEIGHT`, então a barra cresce sem mover os sprites (a base deles fica atrás da barra).
-  - **Texto/imagens não selecionáveis** globalmente via `#root` em `src/index.css` (exceção: `input/textarea`); opções clicáveis.
-  - Cenas usam `getCharacterSpriteSrc` (outcomes proud/sad); hub usa sprites `normal` como ícone de equipamento; preload cobre todos os PNGs.
+  - Fluxo: `LoadingScreen` → `MenuScreen` → `NameEntryScreen` → `StoryLoadingScreen` → `PrologueScreen` → `Act1Screen` → `FinalScreen`; `HomeButton` (exceto menu) + `HomeTransitionVeil`; persist `playerName` + `unlockedMemoryIds`.
+  - **Ato 0 / Ato 1 / Final Act** com roteiros tipados, `StageScreen`, game over com retry e `FinalScreen`.
+  - **Cena de equipamento** (`HubScreen` + `EquipmentMarker`): fundos Lua/Marte, ícones no solo, progresso `0/2 explored`, concluídos bloqueados, link `← Destinations`. Home inline no canto.
+  - **Tela de contato** (`StageLoadingScreen`) antes de cada equipamento.
+  - **Barra de diálogo fixa** (`DialoguePanel` / `dialogueBox.ts`): escolhas dentro da barra, auto-fit, sprites congelados; `playerName` em falas/nameplate/escolhas.
+  - Sprites reais (player, eco, grandpa, eagle, lrv, spirit, phoenix) + expressões proud/sad; Vite resolve `.tsx`/`.ts` antes de `.js`.
   - Áudio automático (`resolveEvent`).
 - **O que falta (Próximos passos imediatos):**
-  1. Backgrounds reais em `public/assets/backgrounds/` (incl. `final-act-resolution.png`, `final-screen.png`) + faixas em `public/assets/music/` (ver `README-ASSETS.md`).
-  2. Sprites pendentes (eco/grandpa) e ícones dedicados de equipamento (hoje o hub reusa sprites).
-  3. `LORE_DATA.md` — completar.
+  1. Backgrounds reais dos estágios/final em `public/assets/backgrounds/` + faixas em `public/assets/music/`.
+  2. Completar `LORE_DATA.md` onde ainda houver lacunas.
+  3. Não versionar `.js` emitidos ao lado dos `.ts`/`.tsx`.
 
 ## Bugs / Bloqueios Conhecidos
-- Lint pré-existente em `src/components/vn/useTypewriterText.ts` e `HomeTransitionVeil.tsx` (`react-hooks/set-state-in-effect`), não tratado (fora de escopo; o código funciona e builda).
-- Backgrounds de Ato 0/1/Final e áudio ainda ausentes — cenas usam placeholder/fallback silencioso.
-- Decisão de design: o painel (`+6rem`) ENGOLE ~4.5rem da base dos sprites de propósito (estilo Monster Prom); sprites NÃO se movem. Em telas ≤768p, a escolha mais longa (Eagle) aciona o auto-fit de proteção (reduz até o mín. 14px).
+- Lint pré-existente em `useTypewriterText.ts` / `HomeTransitionVeil.tsx` (`react-hooks/set-state-in-effect`), não tratado.
+- Fundos de diálogo (Atos 0/1, estágios e tela final) ainda ausentes — escolha de equipamento tem arte real.
+- Arquivos de áudio ainda não existem em `public/assets/music/` — fallback silencioso.
+- Há `.js` emitidos ao lado dos `.ts`/`.tsx`; o Vite prioriza o fonte TypeScript.
 
 ## Log de Marcos
 - [2026-11-14] Criação do `AGENTS.md` e alinhamento da identidade visual (Cores: `#0E0C0F` base, `#EC8501` nave, `#6FCEC6` Lua, `#CD4116` Marte).
@@ -45,3 +39,4 @@
 - [2026-11-15 03:04] Fonte do diálogo padronizada em 17px (min 14px) com painel `+6rem`; travessões removidos de diálogos, roteiro e textos de UI com pontuação ajustada; build ok, lint só com os 2 erros pré-existentes.
 - [2026-11-15 03:11] Tela final sem o rótulo "Final Screen" do placeholder de fundo (`backgroundPlaceholderLabel` vazio); build/lint ok.
 - [2026-11-15 03:14] Checkpoint: estado confirmado, sem novas mudanças de código desde o marco anterior.
+- [2026-11-15 04:06] Cena de equipamento (Lua/Marte) com ícones no solo, Destinations, tela de contato na cor do planeta e Home inline.

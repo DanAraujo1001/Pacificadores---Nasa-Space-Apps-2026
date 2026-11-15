@@ -1,4 +1,4 @@
-import { ALL_SPRITE_PATHS } from "../config/sceneAssets";
+import { ALL_SPRITE_PATHS, CHOOSE_SCENE_ASSETS } from "../config/sceneAssets";
 
 const LOADING_ICONS = [
   "/assets/icons/icon-base.svg",
@@ -29,6 +29,7 @@ export async function preloadAssets(): Promise<void> {
   await Promise.all([
     ...LOADING_ICONS.map(loadImage),
     ...ALL_SPRITE_PATHS.map(loadImage),
+    ...CHOOSE_SCENE_ASSETS.map(loadImage),
     waitForFonts(),
   ]);
 }
@@ -40,3 +41,17 @@ export function delay(ms: number): Promise<void> {
 }
 
 export const LOADING_MIN_DURATION_MS = 2500;
+
+/** Pausa mínima ao entrar num equipamento, para a cena não abrir de uma vez. */
+export const STAGE_LOADING_MIN_MS = 1800;
+
+/** Fundo do estágio e sprites, para o diálogo abrir com a arte já em cache. */
+export async function preloadStageAssets(
+  backgroundAsset: string | null,
+): Promise<void> {
+  const sources = [
+    ...ALL_SPRITE_PATHS,
+    ...(backgroundAsset ? [backgroundAsset] : []),
+  ];
+  await Promise.all(sources.map(loadImage));
+}
