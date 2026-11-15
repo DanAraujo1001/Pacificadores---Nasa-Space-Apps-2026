@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useGameStore } from "../../store/useGameStore";
 
@@ -14,12 +14,17 @@ export function HomeTransitionVeil() {
   const pendingFadeTo = useGameStore((state) => state.pendingFadeTo);
   const commitFade = useGameStore((state) => state.commitFade);
   const [phase, setPhase] = useState<VeilPhase | null>(null);
+  // Guarda a borda de subida de `pendingFadeTo`: inicia o véu ("cover") no
+  // MESMO render em que um fade é solicitado, sem usar um efeito (padrão oficial
+  // de ajustar estado durante o render ao detectar mudança de prop/valor).
+  const [sawPending, setSawPending] = useState(false);
 
-  useEffect(() => {
-    if (pendingFadeTo && phase === null) {
-      setPhase("cover");
-    }
-  }, [pendingFadeTo, phase]);
+  if (pendingFadeTo && !sawPending) {
+    setSawPending(true);
+    if (phase === null) setPhase("cover");
+  } else if (!pendingFadeTo && sawPending) {
+    setSawPending(false);
+  }
 
   const visible = phase !== null;
   const targetOpacity = phase === "cover" ? 1 : 0;

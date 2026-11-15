@@ -8,6 +8,7 @@ import {
 } from "../../config/characters";
 import { PROLOGUE_SCENE } from "../../data/missions/prologue";
 import { useGameStore } from "../../store/useGameStore";
+import type { SpriteExpression } from "../../config/sceneAssets";
 import type { CharacterId, LinearScene } from "../../types/novel";
 import { CharacterSprite } from "./CharacterSprite";
 import { DialogueBox } from "./DialogueBox";
@@ -51,6 +52,19 @@ export function LinearSceneScreen({
     }
     return [...present];
   }, [scene.lines, lineIndex, scene.protagonistAlwaysOnStage]);
+
+  // Estado do capacete do protagonista na fala atual. Deriva da última marca
+  // `protagonistHelmet` até aqui (inclusive). Default: `'on'` (de capacete),
+  // pois nas cenas de missão ele já está equipado; o Ato 0 marca `'off'` já na
+  // primeira fala dele. `'off'` usa o sprite sem capacete.
+  const protagonistExpression = useMemo<SpriteExpression>(() => {
+    let helmet: "on" | "off" = "on";
+    for (let i = 0; i <= lineIndex && i < scene.lines.length; i += 1) {
+      const marker = scene.lines[i].protagonistHelmet;
+      if (marker) helmet = marker;
+    }
+    return helmet === "off" ? "withoutHelmet" : "normal";
+  }, [scene.lines, lineIndex]);
 
   const fullText = withProtagonistName(line.text, playerName);
   const { visibleText, textComplete, skipToFullText } = useTypewriterText(
@@ -104,7 +118,10 @@ export function LinearSceneScreen({
         {onStage.map((characterId) => {
           const character = getCharacter(characterId);
           if (!character) return null;
-          const spriteSrc = getCharacterSpriteSrc(character.id);
+          const spriteSrc =
+            character.id === "protagonist"
+              ? getCharacterSpriteSrc(character.id, protagonistExpression)
+              : getCharacterSpriteSrc(character.id);
           const label =
             character.id === "protagonist"
               ? displayName

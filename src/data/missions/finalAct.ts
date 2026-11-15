@@ -64,6 +64,8 @@ export const FINAL_ACT_SCENE: LinearScene = {
       id: 'final-return-note',
       speakerId: 'narrator',
       exitsCharacterId: 'eco',
+      // A partir daqui ele tira o capacete → sprite sem capacete.
+      protagonistHelmet: 'off',
       text: '({PROTAGONIST_NAME} takes off the helmet, returning to the attic. Grandpa Tadeu stands beside them, smiling.)',
     },
     {
