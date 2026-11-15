@@ -96,7 +96,7 @@ export function NameEntryScreen() {
           />
 
           <p className="font-mono text-sm text-foreground/50">
-            {MIN_LEN}–{MAX_LEN} characters
+            {MIN_LEN} to {MAX_LEN} characters
           </p>
         </motion.div>
 

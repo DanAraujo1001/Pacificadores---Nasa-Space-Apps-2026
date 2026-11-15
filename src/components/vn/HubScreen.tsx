@@ -62,7 +62,7 @@ export function HubScreen({
         <SceneBackground
           key={BACKGROUND_ASSETS.hubShip}
           src={BACKGROUND_ASSETS.hubShip}
-          placeholderLabel="Hub — Ship (Moon & Mars)"
+          placeholderLabel="Hub: Ship (Moon & Mars)"
         />
       </div>
 
@@ -105,7 +105,7 @@ export function HubScreen({
         ) : (
           <>
             <p className="font-display text-lg font-bold uppercase tracking-wide text-primary">
-              {destination?.label} — select equipment
+              {destination?.label}: select equipment
             </p>
             <div className="flex flex-wrap items-center justify-center gap-8">
               {(destination?.stageIds ?? []).map((stageId) => {

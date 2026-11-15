@@ -18,7 +18,11 @@ export const FINAL_SCREEN = {
   id: 'final-screen',
   /** Fundo da tela final (placeholder automático enquanto o arquivo não existe). */
   backgroundAsset: BACKGROUND_ASSETS.finalScreen,
-  backgroundPlaceholderLabel: 'Final Screen',
+  /**
+   * Vazio de propósito: enquanto `final-screen.png` não existe, o fundo fica só
+   * na cor sólida, sem rótulo, para não competir com a frase de encerramento.
+   */
+  backgroundPlaceholderLabel: '',
   /** Frase de encerramento, exatamente como no roteiro. */
   title: 'Abandoned, Yet Never Forgotten.',
   /**

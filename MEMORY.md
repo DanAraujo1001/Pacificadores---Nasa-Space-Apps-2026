@@ -1,27 +1,33 @@
 # MEMORY.md — Estado Atual do Projeto
 
 ## Estado Atual
-- **Fase:** Atos 0 e 1 jogáveis com sprites reais de personagem + fluxo de entrada e Home com arte hero.
+- **Fase:** Jogo completo de ponta a ponta (Ato 0 → Ato 1 → Final Act → tela final) com barra de diálogo estática/fixa e refinamentos de UX de diálogo e escolhas.
 - **O que está pronto:**
   - Stack Vite + React + TypeScript + Tailwind + HeroUI + Zustand + Framer Motion (+ Howler).
   - Temas dinâmicos por planeta em `src/hero.ts` (`space-default` / `space-moon` / `space-mars`).
   - `LoadingScreen` + `MenuScreen` (Play → callsign); arte `image-home-teste.png` no bottom-direita (pulso + glow amarelo).
-  - Fluxo: `NameEntryScreen` → `StoryLoadingScreen` → `PrologueScreen` → `Act1Screen`; `HomeButton` + `HomeTransitionVeil`; persist `playerName` + `unlockedMemoryIds`.
-  - **Ato 0 / Ato 1** com roteiros tipados e progresso (`completedStageIds`, `hubPhase`, etc.).
-  - **Sprites em `public/assets/sprites/`** ligados em `sceneAssets.ts` / `characters.ts`: player, eco, grandpa-tadeu, eagle, lrv, spirit, phoenix (normal + proud/sad onde existir).
-  - Cenas usam `getCharacterSpriteSrc` (outcomes proud/sad); hub usa sprites `normal` como ícone de equipamento; preload cobre todos os PNGs; `playerName` no nameplate/diálogos.
-  - Componentes VN: `DialogueBox`, `ChoiceButton`, `ThemeIcon`, `CharacterSprite`, `SceneBackground`, `EquipmentButton`, `useTypewriterText`.
+  - Fluxo: `NameEntryScreen` → `StoryLoadingScreen` → `PrologueScreen` → `Act1Screen` (intro→hub→estágio→**Final Act**→**FinalScreen**); `HomeButton` + `HomeTransitionVeil`; persist `playerName` + `unlockedMemoryIds`.
+  - **Ato 0 / Ato 1 / Final Act** com roteiros tipados e progresso (`completedStageIds`, `hubPhase`, etc.).
+  - **`FinalScreen.tsx`**: encerramento automático ("Abandoned, Yet Never Forgotten." na fonte do título, Space Grotesk) → volta ao menu; memories/ícones já aparecem atualizados. Sem rótulo de placeholder no fundo (só cor sólida até existir `final-screen.png`).
+  - **Nome do jogador** (`playerName`) aplicado em todas as cenas (falas, nameplate e escolhas), com fallback `Vanguard` (`resolveProtagonistName` / `getSpeakerDisplayName`).
+  - **Barra de diálogo fixa e estática** (config única em `src/config/dialogueBox.ts`): `DialoguePanel` com `position: fixed`, altura `PANEL_HEIGHT` (= base + 6rem) — painel grande que ENGOLE ~4.5rem da base do sprite (estilo Monster Prom; sprite fica atrás via z-index, sem se mover). Sem reflow.
+  - **Fonte do diálogo padronizada:** fala, descrições de item e opções usam o MESMO tamanho (17px; `FONT_MAX_PX = CHOICE_FONT_MAX_PX`); auto-fit só como proteção de borda (mín. 14px) em telas pequenas.
+  - **Sem travessões** em diálogos, roteiro (`echoes_of_astra_game_script.md`) e textos de UI: substituídos por vírgula/ponto/dois-pontos, mantendo o sentido; intervalo `1971-1972` com hífen.
+  - **Escolhas dentro da barra** (DialogueBox), com estrelas laterais na cor do planeta; auto-fit do bloco inteiro (nome+fala+opções) por medição real; avanço desativado durante a escolha.
+  - **Descrições de item** (`isItemDescription`): usam a fonte padrão (sem redução) e são divididas em várias falas por medição real em fins de frase (`useSplitItemLines`), sem alterar o texto.
+  - **Sprites congelados**: `SPRITE.BOTTOM_OFFSET` ancorado em `BASE_PANEL_HEIGHT`, então a barra cresce sem mover os sprites (a base deles fica atrás da barra).
+  - **Texto/imagens não selecionáveis** globalmente via `#root` em `src/index.css` (exceção: `input/textarea`); opções clicáveis.
+  - Cenas usam `getCharacterSpriteSrc` (outcomes proud/sad); hub usa sprites `normal` como ícone de equipamento; preload cobre todos os PNGs.
   - Áudio automático (`resolveEvent`).
 - **O que falta (Próximos passos imediatos):**
-  1. `src/components/vn/FinalScreen.tsx` — tela final definitiva pós-Final Act.
-  2. Backgrounds reais em `public/assets/backgrounds/` + faixas em `public/assets/music/` (ver `README-ASSETS.md`).
-  3. `LORE_DATA.md` — completar; ícones dedicados de equipamento (hoje o hub reusa sprites).
+  1. Backgrounds reais em `public/assets/backgrounds/` (incl. `final-act-resolution.png`, `final-screen.png`) + faixas em `public/assets/music/` (ver `README-ASSETS.md`).
+  2. Sprites pendentes (eco/grandpa) e ícones dedicados de equipamento (hoje o hub reusa sprites).
+  3. `LORE_DATA.md` — completar.
 
 ## Bugs / Bloqueios Conhecidos
-- Lint pré-existente em `src/components/vn/useTypewriterText.ts` (`react-hooks/set-state-in-effect`), não tratado (fora de escopo).
-- Backgrounds de Ato 0/1 ainda ausentes — cenas usam placeholder de fundo.
-- Saída após o Final Act volta ao `menu` (falta tela final definitiva).
-- Arquivos de áudio ainda não existem em `public/assets/music/` — fallback silencioso.
+- Lint pré-existente em `src/components/vn/useTypewriterText.ts` e `HomeTransitionVeil.tsx` (`react-hooks/set-state-in-effect`), não tratado (fora de escopo; o código funciona e builda).
+- Backgrounds de Ato 0/1/Final e áudio ainda ausentes — cenas usam placeholder/fallback silencioso.
+- Decisão de design: o painel (`+6rem`) ENGOLE ~4.5rem da base dos sprites de propósito (estilo Monster Prom); sprites NÃO se movem. Em telas ≤768p, a escolha mais longa (Eagle) aciona o auto-fit de proteção (reduz até o mín. 14px).
 
 ## Log de Marcos
 - [2026-11-14] Criação do `AGENTS.md` e alinhamento da identidade visual (Cores: `#0E0C0F` base, `#EC8501` nave, `#6FCEC6` Lua, `#CD4116` Marte).
@@ -32,3 +38,10 @@
 - [2026-11-14 22:09] Ato 1 implementado: `Act1Screen` (intro→hub→estágio→final), `StageScreen` dirigido por dados, 4 estágios tipados verbatim + act1Intro/finalAct, `HubScreen`/`EquipmentButton`/`GameOverScreen`, progresso central (`completedStageIds` + bloqueio de reentrada); typecheck/build ok.
 - [2026-11-14 23:44] Home com arte hero (PNG) no bottom, glow amarelo e layout copy/Play à esquerda.
 - [2026-11-15 00:50] Sprites reais ligados (eco/grandpa/equipamentos + expressões proud/sad); hub e preload atualizados.
+- [2026-11-15 02:44] Final Act + FinalScreen; barra fixa/estática com auto-fit; nome do jogador em todo o jogo; texto/imagens não selecionáveis; escolhas dentro da barra; barra +1rem sem mover sprites; descrições de item na fonte padrão divididas por medição (`useSplitItemLines`).
+- [2026-11-15 02:47] Painel aumentado p/ +1.5rem (teto sem mover sprites) e botões de escolha maiores (fonte 20px, padding 0.7em, min 12px); corrigido `BASE_PANEL_HEIGHT` (teto 15rem); build/lint ok.
+- [2026-11-15 02:52] Painel bem maior (`+5rem`, engole ~3.5rem da base do sprite, estilo Monster Prom; sprites inalterados) e fonte do diálogo padronizada em 15px (fala/descrições/opções iguais), auto-fit só como proteção (min 13px); `TEXT_HEIGHT_PX`=150; build/lint ok.
+- [2026-11-15 02:56] Checkpoint: estado confirmado, sem novas mudanças de código desde o marco anterior (`Estado Atual` já atualizado).
+- [2026-11-15 03:04] Fonte do diálogo padronizada em 17px (min 14px) com painel `+6rem`; travessões removidos de diálogos, roteiro e textos de UI com pontuação ajustada; build ok, lint só com os 2 erros pré-existentes.
+- [2026-11-15 03:11] Tela final sem o rótulo "Final Screen" do placeholder de fundo (`backgroundPlaceholderLabel` vazio); build/lint ok.
+- [2026-11-15 03:14] Checkpoint: estado confirmado, sem novas mudanças de código desde o marco anterior.

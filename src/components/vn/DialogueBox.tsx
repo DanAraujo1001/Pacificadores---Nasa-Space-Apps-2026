@@ -34,6 +34,12 @@ interface DialogueBoxProps {
   choices?: DialogueChoiceItem[];
   /** Id estável da escolha atual (dispara o recálculo de fonte ao trocar). */
   choicesKey?: string;
+  /**
+   * Quando true, esta fala é uma DESCRIÇÃO DE ITEM: usa a fonte PADRÃO
+   * (`FONT_MAX_PX`), sem redução automática — as descrições são pré-divididas
+   * em partes (ver `useSplitItemLines`) para já caberem nessa fonte.
+   */
+  isItemDescription?: boolean;
 }
 
 const NAME_FONT_FAMILY = '"Space Grotesk", sans-serif';
@@ -56,12 +62,16 @@ export function DialogueBox({
   showContinueHint = false,
   choices,
   choicesKey = "",
+  isItemDescription = false,
 }: DialogueBoxProps) {
   const hasChoices = !!choices && choices.length > 0;
 
-  const { sizerRef, containerRef, fontPx } = useFitDialogueText(
+  const { sizerRef, containerRef, fontPx: autoFitFontPx } = useFitDialogueText(
     measureText ?? text,
   );
+  // Descrições de item NUNCA reduzem a fonte: usam a padrão (já vêm divididas
+  // para caber). As demais falas usam o auto-fit como proteção.
+  const fontPx = isItemDescription ? DIALOGUE_BOX.FONT_MAX_PX : autoFitFontPx;
   const { sizerRef: nameSizerRef, fontPx: nameFontPx } =
     useFitSpeakerName(speakerName);
   const {

@@ -8,7 +8,7 @@
 * **PROTAGONIST:** Grandpa, why do you keep all this old junk? Nobody cares about this stuff anymore.
 * **GRANDPA TADEU:** *(chuckling softly)* Nobody cares because they forgot, (Protagonist's Name). Every piece of those machines carries the hard work of thousands of people.
 * **PROTAGONIST:** But they were abandoned out there, on the Moon, on Mars...
-* **GRANDPA TADEU:** Abandoned, yes. Forgotten, never. As long as someone remembers, they stay alive. That’s what I learned in space: the silence up there isn’t empty—it’s memory waiting for someone to listen.
+* **GRANDPA TADEU:** Abandoned, yes. Forgotten, never. As long as someone remembers, they stay alive. That’s what I learned in space: the silence up there isn’t empty. It’s memory waiting for someone to listen.
 * **PROTAGONIST:** And how do I talk to a machine?
 * **GRANDPA TADEU:** The exact same way you talk to people. Each one has its own personality, and you have to figure out what it is. If you rush in or act careless, they won't listen to you.
 * **GRANDPA TADEU:** *(handing over the helmet)* When I was a kid, I used to put this on and pretend I was up there. Now it’s your turn. Use your imagination as your spaceship.
@@ -26,7 +26,7 @@
 
 ---
 
-## STAGE 1: THE MOON — EAGLE (Apollo 11 Lunar Module)
+## STAGE 1: THE MOON, EAGLE (Apollo 11 Lunar Module)
 
 **Setting:** Sea of Tranquility. A gold-and-silver structure, half-covered in dust, gleams under the faint Earthlight. Dead silence.
 
@@ -48,7 +48,7 @@
 * **EAGLE:** When I think back on what happened here, many say it was the triumph of two men. What do you think?
 
 ### Choice 2
-* **A)** “It was just the two astronauts—the heroes of the mission.” ✘
+* **A)** “It was just the two astronauts, the heroes of the mission.” ✘
 * **B)** “It was thousands of people: engineers, technicians, Collins up in orbit... all working together.” ✔
 * **C)** “Honestly, it was mostly dumb luck.” ✘
 
@@ -63,13 +63,13 @@
 * **B)** “Gratitude. This is where humanity took its very first step onto another world.” ✔
 * **C)** “Nothing special. It’s just an old hunk of metal.” ✘
 
-> * ✘ **(A) EAGLE:** Do not pity me. I was not left behind—I stayed. *(systems shut down)* **ECO:** Event failed.
+> * ✘ **(A) EAGLE:** Do not pity me. I was not left behind. I stayed. *(systems shut down)* **ECO:** Event failed.
 > * ✘ **(C) EAGLE:** ... *(icy silence)* **ECO:** Event failed.
 > * ✔ **(B) EAGLE:** *(warmth in his voice)* Gratitude. That is exactly what I hoped to hear.
 
 ### Stage Clear (Success): Eagle's Story
 * **EAGLE:** Let me tell you a story, little one. On July 20, 1969, I touched down right here carrying Neil Armstrong and Buzz Aldrin. Michael Collins waited up in orbit inside the command module so the two of them could make it home.
-* **EAGLE:** When the time came to leave, my upper half carried them back up. My lower half—the descent stage—stayed right here to serve as a launchpad. I am still here, standing guard over the place where it all began.
+* **EAGLE:** When the time came to leave, my upper half carried them back up. My lower half, the descent stage, stayed right here to serve as a launchpad. I am still here, standing guard over the place where it all began.
 * **EAGLE:** Take this with you.
 
 > **Item Obtained:** Tranquility Base Plaque  
@@ -79,11 +79,11 @@
 
 ---
 
-## STAGE 2: THE MOON — LRVs (Lunar Roving Vehicles)
+## STAGE 2: THE MOON, LRVs (Lunar Roving Vehicles)
 
 **Setting:** A lunar plain. Three roofless buggies with wire-mesh wheels are parked at different spots. Their headlights blink like curious eyes.
 
-**Profile (ECO):** Playful, chatty, and bursting with energy—like kids who never grew up. They love adventure, jokes, and being treated like buddies. They hate formality and can’t stand being seen as mere “tools.”
+**Profile (ECO):** Playful, chatty, and bursting with energy, like kids who never grew up. They love adventure, jokes, and being treated like buddies. They hate formality and can’t stand being seen as mere “tools.”
 
 * **LRV:** *(upbeat, almost youthful voice)* Yo, yo, yo! A visitor! Guys, look, an actual visitor!
 * **PROTAGONIST:** There are three of you?
@@ -100,7 +100,7 @@
 
 *(Short racing sequence. The LRVs do donuts and speed around (Protagonist's Name).)*
 
-* **LRV:** You know the coolest thing about being a Moon buggy? I flew all the way up here folded up like a piece of origami! Zero legroom, though—worst airline ever!
+* **LRV:** You know the coolest thing about being a Moon buggy? I flew all the way up here folded up like a piece of origami! Zero legroom, though. Worst airline ever!
 
 ### Choice 2
 * **A)** “No way! I wish I could’ve seen you unfold!” ✔
@@ -128,13 +128,13 @@
 * **LRV:** Here, take this. It’s a piece of me, so you never forget the crew.
 
 > **Item Obtained:** LRV Wire-Mesh Wheel  
-> **Item Description:** Lunar Roving Vehicle (LRV). Battery-powered four-wheeled rover used during the Apollo 15, 16, and 17 missions (1971–1972). It folded up to be stowed in the descent stage of the lunar module and ran on two non-rechargeable 36-volt silver-zinc batteries, with an individual electric motor on each wheel. Its wheels were made of woven steel-wire mesh with titanium chevrons for traction on lunar dust. All three rovers remain parked on the Moon. They vastly expanded the range astronauts could explore and collect samples from (about 65 km / 40 miles on battery power).
+> **Item Description:** Lunar Roving Vehicle (LRV). Battery-powered four-wheeled rover used during the Apollo 15, 16, and 17 missions (1971-1972). It folded up to be stowed in the descent stage of the lunar module and ran on two non-rechargeable 36-volt silver-zinc batteries, with an individual electric motor on each wheel. Its wheels were made of woven steel-wire mesh with titanium chevrons for traction on lunar dust. All three rovers remain parked on the Moon. They vastly expanded the range astronauts could explore and collect samples from (about 65 km / 40 miles on battery power).
 
-* **LRV:** When you head back home, tell everyone the Moon had a hot rod—and it lived its best life!
+* **LRV:** When you head back home, tell everyone the Moon had a hot rod, and it lived its best life!
 
 ---
 
-## STAGE 3: MARS — SPIRIT
+## STAGE 3: MARS, SPIRIT
 
 **Setting:** Gusev Crater, Mars. A six-wheeled rover with dusty solar panels sits stuck in soft sand. A faint hum fills the air.
 
@@ -187,7 +187,7 @@
 
 ---
 
-## STAGE 4: MARS — PHOENIX
+## STAGE 4: MARS, PHOENIX
 
 **Setting:** The Martian Arctic plains. A three-legged lander with fan-shaped solar arrays, dusted with a thin layer of frost.
 
@@ -241,7 +241,7 @@
 
 ## FINAL ACT: Resolution
 
-**Setting:** The Moon and Mars appear together on the same screen. The four collected artifacts float around (Protagonist's Name), forming a glowing constellation.
+**Setting:** The Moon and Mars appear together on the same screen. The four collected artifacts float around (Protagonist's Name).
 
 * **ECO:** Mission complete. Every piece of hardware has been awakened in your memory.
 * **PROTAGONIST:** I get it now... each one of them has a personality, a voice. They aren't scrap metal.
