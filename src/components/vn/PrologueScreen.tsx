@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import {
   getCharacter,
   getCharacterSpriteSrc,
+  getSpeakerDisplayName,
+  resolveProtagonistName,
   withProtagonistName,
 } from "../../config/characters";
 import { PROLOGUE_SCENE } from "../../data/missions/prologue";
@@ -9,6 +11,7 @@ import { useGameStore } from "../../store/useGameStore";
 import type { CharacterId, LinearScene } from "../../types/novel";
 import { CharacterSprite } from "./CharacterSprite";
 import { DialogueBox } from "./DialogueBox";
+import { DialoguePanel } from "./DialoguePanel";
 import { SceneBackground } from "./SceneBackground";
 import { useTypewriterText } from "./useTypewriterText";
 
@@ -32,7 +35,7 @@ export function LinearSceneScreen({
   const [lineIndex, setLineIndex] = useState(0);
 
   const line = scene.lines[lineIndex] ?? scene.lines[0];
-  const displayName = playerName.trim() || undefined;
+  const displayName = resolveProtagonistName(playerName);
 
   // Quem já entrou em cena e ainda não saiu, até a fala atual (inclusive).
   // Deriva de `entersCharacterId` / `exitsCharacterId`, garantindo continuidade.
@@ -46,7 +49,7 @@ export function LinearSceneScreen({
     return [...present];
   }, [scene.lines, lineIndex]);
 
-  const fullText = withProtagonistName(line.text, displayName);
+  const fullText = withProtagonistName(line.text, playerName);
   const { visibleText, textComplete, skipToFullText } = useTypewriterText(
     fullText,
     line.id,
@@ -56,11 +59,10 @@ export function LinearSceneScreen({
     setWorld(scene.world);
   }, [setWorld, scene.world]);
 
-  const speaker = line.speakerId ? getCharacter(line.speakerId) : null;
-  const speakerName =
-    speaker?.id === "protagonist"
-      ? displayName ?? speaker.displayName
-      : (speaker?.displayName ?? scene.backgroundPlaceholderLabel);
+  const speakerName = line.speakerId
+    ? (getSpeakerDisplayName(line.speakerId, playerName) ??
+      scene.backgroundPlaceholderLabel)
+    : scene.backgroundPlaceholderLabel;
 
   const isLastLine = lineIndex >= scene.lines.length - 1;
 
@@ -87,8 +89,9 @@ export function LinearSceneScreen({
       }}
       role="presentation"
     >
-      {/* Faixa de cena: fundo + sprites posicionados por lado (config central). */}
-      <div className="relative z-0 flex-1 overflow-hidden">
+      {/* Faixa de cena: ocupa a tela toda; sprites por lado (config central).
+          O painel de diálogo é fixo e fica POR CIMA, sem empurrar nada. */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
         <SceneBackground
           key={scene.backgroundAsset ?? "bg-placeholder"}
           src={scene.backgroundAsset}
@@ -101,7 +104,7 @@ export function LinearSceneScreen({
           const spriteSrc = getCharacterSpriteSrc(character.id);
           const label =
             character.id === "protagonist"
-              ? displayName ?? character.placeholderLabel
+              ? displayName
               : character.placeholderLabel;
           return (
             <CharacterSprite
@@ -115,14 +118,15 @@ export function LinearSceneScreen({
         })}
       </div>
 
-      {/* Painel de diálogo — mesmo visual do resto do jogo. */}
-      <div className="relative z-20 flex shrink-0 flex-col items-center justify-start gap-4 bg-[#0E0C0F] px-4 pb-6 pt-5">
+      {/* Painel de diálogo — posição FIXA, fora do fluxo (não causa reflow). */}
+      <DialoguePanel>
         <DialogueBox
           speakerName={speakerName}
           text={visibleText}
+          measureText={fullText}
           showContinueHint={textComplete}
         />
-      </div>
+      </DialoguePanel>
     </section>
   );
 }

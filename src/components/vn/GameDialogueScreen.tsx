@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useGameStore } from "../../store/useGameStore";
 import { DialogueBox } from "./DialogueBox";
+import { DialoguePanel } from "./DialoguePanel";
 import { HomeButton } from "./HomeButton";
 import { useTypewriterText } from "./useTypewriterText";
 
@@ -95,13 +96,14 @@ export function GameDialogueScreen() {
         )}
       </div>
 
-      <div className="relative z-20 -mt-[12vh] flex flex-1 flex-col items-center justify-start gap-4 bg-[#0E0C0F] px-4 pb-6 pt-5">
+      <DialoguePanel>
         <DialogueBox
           speakerName={playerName || "Explorer"}
           text={visibleText}
+          measureText={fullText}
           showContinueHint={textComplete}
         />
-      </div>
+      </DialoguePanel>
     </section>
   );
 }

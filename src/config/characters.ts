@@ -6,26 +6,32 @@ import {
 } from "./sceneAssets";
 
 /**
- * Nome do protagonista. O roteiro usa o placeholder `(Protagonist's Name)`;
- * centralizamos aqui para não repetir texto em vários lugares. Troque num
- * único ponto para renomear em todo o jogo.
- *
- * Em runtime, `withProtagonistName` / telas podem preferir `playerName` do store.
+ * Nome padrão do protagonista (fallback). O jogador define o nome na tela de
+ * entrada (`playerName` no store); este valor só é usado quando nenhum nome
+ * foi digitado.
  */
 export const PROTAGONIST_NAME = "Vanguard";
 
 /**
  * Token usado nos dados de roteiro no lugar de `(Protagonist's Name)`.
- * Substituído por `PROTAGONIST_NAME` em tempo de render.
+ * Substituído em tempo de render pelo nome do jogador (ou pelo fallback).
  */
 export const PROTAGONIST_NAME_TOKEN = "{PROTAGONIST_NAME}";
 
-/** Substitui o token de nome do protagonista pelo nome configurado (ou override). */
-export function withProtagonistName(
-  text: string,
-  displayName: string = PROTAGONIST_NAME,
-): string {
-  return text.split(PROTAGONIST_NAME_TOKEN).join(displayName);
+/** Resolve o nome do protagonista: o digitado pelo jogador, ou o fallback. */
+export function resolveProtagonistName(playerName?: string): string {
+  const trimmed = playerName?.trim();
+  return trimmed ? trimmed : PROTAGONIST_NAME;
+}
+
+/**
+ * Substitui o token de nome do protagonista pelo nome do jogador.
+ * Sem `playerName`, usa o fallback `PROTAGONIST_NAME`.
+ */
+export function withProtagonistName(text: string, playerName?: string): string {
+  return text
+    .split(PROTAGONIST_NAME_TOKEN)
+    .join(resolveProtagonistName(playerName));
 }
 
 /** Mapeia CharacterId → chave do pack de sprites. */
@@ -127,4 +133,18 @@ export function getCharacterSpriteSrc(
   const key = SPRITE_KEY_BY_CHARACTER[id];
   if (!key) return CHARACTERS[id]?.spriteAsset ?? null;
   return resolveCharacterSprite(key, expression);
+}
+
+/**
+ * Nome a exibir no nameplate de um personagem. Para o protagonista, usa o nome
+ * digitado pelo jogador (`playerName`); para os demais, o `displayName` da config.
+ */
+export function getSpeakerDisplayName(
+  id: CharacterId,
+  playerName?: string,
+): string | null {
+  const character = getCharacter(id);
+  if (!character) return null;
+  if (character.id === "protagonist") return resolveProtagonistName(playerName);
+  return character.displayName;
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import type { CharacterSide } from "../../types/novel";
+import { SPRITE } from "../../config/dialogueBox";
 
 interface CharacterSpriteProps {
   /** Caminho do sprite. null força o placeholder (silhueta). */
@@ -40,8 +41,12 @@ export function CharacterSprite({
   const showImage = src !== null && !failed;
 
   return (
+    // Ancorado pela BASE num ponto acima do topo da barra de diálogo
+    // (`SPRITE.BOTTOM_OFFSET`), para a barra nunca cobrir o sprite. Mesma base,
+    // escala e margem lateral para todos (config central `SPRITE`).
     <motion.div
-      className={`pointer-events-none absolute bottom-0 top-0 z-10 flex items-end ${SIDE_CLASSES[side]}`}
+      className={`pointer-events-none absolute z-10 flex items-end ${SIDE_CLASSES[side]}`}
+      style={{ bottom: SPRITE.BOTTOM_OFFSET }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: active ? 1 : 0.45, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
@@ -50,17 +55,19 @@ export function CharacterSprite({
         <img
           src={src}
           alt={name}
-          className="h-[min(78vh,760px)] w-auto max-w-none object-contain object-bottom"
+          className="w-auto max-w-none object-contain object-bottom"
+          style={{ height: SPRITE.HEIGHT }}
           draggable={false}
           onError={() => setFailed(true)}
         />
       ) : (
-        // Placeholder: silhueta com o nome do asset visível.
+        // Placeholder: silhueta com o nome do asset visível (mesma altura/base).
         <div
-          className="flex h-[min(78vh,760px)] w-40 items-end justify-center md:w-56"
+          className="flex w-40 items-end justify-center md:w-56"
+          style={{ height: SPRITE.HEIGHT }}
           aria-hidden="true"
         >
-          <div className="flex h-[55vh] w-full items-center justify-center rounded-sm border border-primary/30 bg-content1/50">
+          <div className="flex h-[70%] w-full items-center justify-center rounded-sm border border-primary/30 bg-content1/50">
             <span className="px-2 text-center font-display text-xs uppercase tracking-widest text-primary">
               {name}
             </span>

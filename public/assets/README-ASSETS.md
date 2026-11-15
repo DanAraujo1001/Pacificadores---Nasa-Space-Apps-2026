@@ -18,8 +18,16 @@ Enquanto o arquivo não existir, a cena usa um **placeholder automático**
 | Estágio LRV             | `public/assets/backgrounds/` | `stage-lrv-plain.png`            | `.png`/`.webp` |
 | Estágio Spirit          | `public/assets/backgrounds/` | `stage-spirit-gusev.png`         | `.png`/`.webp` |
 | Estágio Phoenix         | `public/assets/backgrounds/` | `stage-phoenix-arctic.png`       | `.png`/`.webp` |
+| Final Act (resolução)   | `public/assets/backgrounds/` | `final-act-resolution.png`       | `.png`/`.webp` |
+| Tela Final (encerramento)| `public/assets/backgrounds/`| `final-screen.png`               | `.png`/`.webp` |
 
 Recomendado: imagem horizontal (ex.: 1920×1080), `object-cover`.
+
+> **Final Act / Tela Final:** o roteiro descreve a Lua e Marte juntas na mesma
+> tela com os quatro artefatos flutuando ao redor do protagonista
+> (`final-act-resolution.png`) e, por fim, a frase de encerramento sobre um
+> fundo (`final-screen.png`). Enquanto os arquivos não existirem, as cenas usam
+> o placeholder automático normalmente.
 
 ## Sprites de personagem
 

@@ -16,6 +16,40 @@
   .font-mono {
     font-family: "JetBrains Mono", monospace;
   }
+
+  /*
+    Imersão: texto e imagens do jogo NÃO podem ser selecionados nem arrastados.
+    Aplicado globalmente a partir da raiz (#root) — qualquer elemento novo já
+    nasce protegido. Exceção: campos de entrada (ver regra `input, textarea`
+    abaixo), que precisam continuar editáveis/selecionáveis.
+  */
+  #root {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Imagens: sem arraste e sem seleção (o menu de contexto é tratado no app). */
+  #root img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    pointer-events: none;
+  }
+
+  /* Campos de entrada continuam selecionáveis/editáveis (ex.: nome do jogador). */
+  #root input,
+  #root textarea,
+  #root [contenteditable="true"] {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
 }
 
 @property --play-shine-angle {
