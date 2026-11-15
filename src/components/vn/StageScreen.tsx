@@ -1,6 +1,10 @@
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { getCharacter, withProtagonistName } from "../../config/characters";
+import {
+  getCharacter,
+  getSpeakerDisplayName,
+  withProtagonistName,
+} from "../../config/characters";
+import { useGameStore } from "../../store/useGameStore";
 import type {
   CharacterId,
   ScriptLine,
@@ -8,11 +12,10 @@ import type {
   StageScript,
   StageStep,
 } from "../../types/novel";
-import { ChoiceButton } from "./ChoiceButton";
 import { CharacterSprite } from "./CharacterSprite";
 import { DialogueBox } from "./DialogueBox";
+import { DialoguePanel } from "./DialoguePanel";
 import { SceneBackground } from "./SceneBackground";
-import { ThemeIcon } from "./ThemeIcon";
 import { useTypewriterText } from "./useTypewriterText";
 
 interface StageScreenProps {
@@ -60,13 +63,14 @@ function linesFor(script: StageScript, pos: StagePosition): ScriptLine[] {
  * `ChoiceButton` e `useTypewriterText`, mantendo o mesmo visual do jogo.
  */
 export function StageScreen({ script, onClear, onGameOver }: StageScreenProps) {
+  const playerName = useGameStore((state) => state.playerName);
   const [pos, setPos] = useState<StagePosition>(INITIAL_POSITION);
 
   const lines = linesFor(script, pos);
   const line = lines[pos.lineIndex] ?? lines[0];
   const step: StageStep | undefined = script.steps[pos.stepIndex];
 
-  const fullText = withProtagonistName(line?.text ?? "");
+  const fullText = withProtagonistName(line?.text ?? "", playerName);
   const { visibleText, textComplete, skipToFullText } = useTypewriterText(
     fullText,
     line?.id ?? "empty",
@@ -103,9 +107,10 @@ export function StageScreen({ script, onClear, onGameOver }: StageScreenProps) {
     atLastLineOfBlock &&
     textComplete;
 
-  const speaker = line?.speakerId ? getCharacter(line.speakerId) : null;
-  const speakerName =
-    speaker?.displayName ?? script.backgroundPlaceholderLabel;
+  const speakerName = line?.speakerId
+    ? (getSpeakerDisplayName(line.speakerId, playerName) ??
+      script.backgroundPlaceholderLabel)
+    : script.backgroundPlaceholderLabel;
 
   const handleChoice = (choice: StageChoice) => {
     setPos((current) => ({
@@ -180,7 +185,7 @@ export function StageScreen({ script, onClear, onGameOver }: StageScreenProps) {
       }}
       role="presentation"
     >
-      <div className="relative z-0 flex-1 overflow-hidden">
+      <div className="absolute inset-0 z-0 overflow-hidden">
         <SceneBackground
           key={script.backgroundAsset ?? "bg-placeholder"}
           src={script.backgroundAsset}
@@ -202,54 +207,26 @@ export function StageScreen({ script, onClear, onGameOver }: StageScreenProps) {
         })}
       </div>
 
-      <div className="relative z-20 flex shrink-0 flex-col items-center justify-start gap-4 bg-[#0E0C0F] px-4 pb-6 pt-5">
+      {/* Diálogo: painel FIXO (fora do fluxo). As escolhas aparecem DENTRO da
+          barra, no lugar da fala, sem mudar o tamanho da barra. */}
+      <DialoguePanel>
         <DialogueBox
           speakerName={speakerName}
           text={visibleText}
+          measureText={fullText}
           showContinueHint={textComplete && !showChoices}
+          choices={
+            showChoices && step?.kind === "choice"
+              ? step.choices.map((choice) => ({
+                  id: choice.id,
+                  label: withProtagonistName(choice.label, playerName),
+                  onSelect: () => handleChoice(choice),
+                }))
+              : undefined
+          }
+          choicesKey={showChoices && step?.kind === "choice" ? step.id : ""}
         />
-
-        <AnimatePresence mode="wait">
-          {showChoices && step?.kind === "choice" ? (
-            <motion.div
-              key={`choices-${step.id}`}
-              className="flex w-full max-w-2xl items-center justify-center gap-10 md:gap-16"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={(event) => event.stopPropagation()}
-            >
-              <ThemeIcon
-                src="/assets/icons/icon-star-1.svg"
-                className="h-6 w-5 shrink-0 md:h-7 md:w-6"
-              />
-              <div className="flex min-w-0 flex-1 flex-col gap-2">
-                {step.choices.map((choice, index) => (
-                  <motion.div
-                    key={choice.id}
-                    initial={{ opacity: 0, y: 14 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      delay: index * 0.14,
-                      duration: 0.35,
-                      ease: "easeOut",
-                    }}
-                  >
-                    <ChoiceButton
-                      label={withProtagonistName(choice.label)}
-                      onPress={() => handleChoice(choice)}
-                    />
-                  </motion.div>
-                ))}
-              </div>
-              <ThemeIcon
-                src="/assets/icons/icon-star-2.svg"
-                className="h-6 w-8 shrink-0 md:h-7 md:w-9"
-              />
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
-      </div>
+      </DialoguePanel>
     </section>
   );
 }

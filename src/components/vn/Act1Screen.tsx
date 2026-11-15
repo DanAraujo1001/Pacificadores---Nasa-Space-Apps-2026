@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useGameStore } from "../../store/useGameStore";
 import { ALL_STAGE_IDS } from "../../config/destinations";
 import { ACT1_INTRO_SCENE } from "../../data/missions/act1Intro";
 import { FINAL_ACT_SCENE } from "../../data/missions/finalAct";
 import { getStageScript } from "../../data/missions";
 import type { DestinationId, StageId } from "../../types/novel";
+import { FinalScreen } from "./FinalScreen";
 import { GameOverScreen } from "./GameOverScreen";
 import { HubScreen } from "./HubScreen";
 import { LinearSceneScreen } from "./PrologueScreen";
@@ -36,6 +37,8 @@ export function Act1Screen() {
   const [gameOver, setGameOver] = useState(false);
   // Chave para remontar o StageScreen e reiniciar o estágio do zero.
   const [stageRunId, setStageRunId] = useState(0);
+  // Depois das falas do Final Act, mostra a tela de encerramento (não persiste).
+  const [showFinalScreen, setShowFinalScreen] = useState(false);
 
   const handleSelectDestination = (destination: DestinationId) => {
     setSelectedDestination(destination);
@@ -86,6 +89,9 @@ export function Act1Screen() {
     setGameOver(true);
   };
 
+  // Callback estável: evita reiniciar o timer de auto-dismiss da tela final.
+  const goToMenu = useCallback(() => setScreen("menu"), [setScreen]);
+
   const handleRetry = () => {
     setDialoguePhase("normal");
     setGameOver(false);
@@ -104,13 +110,16 @@ export function Act1Screen() {
   }
 
   if (hubPhase === "final") {
-    // FINAL ACT (resolução). Ponto de saída do fluxo jogável: ao terminar as
-    // falas finais, volta ao menu. (Troque `setScreen('menu')` pela próxima
-    // tela quando o roteiro definir — ex.: tela de créditos.)
+    // FINAL ACT (resolução). Fluxo: falas finais → TELA FINAL de encerramento
+    // ("Abandoned, Yet Never Forgotten.") → menu. Não há caminho de volta aos
+    // estágios já concluídos.
+    if (showFinalScreen) {
+      return <FinalScreen onContinue={goToMenu} />;
+    }
     return (
       <LinearSceneScreen
         scene={FINAL_ACT_SCENE}
-        onComplete={() => setScreen("menu")}
+        onComplete={() => setShowFinalScreen(true)}
       />
     );
   }

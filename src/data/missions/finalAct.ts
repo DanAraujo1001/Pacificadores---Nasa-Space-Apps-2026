@@ -13,7 +13,7 @@ import { BACKGROUND_ASSETS } from '../../config/sceneAssets';
 export const FINAL_ACT_SCENE: LinearScene = {
   id: 'final-act',
   world: 'ship',
-  backgroundAsset: BACKGROUND_ASSETS.act0Attic,
+  backgroundAsset: BACKGROUND_ASSETS.finalAct,
   backgroundPlaceholderLabel: 'Final Act — Resolution',
   lines: [
     {

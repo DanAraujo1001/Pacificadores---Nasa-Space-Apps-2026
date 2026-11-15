@@ -25,6 +25,10 @@ export const BACKGROUND_ASSETS = {
   stageSpirit: '/assets/backgrounds/stage-spirit-gusev.png',
   /** STAGE 4 — planície ártica marciana (Phoenix). */
   stagePhoenix: '/assets/backgrounds/stage-phoenix-arctic.png',
+  /** FINAL ACT — Lua e Marte juntas, artefatos flutuando ao redor; depois sótão. */
+  finalAct: '/assets/backgrounds/final-act-resolution.png',
+  /** TELA FINAL — fundo do encerramento ("Abandoned, Yet Never Forgotten."). */
+  finalScreen: '/assets/backgrounds/final-screen.png',
 } as const;
 
 export const SPRITE_ASSETS = {
