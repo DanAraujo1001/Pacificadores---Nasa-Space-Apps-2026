@@ -22,6 +22,11 @@ export const SPIRIT_STAGE: StageScript = {
       id: 'spirit-choice-1',
       lines: [
         {
+          id: 'spirit-profile',
+          speakerId: 'eco',
+          text: 'Spirit (Profile): Serene, poetic, and sleepy. Relentlessly persistent, yet never dramatic. Values hope and genuine warmth. Refuses pity and hates being seen as a “failure.”',
+        },
+        {
           id: 'spirit-intro-1',
           speakerId: 'spirit',
           entersCharacterId: 'spirit',

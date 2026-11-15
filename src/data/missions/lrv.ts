@@ -21,6 +21,11 @@ export const LRV_STAGE: StageScript = {
       id: 'lrv-choice-1',
       lines: [
         {
+          id: 'lrv-profile',
+          speakerId: 'eco',
+          text: 'LRV (Profile): Playful, chatty, and bursting with energy, like kids who never grew up. They love adventure, jokes, and being treated like buddies. They hate formality and can\'t stand being seen as mere “tools.”',
+        },
+        {
           id: 'lrv-intro-1',
           speakerId: 'lrv',
           entersCharacterId: 'lrv',

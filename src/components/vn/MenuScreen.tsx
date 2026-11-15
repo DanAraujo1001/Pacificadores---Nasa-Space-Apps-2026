@@ -90,7 +90,12 @@ export function MenuScreen() {
                 exit={{ opacity: 0, y: -6, scale: 0.98 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
               >
-                <HomeLinksPanel />
+                <HomeLinksPanel
+                  onNavigate={(screen) => {
+                    setMenuOpen(false);
+                    fadeToScreen(screen);
+                  }}
+                />
                 <InventoryPanel unlockedMemoryIds={unlockedMemoryIds} />
               </motion.div>
             ) : null}

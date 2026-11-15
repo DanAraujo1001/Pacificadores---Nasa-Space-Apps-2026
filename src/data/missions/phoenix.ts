@@ -21,6 +21,11 @@ export const PHOENIX_STAGE: StageScript = {
       id: 'phoenix-choice-1',
       lines: [
         {
+          id: 'phoenix-profile',
+          speakerId: 'eco',
+          text: 'Phoenix (Profile): Curious, bubbly, and a total science geek. Loves experiments, questions, and discoveries. Can\'t stand being treated like “just hardware” or being interrupted mid-explanation.',
+        },
+        {
           id: 'phoenix-intro-1',
           speakerId: 'phoenix',
           entersCharacterId: 'phoenix',

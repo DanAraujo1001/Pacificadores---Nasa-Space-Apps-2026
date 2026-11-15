@@ -35,6 +35,12 @@ export function StageLoadingScreen({
   const [iconFailed, setIconFailed] = useState(false);
   const onCompleteRef = useRef(onComplete);
 
+  // Mantém a ref de `onComplete` sempre atual, sem reiniciar o timer de carga
+  // (o efeito de carga não deve depender da identidade da callback).
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
+
   useEffect(() => {
     let cancelled = false;
     for (const src of LOADING_ICON_SOURCES) {
@@ -48,7 +54,6 @@ export function StageLoadingScreen({
       cancelled = true;
     };
   }, []);
-  onCompleteRef.current = onComplete;
 
   useEffect(() => {
     let cancelled = false;
@@ -86,7 +91,7 @@ export function StageLoadingScreen({
       </motion.p>
 
       <motion.div
-        className="absolute bottom-6 right-6"
+        className="absolute bottom-16 right-6"
         style={{ width: ICON_SIZE_PX, height: ICON_SIZE_PX }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

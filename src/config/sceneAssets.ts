@@ -38,7 +38,12 @@ export const BACKGROUND_ASSETS = {
 } as const;
 
 /** Expressões disponíveis nos arquivos de sprite. */
-export type SpriteExpression = "normal" | "proud" | "sad" | "glitch";
+export type SpriteExpression =
+  | "normal"
+  | "proud"
+  | "sad"
+  | "glitch"
+  | "withoutHelmet";
 
 type SpritePack = Partial<Record<SpriteExpression, string>> & {
   normal: string;
@@ -54,6 +59,7 @@ export const CHARACTER_SPRITES = {
     proud: "/assets/sprites/player/player-proud.png",
     sad: "/assets/sprites/player/player-sad.png",
     glitch: "/assets/sprites/player/player-glitch.png",
+    withoutHelmet: "/assets/sprites/player/player-without-helmet.png",
   },
   eco: {
     normal: "/assets/sprites/eco/Eco.png",

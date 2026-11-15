@@ -24,6 +24,11 @@ export const EAGLE_STAGE: StageScript = {
       id: 'eagle-choice-1',
       lines: [
         {
+          id: 'eagle-profile',
+          speakerId: 'eco',
+          text: 'Eagle (Profile): Solemn, dignified, and a bit melancholic. He is the oldest and the most famous. He values respect, quiet, and teamwork. He can\'t stand being treated like a celebrity or like junk.',
+        },
+        {
           id: 'eagle-intro-1',
           speakerId: 'eagle',
           entersCharacterId: 'eagle',
