@@ -18,6 +18,7 @@
   - Áudio automático (`resolveEvent`).
   - **Backgrounds reais ligados:** Ato 0 (Attic) → `Grandpa's_House.webp`; Ato 1 (Hub ship) → `rocket_background.webp`; Stage Eagle → `Mare_Tranquillitatis.webp`; Stage LRVs → `Shorty_Crater.webp`; Stage Spirit → `Gusev_Crater.webp`; Stage Phoenix → `Vastitas_Borealis.webp`, todos via `BACKGROUND_ASSETS` em `src/config/sceneAssets.ts` (apóstrofo URL-encoded `%27`). `object-cover` mantém o layout.
   - **Fundo do foguete em largura total:** `SceneBackground` aceita `bleedWidth`/`bleedOffsetY`. Na abertura da ECO e no começo do Final Act a arte (`rocket_background.webp`, margens transparentes) usa `158vw` e sobe `6vh`. `ScriptLine.backgroundAsset` troca o fundo a partir da fala; em `final-return-note` o Final Act passa para `Grandpa's_House.webp` e fica no sótão até o fim (sem o bleed do foguete).
+  - **Thumbnails das memories:** cada item em `src/data/memories.ts` aponta para o ícone em `public/assets/icons/equipment/`; o slot só mostra a imagem quando a memória está desbloqueada.
 - **O que falta (Próximos passos imediatos):**
   1. Arte própria da tela final (`final-screen.png`); o Final Act ainda reusa o túnel e o sótão.
   2. Faixas em `public/assets/music/`.
@@ -54,6 +55,7 @@
 - [2026-11-15 06:02] Background do Ato 1 (Hub ship) trocado para `rocket_background.webp` (`hubShip` em `sceneAssets.ts`); build/typecheck ok, layout intacto.
 - [2026-11-15 06:10] Backgrounds dos stages lunares ligados: Eagle (Sea of Tranquility) → `Mare_Tranquillitatis.webp`, LRVs (lunar plain) → `Shorty_Crater.webp` em `sceneAssets.ts`; build/typecheck ok, layout intacto.
 - [2026-11-15 06:25] Nudge vertical por personagem (`spriteBottomNudge` em `CharacterConfig`): ECO abaixada 2.5rem em relação à base da barra; `CharacterSprite` aceita `bottomNudge` e PrologueScreen/StageScreen repassam. Demais sprites inalterados; build/typecheck ok (lint só com os 3 erros pré-existentes).
+- [2026-11-15 06:35] Thumbnails das memories ligadas em `src/data/memories.ts`: Eagle → `Tranquility_base_plaque-Eagle.png`, LRV → `Genesis_Rock_Big_Muley_Rock_Orange_Soil-LRV.png`, Spirit → `Pure_Silica_Mars-Spirit.png`, Phoenix → `Martian_Ice_Core-Phoenix.png` (pasta `public/assets/icons/equipment/`). `MemorySlot` já só exibe o thumbnail quando `unlocked`, e o unlock ocorre no `dialoguePhase==='clear'` (ato concluído); build/typecheck ok.
 - [2026-11-15 13:19] Final Act: sprite do protagonista (Vanguard) agora aparece (flag `protagonistAlwaysOnStage` em `LinearScene`; consumida pelo `LinearSceneScreen`); sem alterar o roteiro; build/lint ok.
 - [2026-11-15 13:40] Tela Team criada (4 molduras estilo Memories maiores, nomes, LinkedIn/GitHub); botão Team ligado à navegação; ícones SVG linkedin/github; fotos pendentes em public/assets/team/; build/lint ok.
 - [2026-11-15 13:51] Checkpoint: tela Team concluída; `Estado Atual` e próximos passos atualizados (fotos/URLs da equipe pendentes); build/lint ok.
