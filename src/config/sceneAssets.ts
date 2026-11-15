@@ -31,8 +31,8 @@ export const BACKGROUND_ASSETS = {
   stageSpirit: "/assets/backgrounds/Gusev_Crater.webp",
   /** STAGE 4 — planície ártica marciana (Phoenix). */
   stagePhoenix: "/assets/backgrounds/Vastitas_Borealis.webp",
-  /** FINAL ACT — Lua e Marte juntas, artefatos flutuando ao redor; depois sótão. */
-  finalAct: "/assets/backgrounds/final-act-resolution.png",
+  /** FINAL ACT — mesmo túnel do foguete da abertura da ECO, até haver arte própria. */
+  finalAct: "/assets/backgrounds/rocket_background.webp",
   /** TELA FINAL — fundo do encerramento ("Abandoned, Yet Never Forgotten."). */
   finalScreen: "/assets/backgrounds/final-screen.png",
 } as const;

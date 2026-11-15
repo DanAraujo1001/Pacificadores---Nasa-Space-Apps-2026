@@ -6,6 +6,7 @@ import {
   resolveProtagonistName,
   withProtagonistName,
 } from "../../config/characters";
+import { BACKGROUND_ASSETS } from "../../config/sceneAssets";
 import { PROLOGUE_SCENE } from "../../data/missions/prologue";
 import { useGameStore } from "../../store/useGameStore";
 import type { SpriteExpression } from "../../config/sceneAssets";
@@ -66,6 +67,19 @@ export function LinearSceneScreen({
     return helmet === "off" ? "withoutHelmet" : "normal";
   }, [scene.lines, lineIndex]);
 
+  // Fundo da fala atual. A cena começa em `backgroundAsset`; uma fala pode
+  // trocar o fundo dali em diante (ex.: Final Act volta ao sótão).
+  const backgroundAsset = useMemo(() => {
+    let asset = scene.backgroundAsset;
+    for (let i = 0; i <= lineIndex && i < scene.lines.length; i += 1) {
+      const marker = scene.lines[i].backgroundAsset;
+      if (marker !== undefined) asset = marker;
+    }
+    return asset;
+  }, [scene.backgroundAsset, scene.lines, lineIndex]);
+
+  const rocketBleed = backgroundAsset === BACKGROUND_ASSETS.hubShip;
+
   const fullText = withProtagonistName(line.text, playerName);
   const { visibleText, textComplete, skipToFullText } = useTypewriterText(
     fullText,
@@ -108,11 +122,15 @@ export function LinearSceneScreen({
     >
       {/* Faixa de cena: ocupa a tela toda; sprites por lado (config central).
           O painel de diálogo é fixo e fica POR CIMA, sem empurrar nada. */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
+      <div className="absolute inset-0 z-0 w-screen overflow-hidden">
         <SceneBackground
-          key={scene.backgroundAsset ?? "bg-placeholder"}
-          src={scene.backgroundAsset}
+          key={backgroundAsset ?? "bg-placeholder"}
+          src={backgroundAsset}
           placeholderLabel={scene.backgroundPlaceholderLabel}
+          // A arte opaca do foguete é 1234/1871 da largura do arquivo.
+          // vw + maxWidth none: a margem transparente não pode limitar a página.
+          bleedWidth={rocketBleed ? "158vw" : undefined}
+          bleedOffsetY={rocketBleed ? "-6vh" : undefined}
         />
 
         {onStage.map((characterId) => {

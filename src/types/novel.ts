@@ -93,6 +93,12 @@ export interface ScriptLine {
    * Act vira `off` quando ele o tira). Sem marca, mantém o estado anterior.
    */
   protagonistHelmet?: "on" | "off";
+  /**
+   * Troca o fundo A PARTIR desta fala (inclusive) até a próxima marca.
+   * Sem marca, a cena mantém o fundo anterior (o `backgroundAsset` da cena
+   * no início).
+   */
+  backgroundAsset?: string | null;
 }
 
 /** Roteiro de uma cena linear (prólogo/epílogo). */

@@ -5,6 +5,13 @@ interface SceneBackgroundProps {
   src: string | null;
   /** Rótulo mostrado no placeholder quando o asset não existe. */
   placeholderLabel: string;
+  /**
+   * Largura da imagem em relação ao quadro, quando o arquivo tem margem
+   * transparente e a arte precisa encostar nas laterais da tela.
+   */
+  bleedWidth?: string;
+  /** Desloca a arte no eixo vertical. Negativo sobe. Ex.: "-6vh". */
+  bleedOffsetY?: string;
 }
 
 /**
@@ -12,7 +19,12 @@ interface SceneBackgroundProps {
  * for null), mostra um placeholder sólido com o nome do asset visível, sem
  * quebrar a tela. Mesmo padrão usado em `GameScreen`, agora centralizado.
  */
-export function SceneBackground({ src, placeholderLabel }: SceneBackgroundProps) {
+export function SceneBackground({
+  src,
+  placeholderLabel,
+  bleedWidth,
+  bleedOffsetY = "0px",
+}: SceneBackgroundProps) {
   // O estado de erro é resetado na troca de asset pela `key` no componente pai.
   const [failed, setFailed] = useState(false);
 
@@ -23,7 +35,21 @@ export function SceneBackground({ src, placeholderLabel }: SceneBackgroundProps)
       <img
         src={src}
         alt=""
-        className="absolute inset-0 size-full object-cover"
+        className={
+          bleedWidth
+            ? "absolute top-1/2 left-1/2 h-auto"
+            : "absolute inset-0 size-full object-cover"
+        }
+        style={
+          bleedWidth
+            ? {
+                width: bleedWidth,
+                maxWidth: "none",
+                height: "auto",
+                transform: `translate(-50%, calc(-50% + ${bleedOffsetY}))`,
+              }
+            : undefined
+        }
         draggable={false}
         onError={() => setFailed(true)}
       />

@@ -17,15 +17,16 @@
   - Sprites reais (player, eco, grandpa, eagle, lrv, spirit, phoenix) + expressões proud/sad; Vite resolve `.tsx`/`.ts` antes de `.js`.
   - Áudio automático (`resolveEvent`).
   - **Backgrounds reais ligados:** Ato 0 (Attic) → `Grandpa's_House.webp`; Ato 1 (Hub ship) → `rocket_background.webp`; Stage Eagle → `Mare_Tranquillitatis.webp`; Stage LRVs → `Shorty_Crater.webp`; Stage Spirit → `Gusev_Crater.webp`; Stage Phoenix → `Vastitas_Borealis.webp`, todos via `BACKGROUND_ASSETS` em `src/config/sceneAssets.ts` (apóstrofo URL-encoded `%27`). `object-cover` mantém o layout.
+  - **Fundo do foguete em largura total:** `SceneBackground` aceita `bleedWidth`/`bleedOffsetY`. Na abertura da ECO e no começo do Final Act a arte (`rocket_background.webp`, margens transparentes) usa `158vw` e sobe `6vh`. `ScriptLine.backgroundAsset` troca o fundo a partir da fala; em `final-return-note` o Final Act passa para `Grandpa's_House.webp` e fica no sótão até o fim (sem o bleed do foguete).
 - **O que falta (Próximos passos imediatos):**
-  1. Backgrounds reais dos estágios/final restantes em `public/assets/backgrounds/` + faixas em `public/assets/music/`.
-  2. Completar `LORE_DATA.md` onde ainda houver lacunas.
-  3. Não versionar `.js` emitidos ao lado dos `.ts`/`.tsx`.
+  1. Arte própria da tela final (`final-screen.png`); o Final Act ainda reusa o túnel e o sótão.
+  2. Faixas em `public/assets/music/`.
+  3. Completar `LORE_DATA.md` onde ainda houver lacunas e não versionar `.js` emitidos ao lado dos `.ts`/`.tsx`.
 
 ## Bugs / Bloqueios Conhecidos
 - (Resolvido) Falas "engolidas"/puladas: `useTypewriterText` resetava o estado da fala num efeito, deixando o 1º frame da nova fala com o estado da anterior (`textComplete=true`); clique nessa janela pulava a fala. Agora o reset é síncrono no render (padrão "prop anterior em estado"), afeta todas as cenas/estágios.
 - (Resolvido) Lint zerado: os 2 erros pré-existentes foram corrigidos. `HomeTransitionVeil.tsx` (`set-state-in-effect`) agora inicia o véu no render via padrão de borda (`sawPending`); `StageLoadingScreen.tsx` (`refs`) move a escrita de `onCompleteRef` para um efeito. `npm run lint` passa sem erros.
-- Fundos dos Atos 0/1 e dos 4 estágios ligados; a tela final ainda sem arte própria.
+- Fundos dos Atos 0/1, dos 4 estágios e do Final Act (túnel, depois sótão) ligados; a tela final ainda sem arte própria.
 - Arquivos de áudio ainda não existem em `public/assets/music/` — fallback silencioso.
 - Há `.js` emitidos ao lado dos `.ts`/`.tsx`; o Vite prioriza o fonte TypeScript.
 
@@ -67,3 +68,4 @@
 - [2026-11-15 15:40] Lint zerado: corrigidos os 2 erros pré-existentes. `HomeTransitionVeil` inicia o véu no render via detecção de borda (`sawPending`), sem efeito; `StageLoadingScreen` move a escrita de `onCompleteRef.current` para um efeito `[onComplete]`. `npm run lint` passa sem erros; build ok.
 - [2026-11-15 15:46] Perfil (ECO) por equipamento: adicionada a fala de descrição do personagem como 1ª linha de cada estágio (`eagle/lrv/spirit/phoenix-profile`, `speakerId:'eco'`), verbatim do roteiro, exibida antes do equipamento entrar; usa o auto-fit padrão da barra; build/lint ok.
 - [2026-11-15 15:48] Perfil (ECO): texto passou a abrir com o nome do equipamento no formato `Nome (Profile): ...` (Eagle/LRV/Spirit/Phoenix); build/lint ok.
+- [2026-11-15 19:14] Fundo do foguete em largura total na abertura da ECO e no início do Final Act (`bleedWidth` 158vw, −6vh); a partir de `final-return-note` o fundo troca para o sótão (`Grandpa's_House.webp`).
