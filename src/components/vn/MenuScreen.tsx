@@ -6,8 +6,27 @@ import { HomeLinksPanel } from "./HomeLinksPanel";
 import { InventoryPanel } from "./InventoryPanel";
 import { ThemeIcon } from "./ThemeIcon";
 
+const enterContainer = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const enterItem = {
+  hidden: { opacity: 0, y: 18 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
+  },
+};
+
 export function MenuScreen() {
-  const setScreen = useGameStore((state) => state.setScreen);
+  const fadeToScreen = useGameStore((state) => state.fadeToScreen);
   const setWorld = useGameStore((state) => state.setWorld);
   const unlockedMemoryIds = useGameStore((state) => state.unlockedMemoryIds);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -32,9 +51,12 @@ export function MenuScreen() {
 
   return (
     <section className="relative flex min-h-screen w-full flex-col items-center justify-center bg-background px-6 text-foreground">
-      <div
+      <motion.div
         ref={headerRef}
         className="absolute right-4 top-4 z-30 md:right-6 md:top-6"
+        initial={{ opacity: 0, y: -12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="relative">
           <Button
@@ -70,10 +92,15 @@ export function MenuScreen() {
             ) : null}
           </AnimatePresence>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="flex w-full max-w-md flex-col items-center gap-8 text-center">
-        <div>
+      <motion.div
+        className="flex w-full max-w-md flex-col items-center gap-8 text-center"
+        variants={enterContainer}
+        initial="hidden"
+        animate="show"
+      >
+        <motion.div variants={enterItem}>
           <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-primary/70">
             NASA Space Apps 2026
           </p>
@@ -86,19 +113,19 @@ export function MenuScreen() {
           <p className="mt-3 text-sm text-foreground/70">
             Forgotten hardware. Stories that still echo.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="play-shine-border text-primary">
+        <motion.div variants={enterItem} className="play-shine-border text-primary">
           <Button
             variant="primary"
             size="lg"
-            onPress={() => setScreen("playing")}
+            onPress={() => fadeToScreen("name-entry")}
             className="min-h-14 min-w-[260px] cursor-pointer rounded-sm border-0 bg-[#0E0C0F] px-12 py-5 text-lg font-semibold text-white transition-colors hover:bg-primary/90 data-[hovered=true]:bg-primary/90"
           >
             Play
           </Button>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
