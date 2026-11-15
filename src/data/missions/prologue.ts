@@ -31,6 +31,8 @@ export const PROLOGUE_SCENE: LinearScene = {
       speakerId: 'protagonist',
       // Protagonista já está em cena (sempre à esquerda) desde o início.
       entersCharacterId: 'protagonist',
+      // No sótão ele ainda não colocou o capacete → sprite sem capacete.
+      protagonistHelmet: 'off',
       text: 'Grandpa, why do you keep all this old junk? Nobody cares about this stuff anymore.',
     },
     {
@@ -71,6 +73,8 @@ export const PROLOGUE_SCENE: LinearScene = {
       // Avô Tadeu sai de cena quando o protagonista coloca o capacete e a
       // cena transita para a Eco / sistema do capacete.
       exitsCharacterId: 'grandpa-tadeu',
+      // A partir daqui ele está de capacete → sprite normal.
+      protagonistHelmet: 'on',
       text: `(${PROTAGONIST_NAME_TOKEN} puts on the helmet. The lights flicker on and the visor powers up.)`,
     },
     {

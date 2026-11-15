@@ -77,6 +77,15 @@ export interface ScriptLine {
    * O texto não é alterado — só dividido. Ver `useSplitItemLines`.
    */
   isItemDescription?: boolean;
+  /**
+   * Marca uma transição do capacete do protagonista A PARTIR desta fala
+   * (inclusive) até a próxima transição. `'off'` mostra o sprite sem capacete
+   * (`player-without-helmet.png`); `'on'` mostra o sprite normal com capacete.
+   * As cenas lineares consomem isto para trocar o sprite no momento certo
+   * (ex.: Ato 0 começa `off` e vira `on` quando ele coloca o capacete; o Final
+   * Act vira `off` quando ele o tira). Sem marca, mantém o estado anterior.
+   */
+  protagonistHelmet?: "on" | "off";
 }
 
 /** Roteiro de uma cena linear (prólogo/epílogo). */

@@ -189,7 +189,7 @@
 
 ## STAGE 4: MARS, PHOENIX
 
-**Setting:** The Martian Arctic plains. A three-legged lander with fan-shaped solar arrays, dusted with a thin layer of frost.
+**Setting:** A vast Martian plain of rust-red, rock-strewn terrain stretching to a flat horizon. A hazy orange sky glows above, and a blazing Sun burns low in the upper corner.
 
 **Profile (ECO):** Curious, bubbly, and a total science geek. Loves experiments, questions, and discoveries. Can’t stand being treated like “just hardware” or being interrupted mid-explanation.
 

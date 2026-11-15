@@ -7,11 +7,13 @@
   - Temas dinâmicos por planeta em `src/hero.ts` (`space-default` / `space-moon` / `space-mars`).
   - Fluxo: `LoadingScreen` → `MenuScreen` → `NameEntryScreen` → `StoryLoadingScreen` → `PrologueScreen` → `Act1Screen` → `FinalScreen`; `HomeButton` (exceto menu) + `HomeTransitionVeil`; persist `playerName` + `unlockedMemoryIds`.
   - **Ato 0 / Ato 1 / Final Act** com roteiros tipados, `StageScreen`, game over com retry e `FinalScreen`.
+  - **Perfil (ECO) de cada equipamento**: 1ª fala de cada estágio é a descrição do personagem falada pela ECO (`*-profile`, `speakerId:'eco'`), verbatim do roteiro, antes do equipamento entrar em cena. O texto começa com o nome do equipamento no formato `Nome (Profile): ...` (Eagle/LRV/Spirit/Phoenix).
   - **Cena de equipamento** (`HubScreen` + `EquipmentMarker`): fundos Lua/Marte, ícones no solo, progresso `0/2 explored`, concluídos bloqueados, link `← Destinations`. Home inline no canto.
   - **Tela de contato** (`StageLoadingScreen`) antes de cada equipamento.
   - **Barra de diálogo fixa** (`DialoguePanel` / `dialogueBox.ts`): escolhas dentro da barra, auto-fit, sprites congelados; `playerName` em falas/nameplate/escolhas.
   - **Tela Team** (`TeamScreen`): aberta pelo botão Team do menu (fade), botão Back volta ao menu sem resetar; 4 molduras `PhotoFrame` (estilo Memories, maiores) com fotos `.jpeg` recortadas no rosto (`object-cover`+`object-top`); nomes + links LinkedIn/GitHub (`SocialLink`, nova aba, `noopener`, hover invertendo cor com o quadrado); dados em `data/team.ts`, caminhos/tamanhos em `config/teamAssets.ts`.
   - **Final Act** mostra o sprite do protagonista (Vanguard) à esquerda do início ao fim, via flag `LinearScene.protagonistAlwaysOnStage`; `FinalScreen` sem rótulo de placeholder no fundo.
+  - **Troca de sprite por capacete** (protagonista): expressão `withoutHelmet` em `CHARACTER_SPRITES.protagonist` (`player-without-helmet.png`); marca de dados `ScriptLine.protagonistHelmet: 'on' | 'off'`; `LinearSceneScreen` deriva o estado atual (default `on`) e renderiza o sprite certo. Ato 0 começa sem capacete e vira normal em `p-08-narrator` (coloca o capacete); Final Act vira sem capacete em `final-return-note` (tira o capacete).
   - Sprites reais (player, eco, grandpa, eagle, lrv, spirit, phoenix) + expressões proud/sad; Vite resolve `.tsx`/`.ts` antes de `.js`.
   - Áudio automático (`resolveEvent`).
 - **O que falta (Próximos passos imediatos):**
@@ -21,7 +23,8 @@
   4. Não versionar `.js` emitidos ao lado dos `.ts`/`.tsx`.
 
 ## Bugs / Bloqueios Conhecidos
-- Lint pré-existente em `useTypewriterText.ts` / `HomeTransitionVeil.tsx` (`react-hooks/set-state-in-effect`), não tratado.
+- (Resolvido) Falas "engolidas"/puladas: `useTypewriterText` resetava o estado da fala num efeito, deixando o 1º frame da nova fala com o estado da anterior (`textComplete=true`); clique nessa janela pulava a fala. Agora o reset é síncrono no render (padrão "prop anterior em estado"), afeta todas as cenas/estágios.
+- (Resolvido) Lint zerado: os 2 erros pré-existentes foram corrigidos. `HomeTransitionVeil.tsx` (`set-state-in-effect`) agora inicia o véu no render via padrão de borda (`sawPending`); `StageLoadingScreen.tsx` (`refs`) move a escrita de `onCompleteRef` para um efeito. `npm run lint` passa sem erros.
 - Fundos de diálogo (Atos 0/1, estágios e tela final) ainda ausentes — escolha de equipamento tem arte real.
 - Arquivos de áudio ainda não existem em `public/assets/music/` — fallback silencioso.
 - Há `.js` emitidos ao lado dos `.ts`/`.tsx`; o Vite prioriza o fonte TypeScript.
@@ -51,3 +54,9 @@
 - [2026-11-15 14:14] Team: URLs do Lucas (LinkedIn/GitHub) adicionadas; os 4 integrantes agora com foto e links ativos; build/lint ok.
 - [2026-11-15 14:20] Checkpoint: estado confirmado, sem novas mudanças de código desde o marco anterior (Team completa).
 - [2026-11-15 14:22] Checkpoint: estado confirmado, sem novas mudanças de código (pendente apenas commit das alterações da Team + fix do Final Act).
+- [2026-11-15 15:25] Troca de sprite por capacete: expressão `withoutHelmet` (`player-without-helmet.png`) + marca `ScriptLine.protagonistHelmet`; Ato 0 sem capacete até `p-08` e Final Act sem capacete a partir de `final-return-note`; `LinearSceneScreen` consome o estado; build ok, lint só com erros pré-existentes.
+- [2026-11-15 15:31] Roteiro-fonte (`echoes_of_astra_game_script.md`): linha de cenário do Stage 4 (Phoenix) reescrita para descrever a nova arte (planície marciana vermelha, horizonte plano, céu laranja, Sol ao canto), em inglês e sem travessões; só doc, sem alteração de código.
+- [2026-11-15 15:38] Fix de falas engolidas: `useTypewriterText` reescrito para resetar a fala de forma SÍNCRONA no render (padrão oficial "prop anterior em estado" via `renderedKey`), eliminando a janela de estado obsoleto que fazia um clique pular a fala; fala vazia já entra concluída. Vale para todas as cenas lineares e os 4 estágios; build ok, lint só com os 2 erros pré-existentes (arquivo do typewriter agora limpo).
+- [2026-11-15 15:40] Lint zerado: corrigidos os 2 erros pré-existentes. `HomeTransitionVeil` inicia o véu no render via detecção de borda (`sawPending`), sem efeito; `StageLoadingScreen` move a escrita de `onCompleteRef.current` para um efeito `[onComplete]`. `npm run lint` passa sem erros; build ok.
+- [2026-11-15 15:46] Perfil (ECO) por equipamento: adicionada a fala de descrição do personagem como 1ª linha de cada estágio (`eagle/lrv/spirit/phoenix-profile`, `speakerId:'eco'`), verbatim do roteiro, exibida antes do equipamento entrar; usa o auto-fit padrão da barra; build/lint ok.
+- [2026-11-15 15:48] Perfil (ECO): texto passou a abrir com o nome do equipamento no formato `Nome (Profile): ...` (Eagle/LRV/Spirit/Phoenix); build/lint ok.
