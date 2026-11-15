@@ -7,6 +7,7 @@ import { MenuScreen } from "./components/vn/MenuScreen";
 import { NameEntryScreen } from "./components/vn/NameEntryScreen";
 import { PrologueScreen } from "./components/vn/PrologueScreen";
 import { StoryLoadingScreen } from "./components/vn/StoryLoadingScreen";
+import { TeamScreen } from "./components/vn/TeamScreen";
 import { useGameStore } from "./store/useGameStore";
 
 const THEME_BY_WORLD = {
@@ -22,9 +23,11 @@ export function App() {
   const themeClass = THEME_BY_WORLD[currentWorld];
   const homeInScene =
     currentScreen === "playing" && hubPhase === "select-equipment";
+  // A tela Team tem seu próprio botão "Back"; não mostra o Home global (que reseta).
   const showHome =
     currentScreen !== "menu" &&
     currentScreen !== "loading" &&
+    currentScreen !== "team" &&
     !homeInScene;
 
   return (
@@ -36,6 +39,7 @@ export function App() {
       {currentScreen === "prologue" ? <PrologueScreen /> : null}
       {currentScreen === "playing" ? <Act1Screen /> : null}
       {currentScreen === "dialogue" ? <GameDialogueScreen /> : null}
+      {currentScreen === "team" ? <TeamScreen /> : null}
       {showHome ? <HomeButton /> : null}
       <HomeTransitionVeil />
     </main>

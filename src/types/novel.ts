@@ -86,6 +86,12 @@ export interface LinearScene {
   backgroundAsset: string | null;
   backgroundPlaceholderLabel: string;
   lines: ScriptLine[];
+  /**
+   * Quando true, o protagonista está em cena durante TODA a cena (sempre à
+   * esquerda), sem precisar de `entersCharacterId` numa fala. Usado em cenas em
+   * que ele já está presente do início ao fim (ex.: Final Act). Default: false.
+   */
+  protagonistAlwaysOnStage?: boolean;
 }
 
 export type Expression = 'neutral' | 'happy' | 'sad' | 'glitch';
