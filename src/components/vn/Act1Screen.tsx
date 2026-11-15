@@ -1,4 +1,5 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, type ReactNode } from "react";
+import { motion } from "framer-motion";
 import { useGameStore } from "../../store/useGameStore";
 import { ALL_STAGE_IDS, getEquipment } from "../../config/destinations";
 import { ACT1_INTRO_SCENE } from "../../data/missions/act1Intro";
@@ -11,6 +12,10 @@ import { HubScreen } from "./HubScreen";
 import { LinearSceneScreen } from "./PrologueScreen";
 import { StageLoadingScreen } from "./StageLoadingScreen";
 import { StageScreen } from "./StageScreen";
+
+const DESTINATION_FADE_S = 0.45;
+
+type DestinationVeil = "cover" | "reveal";
 
 /**
  * Orquestrador do Ato 1 (renderizado na tela `playing`).
@@ -45,6 +50,10 @@ export function Act1Screen() {
   const [stageRunId, setStageRunId] = useState(0);
   // Depois das falas do Final Act, mostra a tela de encerramento (não persiste).
   const [showFinalScreen, setShowFinalScreen] = useState(false);
+  // Fade até a escolha de destino (intro e volta de um estágio).
+  const [destinationVeil, setDestinationVeil] = useState<DestinationVeil | null>(
+    null,
+  );
 
   const handleSelectDestination = (destination: DestinationId) => {
     setSelectedDestination(destination);
@@ -75,11 +84,21 @@ export function Act1Screen() {
   ]);
 
   const returnToHub = () => {
-    setStage(null);
-    setDialoguePhase("normal");
-    setGameOver(false);
-    setSelectedDestination(null);
-    setHubPhase("select-destination");
+    if (destinationVeil) return;
+    setDestinationVeil("cover");
+  };
+
+  const finishDestinationVeil = () => {
+    if (destinationVeil === "cover") {
+      setStage(null);
+      setDialoguePhase("normal");
+      setGameOver(false);
+      setSelectedDestination(null);
+      setHubPhase("select-destination");
+      setDestinationVeil("reveal");
+      return;
+    }
+    if (destinationVeil === "reveal") setDestinationVeil(null);
   };
 
   const handleStageClear = () => {
@@ -119,49 +138,41 @@ export function Act1Screen() {
 
   // --- Render por fase -------------------------------------------------------
 
+  let screen: ReactNode;
+
   if (hubPhase === "intro") {
-    return (
+    screen = (
       <LinearSceneScreen
         scene={ACT1_INTRO_SCENE}
-        onComplete={() => setHubPhase("select-destination")}
+        onComplete={returnToHub}
       />
     );
-  }
-
-  if (hubPhase === "final") {
+  } else if (hubPhase === "final") {
     // FINAL ACT (resolução). Fluxo: falas finais → TELA FINAL de encerramento
     // ("Abandoned, Yet Never Forgotten.") → menu. Não há caminho de volta aos
     // estágios já concluídos.
-    if (showFinalScreen) {
-      return <FinalScreen onContinue={goToMenu} />;
-    }
-    return (
+    screen = showFinalScreen ? (
+      <FinalScreen onContinue={goToMenu} />
+    ) : (
       <LinearSceneScreen
         scene={FINAL_ACT_SCENE}
         onComplete={() => setShowFinalScreen(true)}
       />
     );
-  }
-
-  if (enteringStage) {
+  } else if (enteringStage) {
     const equipment = getEquipment(enteringStage);
     const script = getStageScript(enteringStage);
-    return (
+    screen = (
       <StageLoadingScreen
         equipmentLabel={equipment.label}
         backgroundAsset={script.backgroundAsset}
         onComplete={handleStageReady}
       />
     );
-  }
-
-  if (hubPhase === "stage" && currentStage) {
-    if (gameOver) {
-      return (
-        <GameOverScreen onRetry={handleRetry} onBackToHub={returnToHub} />
-      );
-    }
-    return (
+  } else if (hubPhase === "stage" && currentStage) {
+    screen = gameOver ? (
+      <GameOverScreen onRetry={handleRetry} onBackToHub={returnToHub} />
+    ) : (
       <StageScreen
         key={`${currentStage}-${stageRunId}`}
         script={getStageScript(currentStage)}
@@ -169,15 +180,31 @@ export function Act1Screen() {
         onGameOver={handleGameOver}
       />
     );
+  } else {
+    // Hub: destino ou equipamento. A volta do planeta já tem o fade do HubScreen.
+    screen = (
+      <HubScreen
+        equipmentView={hubPhase === "select-equipment"}
+        onSelectDestination={handleSelectDestination}
+        onSelectStage={handleSelectStage}
+        onBackToDestinations={() => setHubPhase("select-destination")}
+      />
+    );
   }
 
-  // Hub: destino ou equipamento.
   return (
-    <HubScreen
-      equipmentView={hubPhase === "select-equipment"}
-      onSelectDestination={handleSelectDestination}
-      onSelectStage={handleSelectStage}
-      onBackToDestinations={() => setHubPhase("select-destination")}
-    />
+    <>
+      {screen}
+      {destinationVeil ? (
+        <motion.div
+          className="pointer-events-auto fixed inset-0 z-[80] bg-[#0E0C0F]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: destinationVeil === "cover" ? 1 : 0 }}
+          transition={{ duration: DESTINATION_FADE_S, ease: "easeInOut" }}
+          onAnimationComplete={finishDestinationVeil}
+          aria-hidden="true"
+        />
+      ) : null}
+    </>
   );
 }

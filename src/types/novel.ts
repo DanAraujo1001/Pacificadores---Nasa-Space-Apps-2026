@@ -180,6 +180,12 @@ export interface StageScript {
 /** Destino de missão jogável (Lua / Marte), sem a nave. */
 export type DestinationId = Exclude<WorldId, 'ship'>;
 
+/** Ponto do ícone na cena, em porcentagem do quadro (ex.: "28%"). */
+export interface EquipmentHotspot {
+  left: string;
+  top: string;
+}
+
 /** Destino de missão (Lua / Marte) com seus equipamentos. */
 export interface DestinationConfig {
   id: DestinationId;
@@ -190,12 +196,26 @@ export interface DestinationConfig {
   backgroundAsset: string;
   /** Rótulo do placeholder se o fundo ainda não existir. */
   backgroundPlaceholderLabel: string;
-}
-
-/** Ponto do ícone na cena, em porcentagem da viewport (ex.: "28%"). */
-export interface EquipmentHotspot {
-  left: string;
-  top: string;
+  /** Planeta clicável na janela da cabine. */
+  iconAsset: string;
+  /**
+   * Canto superior esquerdo do planeta no quadro da cabine (1519×569).
+   * Tela larga e tela estreita usam a mesma proporção do fundo.
+   */
+  hotspot: {
+    desktop: EquipmentHotspot;
+    narrow: EquipmentHotspot;
+  };
+  /** Largura do planeta em relação ao quadro da cabine. */
+  iconWidth: {
+    desktop: string;
+    narrow: string;
+  };
+  /** Altura do planeta em relação ao quadro da cabine. */
+  iconHeight: {
+    desktop: string;
+    narrow: string;
+  };
 }
 
 /** Metadados de um equipamento para o hub (ícone + rótulo). */
