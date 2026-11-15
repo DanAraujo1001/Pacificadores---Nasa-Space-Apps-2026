@@ -14,40 +14,99 @@
 
 export const BACKGROUND_ASSETS = {
   /** ACT 0 — sótão com fotos antigas, maquetes e um capacete; chove lá fora. */
-  act0Attic: '/assets/backgrounds/act0-attic.png',
+  act0Attic: "/assets/backgrounds/act0-attic.png",
   /** ACT 1 — hub na nave: Lua e Marte à vista pela janela. */
-  hubShip: '/assets/backgrounds/act1-hub-ship.png',
+  hubShip: "/assets/backgrounds/act1-hub-ship.png",
   /** STAGE 1 — Mar da Tranquilidade (Eagle / Apollo 11). */
-  stageEagle: '/assets/backgrounds/stage-eagle-tranquility.png',
+  stageEagle: "/assets/backgrounds/stage-eagle-tranquility.png",
   /** STAGE 2 — planície lunar com as três buggies (LRVs). */
-  stageLrv: '/assets/backgrounds/stage-lrv-plain.png',
+  stageLrv: "/assets/backgrounds/stage-lrv-plain.png",
   /** STAGE 3 — Cratera Gusev, Marte (Spirit). */
-  stageSpirit: '/assets/backgrounds/stage-spirit-gusev.png',
+  stageSpirit: "/assets/backgrounds/stage-spirit-gusev.png",
   /** STAGE 4 — planície ártica marciana (Phoenix). */
-  stagePhoenix: '/assets/backgrounds/stage-phoenix-arctic.png',
+  stagePhoenix: "/assets/backgrounds/stage-phoenix-arctic.png",
 } as const;
 
+/** Expressões disponíveis nos arquivos de sprite. */
+export type SpriteExpression = "normal" | "proud" | "sad" | "glitch";
+
+type SpritePack = Partial<Record<SpriteExpression, string>> & {
+  normal: string;
+};
+
+/**
+ * Sprites por personagem. `normal` é obrigatório; as demais expressões caem
+ * para `normal` quando o arquivo não existir no pack.
+ */
+export const CHARACTER_SPRITES = {
+  protagonist: {
+    normal: "/assets/sprites/player/player-normal.png",
+    proud: "/assets/sprites/player/player-proud.png",
+    sad: "/assets/sprites/player/player-sad.png",
+    glitch: "/assets/sprites/player/player-glitch.png",
+  },
+  eco: {
+    normal: "/assets/sprites/eco/eco-normal.png",
+  },
+  grandpaTadeu: {
+    normal: "/assets/sprites/grandpa-tadeu/grandpa-normal.png",
+  },
+  eagle: {
+    normal: "/assets/sprites/eagle/eagle-normal.png",
+    proud: "/assets/sprites/eagle/eagle-proud.png",
+    sad: "/assets/sprites/eagle/eagle-sad.png",
+  },
+  lrv: {
+    normal: "/assets/sprites/lrv/lrv-normal.png",
+    proud: "/assets/sprites/lrv/lrv-proud.png",
+    sad: "/assets/sprites/lrv/lrv-sad.png",
+  },
+  spirit: {
+    normal: "/assets/sprites/spirit/spirit-normal.png",
+    proud: "/assets/sprites/spirit/spirit-proud.png",
+    sad: "/assets/sprites/spirit/spirit-sad.png",
+  },
+  phoenix: {
+    normal: "/assets/sprites/phoenix/phoenix-normal.png",
+    proud: "/assets/sprites/phoenix/phoenix-proud.png",
+    sad: "/assets/sprites/phoenix/phoenix-sad.png",
+  },
+} as const satisfies Record<string, SpritePack>;
+
+export type CharacterSpriteKey = keyof typeof CHARACTER_SPRITES;
+
+/** Resolve o caminho do sprite para uma expressão (fallback → normal). */
+export function resolveCharacterSprite(
+  key: CharacterSpriteKey,
+  expression: SpriteExpression = "normal",
+): string {
+  const pack = CHARACTER_SPRITES[key] as SpritePack;
+  return pack[expression] ?? pack.normal;
+}
+
+/** Lista plana de todos os arquivos de sprite (preload). */
+export const ALL_SPRITE_PATHS: string[] = Object.values(CHARACTER_SPRITES).flatMap(
+  (pack) => Object.values(pack),
+);
+
+/** Atalhos legados: sempre a expressão `normal`. */
 export const SPRITE_ASSETS = {
-  /** Sprite do protagonista (reutiliza o player existente). */
-  protagonist: '/assets/sprites/player/player-normal.png',
-  /** Sprite da Eco (assistente do capacete). */
-  eco: '/assets/sprites/eco/eco-normal.png',
-  /** Sprite do Avô Tadeu (mentor do prólogo/epílogo). */
-  grandpaTadeu: '/assets/sprites/grandpa-tadeu/grandpa-normal.png',
-  /** Sprite do Eagle (módulo lunar Apollo 11). */
-  eagle: '/assets/sprites/eagle/eagle-normal.png',
-  /** Sprite das LRVs (buggies lunares). */
-  lrv: '/assets/sprites/lrv/lrv-normal.png',
-  /** Sprite do Spirit (rover marciano). */
-  spirit: '/assets/sprites/spirit/spirit-normal.png',
-  /** Sprite do Phoenix (lander ártico marciano). */
-  phoenix: '/assets/sprites/phoenix/phoenix-normal.png',
+  protagonist: CHARACTER_SPRITES.protagonist.normal,
+  eco: CHARACTER_SPRITES.eco.normal,
+  grandpaTadeu: CHARACTER_SPRITES.grandpaTadeu.normal,
+  eagle: CHARACTER_SPRITES.eagle.normal,
+  lrv: CHARACTER_SPRITES.lrv.normal,
+  spirit: CHARACTER_SPRITES.spirit.normal,
+  phoenix: CHARACTER_SPRITES.phoenix.normal,
 } as const;
 
-/** Ícones clicáveis dos equipamentos no hub (ACT 1). */
+/**
+ * Ícones do hub: usam o sprite `normal` do equipamento enquanto não houver
+ * ícones dedicados em `public/assets/icons/equipment/`.
+ */
 export const EQUIPMENT_ICON_ASSETS = {
-  eagle: '/assets/icons/equipment/eagle.svg',
-  lrv: '/assets/icons/equipment/lrv.svg',
-  spirit: '/assets/icons/equipment/spirit.svg',
-  phoenix: '/assets/icons/equipment/phoenix.svg',
+  eagle: CHARACTER_SPRITES.eagle.normal,
+  lrv: CHARACTER_SPRITES.lrv.normal,
+  spirit: CHARACTER_SPRITES.spirit.normal,
+  phoenix: CHARACTER_SPRITES.phoenix.normal,
 } as const;

@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { useGameStore } from "../../store/useGameStore";
-import { getCharacter, withProtagonistName } from "../../config/characters";
+import {
+  getCharacter,
+  getCharacterSpriteSrc,
+  withProtagonistName,
+} from "../../config/characters";
 import { PROLOGUE_SCENE } from "../../data/missions/prologue";
+import { useGameStore } from "../../store/useGameStore";
 import type { CharacterId, LinearScene } from "../../types/novel";
 import { CharacterSprite } from "./CharacterSprite";
 import { DialogueBox } from "./DialogueBox";
@@ -24,9 +28,11 @@ export function LinearSceneScreen({
   onComplete,
 }: LinearSceneScreenProps) {
   const setWorld = useGameStore((state) => state.setWorld);
+  const playerName = useGameStore((state) => state.playerName);
   const [lineIndex, setLineIndex] = useState(0);
 
   const line = scene.lines[lineIndex] ?? scene.lines[0];
+  const displayName = playerName.trim() || undefined;
 
   // Quem já entrou em cena e ainda não saiu, até a fala atual (inclusive).
   // Deriva de `entersCharacterId` / `exitsCharacterId`, garantindo continuidade.
@@ -40,7 +46,7 @@ export function LinearSceneScreen({
     return [...present];
   }, [scene.lines, lineIndex]);
 
-  const fullText = withProtagonistName(line.text);
+  const fullText = withProtagonistName(line.text, displayName);
   const { visibleText, textComplete, skipToFullText } = useTypewriterText(
     fullText,
     line.id,
@@ -51,7 +57,10 @@ export function LinearSceneScreen({
   }, [setWorld, scene.world]);
 
   const speaker = line.speakerId ? getCharacter(line.speakerId) : null;
-  const speakerName = speaker?.displayName ?? scene.backgroundPlaceholderLabel;
+  const speakerName =
+    speaker?.id === "protagonist"
+      ? displayName ?? speaker.displayName
+      : (speaker?.displayName ?? scene.backgroundPlaceholderLabel);
 
   const isLastLine = lineIndex >= scene.lines.length - 1;
 
@@ -89,11 +98,16 @@ export function LinearSceneScreen({
         {onStage.map((characterId) => {
           const character = getCharacter(characterId);
           if (!character) return null;
+          const spriteSrc = getCharacterSpriteSrc(character.id);
+          const label =
+            character.id === "protagonist"
+              ? displayName ?? character.placeholderLabel
+              : character.placeholderLabel;
           return (
             <CharacterSprite
-              key={`${character.id}:${character.spriteAsset ?? "placeholder"}`}
-              src={character.spriteAsset}
-              name={character.placeholderLabel}
+              key={`${character.id}:${spriteSrc ?? "placeholder"}`}
+              src={spriteSrc}
+              name={label}
               side={character.side}
               active={line.speakerId === character.id}
             />

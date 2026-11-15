@@ -41,6 +41,10 @@ pela mesma linha de base.
 
 ## Ícones de equipamento (hub do Ato 1)
 
+Por enquanto o hub usa o sprite `*-normal.png` de cada equipamento
+(`src/config/sceneAssets.ts` → `EQUIPMENT_ICON_ASSETS`). Quando houver ícones
+dedicados, troque os caminhos para:
+
 | Equipamento | Pasta                             | Arquivo esperado | Formato |
 | ----------- | --------------------------------- | ---------------- | ------- |
 | Eagle       | `public/assets/icons/equipment/`  | `eagle.svg`      | `.svg`/`.png` |

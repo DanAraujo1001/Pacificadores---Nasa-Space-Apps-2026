@@ -38,14 +38,14 @@ export function EquipmentButton({
       className="group flex h-auto cursor-pointer flex-col items-center gap-3 rounded-sm border border-primary bg-content1/60 px-6 py-5 text-primary transition-colors hover:bg-primary/15 data-[hovered=true]:bg-primary/15 data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-40"
     >
       <span
-        className="relative flex size-20 items-center justify-center rounded-sm border border-primary/40 bg-background/40"
+        className="relative flex size-24 items-center justify-center overflow-hidden rounded-sm border border-primary/40 bg-background/40"
         aria-hidden={showIcon ? undefined : true}
       >
         {showIcon ? (
           <img
             src={iconSrc}
             alt=""
-            className="size-14 object-contain"
+            className="h-full w-full object-contain object-bottom p-1"
             draggable={false}
             onError={() => setIconFailed(true)}
           />
