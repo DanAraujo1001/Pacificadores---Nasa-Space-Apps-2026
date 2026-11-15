@@ -1,11 +1,11 @@
 # MEMORY.md — Estado Atual do Projeto
 
 ## Estado Atual
-- **Fase:** Atos 0 e 1 jogáveis + fluxo de entrada (Home → Callsign → Story Loading → prólogo → hub/estágios).
+- **Fase:** Atos 0 e 1 jogáveis + fluxo de entrada (Home → Callsign → Story Loading → prólogo → hub/estágios) + Home visual com arte hero.
 - **O que está pronto:**
   - Stack Vite + React + TypeScript + Tailwind + HeroUI + Zustand + Framer Motion (+ Howler).
   - Temas dinâmicos por planeta em `src/hero.ts` (`space-default` / `space-moon` / `space-mars`).
-  - `LoadingScreen` + `MenuScreen` (Play reseta progresso → fade para callsign).
+  - `LoadingScreen` + `MenuScreen` (Play reseta progresso → fade para callsign); arte `image-home-teste.png` fixa no bottom-direita com pulso e glow amarelo suave.
   - Fluxo de entrada: `NameEntryScreen` → `StoryLoadingScreen` → `PrologueScreen` → `Act1Screen`; `HomeButton` + `HomeTransitionVeil`; persist `playerName` + `unlockedMemoryIds`.
   - **Ato 0 (Prólogo):** `PrologueScreen` + base `LinearSceneScreen`, roteiro `src/data/missions/prologue.ts` (verbatim).
   - **Ato 1:** `Act1Screen` orquestra intro(ECO) → `HubScreen` → `StageScreen` → Final Act → menu.
@@ -24,6 +24,7 @@
 - Assets de Ato 0 e Ato 1 ainda não existem — cenas rodam com placeholders nomeados.
 - Saída após o Final Act volta ao `menu` (falta tela final definitiva).
 - Arquivos de áudio ainda não existem em `public/assets/music/` — fallback silencioso.
+- Assets `image-home.svg` / `image-home-teste.svg` ainda no repo; Home ativa usa `image-home-teste.png`.
 
 ## Log de Marcos
 - [2026-11-14] Criação do `AGENTS.md` e alinhamento da identidade visual (Cores: `#0E0C0F` base, `#EC8501` nave, `#6FCEC6` Lua, `#CD4116` Marte).
@@ -32,3 +33,4 @@
 - [2026-11-14 21:05] Ato 0 (Prólogo) implementado: `PrologueScreen`/`LinearSceneScreen`, roteiro tipado, configs centrais de personagens e assets, `CharacterSprite`/`SceneBackground` com fallback; build/typecheck/lint (arquivos novos) ok.
 - [2026-11-14 21:13] Home jogável + name entry/story loading, persist de nome/memórias, HomeButton e transições de tela (fade + conteúdo).
 - [2026-11-14 22:09] Ato 1 implementado: `Act1Screen` (intro→hub→estágio→final), `StageScreen` dirigido por dados, 4 estágios tipados verbatim + act1Intro/finalAct, `HubScreen`/`EquipmentButton`/`GameOverScreen`, progresso central (`completedStageIds` + bloqueio de reentrada); typecheck/build ok.
+- [2026-11-14 23:44] Home com arte hero (PNG) no bottom, glow amarelo e layout copy/Play à esquerda.
