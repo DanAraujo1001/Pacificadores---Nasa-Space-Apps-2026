@@ -4,6 +4,7 @@ import type { DialogueChoice, DialogueNode } from "../../types/novel";
 import { useGameStore } from "../../store/useGameStore";
 import { ChoiceButton } from "./ChoiceButton";
 import { DialogueBox } from "./DialogueBox";
+import { HomeButton } from "./HomeButton";
 import { ThemeIcon } from "./ThemeIcon";
 import { useTypewriterText } from "./useTypewriterText";
 
@@ -50,6 +51,7 @@ const INITIAL_NODE: DialogueNode = {
 
 export function GameScreen() {
   const setWorld = useGameStore((state) => state.setWorld);
+  const playerName = useGameStore((state) => state.playerName);
   const [node, setNode] = useState<DialogueNode>(INITIAL_NODE);
   const [bgFailed, setBgFailed] = useState(false);
   const [spriteFailed, setSpriteFailed] = useState(false);
@@ -89,6 +91,8 @@ export function GameScreen() {
       }}
       role="presentation"
     >
+      <HomeButton />
+
       {/* Letterbox superior — desce o bloco de imagem */}
       <div className="h-16 shrink-0 bg-[#0E0C0F] md:h-20" aria-hidden="true" />
 
@@ -139,7 +143,7 @@ export function GameScreen() {
         className="relative z-20 -mt-[12vh] flex flex-1 flex-col items-center justify-start gap-4 bg-[#0E0C0F] px-4 pb-6 pt-5"
       >
         <DialogueBox
-          speakerName="Name Person"
+          speakerName={playerName || "Explorer"}
           text={visibleText}
           showContinueHint={textComplete && !hasChoices}
         />

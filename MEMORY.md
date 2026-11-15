@@ -1,27 +1,28 @@
 # MEMORY.md — Estado Atual do Projeto
 
 ## Estado Atual
-- **Fase:** Atos 0 e 1 jogáveis de ponta a ponta com placeholders (prólogo → hub → 4 estágios com escolhas → final act → menu).
+- **Fase:** Atos 0 e 1 jogáveis + fluxo de entrada (Home → Callsign → Story Loading → prólogo → hub/estágios).
 - **O que está pronto:**
   - Stack Vite + React + TypeScript + Tailwind + HeroUI + Zustand + Framer Motion (+ Howler).
   - Temas dinâmicos por planeta em `src/hero.ts` (`space-default` / `space-moon` / `space-mars`).
-  - `LoadingScreen` + `MenuScreen` (Play reseta progresso → prólogo).
+  - `LoadingScreen` + `MenuScreen` (Play reseta progresso → fade para callsign).
+  - Fluxo de entrada: `NameEntryScreen` → `StoryLoadingScreen` → `PrologueScreen` → `Act1Screen`; `HomeButton` + `HomeTransitionVeil`; persist `playerName` + `unlockedMemoryIds`.
   - **Ato 0 (Prólogo):** `PrologueScreen` + base `LinearSceneScreen`, roteiro `src/data/missions/prologue.ts` (verbatim).
-  - **Ato 1:** `Act1Screen` orquestra intro(ECO) → `HubScreen` (destino Lua/Marte → equipamento) → `StageScreen` (motor de estágio reutilizável, dirigido por dados) → volta ao hub; todos concluídos → Final Act → menu.
-  - **Estágios tipados** (verbatim) em `src/data/missions/`: `eagle`, `lrv`, `spirit`, `phoenix` (+ `act1Intro`, `finalAct`, `index` registry). Escolhas certas avançam; erradas → `GameOverScreen` (try again).
-  - **Progresso central** no store: `completedStageIds`, `hubPhase`, `selectedDestination`, `completeStage`, `resetProgress`. Estágio concluído fica marcado ✓/esmaecido/bloqueado (`EquipmentButton`), sem reentrada. Ordem livre.
-  - **Configs centrais:** `src/config/characters.ts` (nome/lado — protagonista=esquerda, equipamentos=direita, token do nome), `src/config/sceneAssets.ts` (bg/sprites/ícones), `src/config/destinations.ts` (Lua: Eagle/LRV; Marte: Spirit/Phoenix; `ALL_STAGE_IDS`).
-  - Componentes VN reutilizáveis: `DialogueBox`, `ChoiceButton`, `ThemeIcon`, `CharacterSprite`, `SceneBackground`, `EquipmentButton`, hook `useTypewriterText`. Fallback de asset automático (placeholder nomeado).
+  - **Ato 1:** `Act1Screen` orquestra intro(ECO) → `HubScreen` → `StageScreen` → Final Act → menu.
+  - **Estágios tipados** em `src/data/missions/`: `eagle`, `lrv`, `spirit`, `phoenix` (+ `act1Intro`, `finalAct`, `index`).
+  - Progresso: `completedStageIds`, `hubPhase`, `selectedDestination`, `completeStage`, `resetProgress`.
+  - Configs: `characters.ts`, `sceneAssets.ts`, `destinations.ts`.
+  - Componentes VN: `DialogueBox`, `ChoiceButton`, `ThemeIcon`, `CharacterSprite`, `SceneBackground`, `EquipmentButton`, `useTypewriterText`.
   - Áudio automático (`resolveEvent` cobre prólogo/hub/estágios/stage-clear/game-over/final).
 - **O que falta (Próximos passos imediatos):**
-  1. `src/components/vn/FinalScreen.tsx` — tela final definitiva ("Abandoned, Yet Never Forgotten") para a saída pós-Final Act (hoje volta ao `menu`).
-  2. `public/assets/.../*` — adicionar os assets reais (ver `public/assets/README-ASSETS.md`): backgrounds hub + 4 estágios, sprites eagle/lrv/spirit/phoenix (+ eco/grandpa), ícones de equipamento e faixas em `public/assets/music/`.
-  3. `LORE_DATA.md` — completar; e confirmar decisões de roteiro pendentes (rubricas/narração, descrição de item como fala da ECO vs. inventário, sprite da ECO).
+  1. `src/components/vn/FinalScreen.tsx` — tela final definitiva pós-Final Act.
+  2. `public/assets/.../*` — assets reais (ver `public/assets/README-ASSETS.md`) + faixas em `public/assets/music/`.
+  3. `LORE_DATA.md` — completar; decisões de roteiro pendentes (rubricas, ECO, etc.).
 
 ## Bugs / Bloqueios Conhecidos
 - Lint pré-existente em `src/components/vn/useTypewriterText.ts` (`react-hooks/set-state-in-effect`), não tratado (fora de escopo).
-- Assets de Ato 0 e Ato 1 ainda não existem — cenas rodam com placeholders nomeados (sem quebrar).
-- Saída após o Final Act volta ao `menu` (ponto de saída marcado no código; falta tela final definitiva).
+- Assets de Ato 0 e Ato 1 ainda não existem — cenas rodam com placeholders nomeados.
+- Saída após o Final Act volta ao `menu` (falta tela final definitiva).
 - Arquivos de áudio ainda não existem em `public/assets/music/` — fallback silencioso.
 
 ## Log de Marcos
@@ -29,4 +30,5 @@
 - [2026-11-14 17:53] Telas VN cinematográficas: loading, GameScreen com opções, GameDialogueScreen só diálogo, typewriter com skip e continue stars temáticos.
 - [2026-11-14 17:59] Trilha sonora automática reativa ao `useGameStore` (audioAutoplay + playEventMusic), pastas de assets criadas e `howler` instalado; build/lint/typecheck ok.
 - [2026-11-14 21:05] Ato 0 (Prólogo) implementado: `PrologueScreen`/`LinearSceneScreen`, roteiro tipado, configs centrais de personagens e assets, `CharacterSprite`/`SceneBackground` com fallback; build/typecheck/lint (arquivos novos) ok.
+- [2026-11-14 21:13] Home jogável + name entry/story loading, persist de nome/memórias, HomeButton e transições de tela (fade + conteúdo).
 - [2026-11-14 22:09] Ato 1 implementado: `Act1Screen` (intro→hub→estágio→final), `StageScreen` dirigido por dados, 4 estágios tipados verbatim + act1Intro/finalAct, `HubScreen`/`EquipmentButton`/`GameOverScreen`, progresso central (`completedStageIds` + bloqueio de reentrada); typecheck/build ok.

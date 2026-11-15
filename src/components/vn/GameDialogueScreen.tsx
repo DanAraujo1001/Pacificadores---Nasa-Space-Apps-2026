@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useGameStore } from "../../store/useGameStore";
 import { DialogueBox } from "./DialogueBox";
+import { HomeButton } from "./HomeButton";
 import { useTypewriterText } from "./useTypewriterText";
 
 const STAGE_BG = "/assets/backgrounds/bg-example.png";
@@ -15,6 +16,7 @@ const MOCK_LINES = [
 
 export function GameDialogueScreen() {
   const setWorld = useGameStore((state) => state.setWorld);
+  const playerName = useGameStore((state) => state.playerName);
   const [lineIndex, setLineIndex] = useState(0);
   const [bgFailed, setBgFailed] = useState(false);
   const [spriteFailed, setSpriteFailed] = useState(false);
@@ -49,6 +51,8 @@ export function GameDialogueScreen() {
       }}
       role="presentation"
     >
+      <HomeButton />
+
       <div className="h-16 shrink-0 bg-[#0E0C0F] md:h-20" aria-hidden="true" />
 
       <div className="relative z-0 h-[min(60vh,620px)] w-full shrink-0 overflow-visible">
@@ -93,7 +97,7 @@ export function GameDialogueScreen() {
 
       <div className="relative z-20 -mt-[12vh] flex flex-1 flex-col items-center justify-start gap-4 bg-[#0E0C0F] px-4 pb-6 pt-5">
         <DialogueBox
-          speakerName="Name Person"
+          speakerName={playerName || "Explorer"}
           text={visibleText}
           showContinueHint={textComplete}
         />
