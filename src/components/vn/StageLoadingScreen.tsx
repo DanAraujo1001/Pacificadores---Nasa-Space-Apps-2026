@@ -86,7 +86,7 @@ export function StageLoadingScreen({
       </motion.p>
 
       <motion.div
-        className="absolute bottom-6 right-6"
+        className="absolute bottom-16 right-6"
         style={{ width: ICON_SIZE_PX, height: ICON_SIZE_PX }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
