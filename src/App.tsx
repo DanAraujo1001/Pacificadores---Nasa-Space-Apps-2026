@@ -18,8 +18,11 @@ const THEME_BY_WORLD = {
 export function App() {
   const currentWorld = useGameStore((state) => state.currentWorld);
   const currentScreen = useGameStore((state) => state.currentScreen);
+  const hubPhase = useGameStore((state) => state.hubPhase);
   const themeClass = THEME_BY_WORLD[currentWorld];
-  const showHome = currentScreen !== "menu";
+  const homeInScene =
+    currentScreen === "playing" && hubPhase === "select-equipment";
+  const showHome = currentScreen !== "menu" && !homeInScene;
 
   return (
     <main className={`${themeClass} relative min-h-screen bg-background text-foreground`}>

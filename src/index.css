@@ -94,3 +94,35 @@
   position: relative;
   z-index: 1;
 }
+
+.scene-link {
+  filter: saturate(1);
+  transition: filter 200ms ease;
+}
+
+.scene-link:hover,
+.scene-link[data-hovered="true"] {
+  filter: saturate(2.4);
+}
+
+/* Ícone de carga: a forma vem do asset; a cor vem do tema (bg-primary). */
+.loading-mark {
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
+}
+
+.loading-mark-outline {
+  -webkit-mask-image: url("/assets/icons/icon-base.svg");
+  mask-image: url("/assets/icons/icon-base.svg");
+}
+
+.loading-mark-fill {
+  -webkit-mask-image: url("/assets/icons/icon-base-filled.png");
+  mask-image: url("/assets/icons/icon-base-filled.png");
+}

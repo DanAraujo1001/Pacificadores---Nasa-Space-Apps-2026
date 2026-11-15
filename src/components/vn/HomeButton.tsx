@@ -1,12 +1,21 @@
 import { Button } from "@heroui/react";
 import { useGameStore } from "../../store/useGameStore";
 
-export function HomeButton() {
+interface HomeButtonProps {
+  /** Dentro do fluxo, em vez do canto fixo da tela. */
+  inline?: boolean;
+}
+
+export function HomeButton({ inline = false }: HomeButtonProps) {
   const goHome = useGameStore((state) => state.goHome);
 
   return (
     <div
-      className="fixed left-4 top-4 z-40 md:left-6 md:top-6"
+      className={
+        inline
+          ? "z-40"
+          : "fixed left-4 top-4 z-40 md:left-6 md:top-6"
+      }
       onClick={(event) => event.stopPropagation()}
       onKeyDown={(event) => event.stopPropagation()}
     >
