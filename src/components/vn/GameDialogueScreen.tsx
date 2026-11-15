@@ -10,7 +10,7 @@ const PLAYER_SPRITE = "/assets/sprites/player/player-normal.png";
 
 const MOCK_LINES = [
   "Solo lunar sob as botas. Diante de mim, equipamentos esquecidos da NASA aguardam. Hora de explorar a superfície.",
-  "Poeira fina, basáltica. Leituras batem com as amostras históricas — a superfície ainda guarda o que foi deixado para trás.",
+  "Poeira fina, basáltica. Leituras batem com as amostras históricas. A superfície ainda guarda o que foi deixado para trás.",
   "Sem vento. Sem atmosfera. Só o ruído térmico do meu traje e a memória de um primeiro passo.",
 ] as const;
 

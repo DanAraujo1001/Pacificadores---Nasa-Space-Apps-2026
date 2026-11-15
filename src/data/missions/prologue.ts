@@ -19,7 +19,7 @@ export const PROLOGUE_SCENE: LinearScene = {
   id: 'act0-prologue',
   world: 'ship',
   backgroundAsset: BACKGROUND_ASSETS.act0Attic,
-  backgroundPlaceholderLabel: 'Act 0 — Attic (rain outside)',
+  backgroundPlaceholderLabel: 'Act 0: Attic (rain outside)',
   lines: [
     {
       id: 'p-00-narrator',
@@ -48,7 +48,7 @@ export const PROLOGUE_SCENE: LinearScene = {
     {
       id: 'p-04-grandpa',
       speakerId: 'grandpa-tadeu',
-      text: 'Abandoned, yes. Forgotten, never. As long as someone remembers, they stay alive. That’s what I learned in space: the silence up there isn’t empty—it’s memory waiting for someone to listen.',
+      text: 'Abandoned, yes. Forgotten, never. As long as someone remembers, they stay alive. That’s what I learned in space: the silence up there isn’t empty. It’s memory waiting for someone to listen.',
     },
     {
       id: 'p-05-protagonist',

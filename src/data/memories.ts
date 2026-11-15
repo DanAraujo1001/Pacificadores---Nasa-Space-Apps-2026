@@ -7,7 +7,7 @@ export const MEMORIES: MemoryItem[] = [
     stageId: "eagle",
     title: "Tranquility Base Plaque",
     description:
-      "Eagle memory: the plaque declaring that humankind came in peace — and stayed on the Moon.",
+      "Eagle memory: the plaque declaring that humankind came in peace, and stayed on the Moon.",
   },
   {
     id: "memory-lrv",

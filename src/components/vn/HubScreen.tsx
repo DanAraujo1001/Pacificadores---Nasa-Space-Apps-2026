@@ -76,7 +76,7 @@ export function HubScreen({
         <SceneBackground
           key={BACKGROUND_ASSETS.hubShip}
           src={BACKGROUND_ASSETS.hubShip}
-          placeholderLabel="Hub — Ship (Moon & Mars)"
+          placeholderLabel="Hub: Ship (Moon & Mars)"
         />
       </div>
 

@@ -14,7 +14,7 @@ export const LRV_STAGE: StageScript = {
   world: 'moon',
   characterId: 'lrv',
   backgroundAsset: BACKGROUND_ASSETS.stageLrv,
-  backgroundPlaceholderLabel: 'Stage — LRVs (lunar plain)',
+  backgroundPlaceholderLabel: 'Stage: LRVs (lunar plain)',
   steps: [
     {
       kind: 'choice',
@@ -91,7 +91,7 @@ export const LRV_STAGE: StageScript = {
         {
           id: 'lrv-q2',
           speakerId: 'lrv',
-          text: 'You know the coolest thing about being a Moon buggy? I flew all the way up here folded up like a piece of origami! Zero legroom, though—worst airline ever!',
+          text: 'You know the coolest thing about being a Moon buggy? I flew all the way up here folded up like a piece of origami! Zero legroom, though. Worst airline ever!',
         },
       ],
       choices: [
@@ -208,12 +208,13 @@ export const LRV_STAGE: StageScript = {
     {
       id: 'lrv-clear-item',
       speakerId: 'eco',
-      text: 'Item Obtained: LRV Wire-Mesh Wheel. Lunar Roving Vehicle (LRV). Battery-powered four-wheeled rover used during the Apollo 15, 16, and 17 missions (1971–1972). It folded up to be stowed in the descent stage of the lunar module and ran on two non-rechargeable 36-volt silver-zinc batteries, with an individual electric motor on each wheel. Its wheels were made of woven steel-wire mesh with titanium chevrons for traction on lunar dust. All three rovers remain parked on the Moon. They vastly expanded the range astronauts could explore and collect samples from (about 65 km / 40 miles on battery power).',
+      isItemDescription: true,
+      text: 'Item Obtained: LRV Wire-Mesh Wheel. Lunar Roving Vehicle (LRV). Battery-powered four-wheeled rover used during the Apollo 15, 16, and 17 missions (1971-1972). It folded up to be stowed in the descent stage of the lunar module and ran on two non-rechargeable 36-volt silver-zinc batteries, with an individual electric motor on each wheel. Its wheels were made of woven steel-wire mesh with titanium chevrons for traction on lunar dust. All three rovers remain parked on the Moon. They vastly expanded the range astronauts could explore and collect samples from (about 65 km / 40 miles on battery power).',
     },
     {
       id: 'lrv-clear-farewell',
       speakerId: 'lrv',
-      text: 'When you head back home, tell everyone the Moon had a hot rod—and it lived its best life!',
+      text: 'When you head back home, tell everyone the Moon had a hot rod, and it lived its best life!',
     },
   ],
 };
