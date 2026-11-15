@@ -1,5 +1,4 @@
 import { Act1Screen } from "./components/vn/Act1Screen";
-import { GameDialogueScreen } from "./components/vn/GameDialogueScreen";
 import { HomeButton } from "./components/vn/HomeButton";
 import { HomeTransitionVeil } from "./components/vn/HomeTransitionVeil";
 import { LoadingScreen } from "./components/vn/LoadingScreen";
@@ -38,7 +37,6 @@ export function App() {
       {currentScreen === "story-loading" ? <StoryLoadingScreen /> : null}
       {currentScreen === "prologue" ? <PrologueScreen /> : null}
       {currentScreen === "playing" ? <Act1Screen /> : null}
-      {currentScreen === "dialogue" ? <GameDialogueScreen /> : null}
       {currentScreen === "team" ? <TeamScreen /> : null}
       {showHome ? <HomeButton /> : null}
       <HomeTransitionVeil />

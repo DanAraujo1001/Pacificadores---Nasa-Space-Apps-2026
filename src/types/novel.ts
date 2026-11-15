@@ -85,6 +85,12 @@ export interface ScriptLine {
    */
   isItemDescription?: boolean;
   /**
+   * Fala de ITEM OBTIDO: id do item do catálogo (`src/data/items.ts`). Enquanto
+   * esta fala (ou qualquer parte dela, se dividida) estiver na tela, o item
+   * aparece em destaque no centro da cena, e ele é concedido uma única vez.
+   */
+  itemId?: string;
+  /**
    * Marca uma transição do capacete do protagonista A PARTIR desta fala
    * (inclusive) até a próxima transição. `'off'` mostra o sprite sem capacete
    * (`player-without-helmet.png`); `'on'` mostra o sprite normal com capacete.
@@ -114,41 +120,6 @@ export interface LinearScene {
    * que ele já está presente do início ao fim (ex.: Final Act). Default: false.
    */
   protagonistAlwaysOnStage?: boolean;
-}
-
-export type Expression = 'neutral' | 'happy' | 'sad' | 'glitch';
-
-export interface DialogueChoice {
-  id: string;
-  label: string;
-  nextNodeId: string;
-  effects?: {
-    empathy?: number;
-    science?: number;
-    unlockLogId?: string;
-  };
-}
-
-export interface DialogueNode {
-  id: string;
-  speakerId: CharacterId;
-  expression: Expression;
-  telemetryStatus?: string;
-  text: string;
-  choices?: DialogueChoice[];
-  nextNodeId?: string;
-  isEnding?: boolean;
-}
-
-export interface MissionScript {
-  id: string;
-  world: WorldId;
-  characterId: CharacterId;
-  characterName: string;
-  missionTag: string;
-  backgroundAsset: string;
-  initialNodeId: string;
-  nodes: Record<string, DialogueNode>;
 }
 
 /* -------------------------------------------------------------------------- */

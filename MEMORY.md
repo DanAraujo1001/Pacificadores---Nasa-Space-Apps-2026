@@ -1,34 +1,29 @@
 # MEMORY.md — Estado Atual do Projeto
 
 ## Estado Atual
-- **Fase:** Jogo completo (Ato 0 → Ato 1 → Final Act → FinalScreen); equipamento escolhido na cena do planeta; barra de diálogo fixa.
+- **Fase:** Jogo completo (Ato 0 → Ato 1 → Final Act → FinalScreen) com save de progresso, Continue/New Game, tela de item obtido e Memories por item.
 - **O que está pronto:**
-  - Stack Vite + React + TypeScript + Tailwind + HeroUI + Zustand + Framer Motion (+ Howler).
-  - Temas dinâmicos por planeta em `src/hero.ts` (`space-default` / `space-moon` / `space-mars`).
-  - Fluxo: `LoadingScreen` → `MenuScreen` → `NameEntryScreen` → `StoryLoadingScreen` → `PrologueScreen` → `Act1Screen` → `FinalScreen`; `HomeButton` (exceto menu) + `HomeTransitionVeil`; persist `playerName` + `unlockedMemoryIds`.
-  - **Ato 0 / Ato 1 / Final Act** com roteiros tipados, `StageScreen`, game over com retry e `FinalScreen`.
-  - **Perfil (ECO) de cada equipamento**: 1ª fala de cada estágio é a descrição do personagem falada pela ECO (`*-profile`, `speakerId:'eco'`), verbatim do roteiro, antes do equipamento entrar em cena. O texto começa com o nome do equipamento no formato `Nome (Profile): ...` (Eagle/LRV/Spirit/Phoenix).
-  - **Cena de equipamento** (`HubScreen` + `EquipmentMarker`): fundos Lua/Marte, ícones no solo, progresso `0/2 explored`, concluídos bloqueados, link `← Destinations`. Home inline no canto.
-  - **Tela de contato** (`StageLoadingScreen`) antes de cada equipamento.
-  - **Barra de diálogo fixa** (`DialoguePanel` / `dialogueBox.ts`): escolhas dentro da barra, auto-fit, sprites congelados; `playerName` em falas/nameplate/escolhas.
-  - **Tela Team** (`TeamScreen`): aberta pelo botão Team do menu (fade), botão Back volta ao menu sem resetar; 4 molduras `PhotoFrame` (estilo Memories, maiores) com fotos `.jpeg` recortadas no rosto (`object-cover`+`object-top`); nomes + links LinkedIn/GitHub (`SocialLink`, nova aba, `noopener`, hover invertendo cor com o quadrado); dados em `data/team.ts`, caminhos/tamanhos em `config/teamAssets.ts`.
-  - **Final Act** mostra o sprite do protagonista (Vanguard) à esquerda do início ao fim, via flag `LinearScene.protagonistAlwaysOnStage`; `FinalScreen` sem rótulo de placeholder no fundo.
-  - **Troca de sprite por capacete** (protagonista): expressão `withoutHelmet` em `CHARACTER_SPRITES.protagonist` (`player-without-helmet.png`); marca de dados `ScriptLine.protagonistHelmet: 'on' | 'off'`; `LinearSceneScreen` deriva o estado atual (default `on`) e renderiza o sprite certo. Ato 0 começa sem capacete e vira normal em `p-08-narrator` (coloca o capacete); Final Act vira sem capacete em `final-return-note` (tira o capacete).
-  - Sprites reais (player, eco, grandpa, eagle, lrv, spirit, phoenix) + expressões proud/sad; Vite resolve `.tsx`/`.ts` antes de `.js`.
-  - Áudio automático (`resolveEvent`).
-  - **Backgrounds reais ligados:** Ato 0 (Attic) → `Grandpa's_House.webp`; Ato 1 (Hub ship) → `rocket_background.webp`; Stage Eagle → `Mare_Tranquillitatis.webp`; Stage LRVs → `Shorty_Crater.webp`; Stage Spirit → `Gusev_Crater.webp`; Stage Phoenix → `Vastitas_Borealis.webp`, todos via `BACKGROUND_ASSETS` em `src/config/sceneAssets.ts` (apóstrofo URL-encoded `%27`). `object-cover` mantém o layout.
+  - Stack Vite + React + TypeScript + Tailwind + HeroUI + Zustand + Framer Motion (+ Howler). Temas por planeta em `src/hero.ts`.
+  - Fluxo: `LoadingScreen` → `MenuScreen` → `NameEntryScreen` → `StoryLoadingScreen` → `PrologueScreen` → `Act1Screen` (intro → destino → equipamento → contato → estágio → Final Act) → `FinalScreen`; `HomeButton` + `HomeTransitionVeil`.
+  - **Proporção central:** `SCENE.UPPER_PANEL_HEIGHT = 100vh − DIALOGUE_BOX.PANEL_HEIGHT`, `SCENE.TOP_BAR_HEIGHT` (8.5vh) e `SCENE.PLACEHOLDER_LABEL_TOP` em `src/config/dialogueBox.ts`. Cenas de diálogo, estágios, item obtido e seleção de equipamento usam a mesma proporção (1280×720: cena 437px / barra 283px). Seleção de destino mantém a arte 1519:569 abaixo da faixa (sem barra de diálogo). `SPRITE` inalterado.
+  - **Itens (catálogo único `src/data/items.ts`):** Eagle "Tranquility Base Plaque", LRV "Genesis Rock, Big Muley & Orange Soil" (1 item/1 ícone), Spirit "Pure Silica Mars", Phoenix "Martian Ice Core". Falas da Eco geradas por `itemObtainedText(id)`; `ScriptLine.itemId` liga a fala ao item. Roteiro e `LORE_DATA.md` atualizados. `src/data/memories.ts` saiu; o catálogo de itens o substitui.
+  - **Tela de item obtido:** `ItemReward.tsx` (item central + raios que pulsam/giram, respeita reduce-motion) e `ItemIcon.tsx` (placeholder com o nome). Config `ITEM_REWARD` em `dialogueBox.ts`. Item desenhado à FRENTE dos sprites (no LRV o sprite das 3 buggies ocupa o centro). Ícones em `ITEM_ICON_ASSETS` apontam para os PNGs em `public/assets/icons/equipment/`.
+  - **Memories:** `useMemoriesStore` (chave separada), `InventoryPanel`/`MemorySlot` leem o catálogo; sem duplicar; sobrevivem a fim de jogo e novo save.
+  - **Save:** módulo único `src/engine/saveSystem.ts` (único acesso ao localStorage). Chaves `echoes-of-astra:progress` e `echoes-of-astra:memories` (v1); migra a chave antiga `echoes-of-astra-save`. Autosave por subscribe em `useGameStore` (`initProgressAutosave` no `main.tsx`), só em telas retomáveis e só quando muda. Posição exata: `scenePosition` e `stagePosition` (incl. `lineId` da parte dividida). Inválido/corrompido/versão antiga → descartado sem log, Memories intactos. Estágio concluído no save → retoma na escolha de destino. Game over → retoma do início do estágio. `endRun()` ao fim do Final Act apaga o progresso.
+  - **Home:** "Play" sem save; "Continue" + "New Game" (confirmação inline) com save.
+  - Perfil (ECO) por equipamento, troca de sprite por capacete, tela Team, faixa preta superior, backgrounds reais dos Atos 0/1 e 4 estágios.
   - **Fundo do foguete em largura total:** `SceneBackground` aceita `bleedWidth`/`bleedOffsetY`. Na abertura da ECO e no começo do Final Act a arte (`rocket_background.webp`, margens transparentes) usa `158vw` e sobe `6vh`. `ScriptLine.backgroundAsset` troca o fundo a partir da fala; em `final-return-note` o Final Act passa para `Grandpa's_House.webp` e fica no sótão até o fim (sem o bleed do foguete).
-  - **Thumbnails das memories:** cada item em `src/data/memories.ts` aponta para o ícone em `public/assets/icons/equipment/`; o slot só mostra a imagem quando a memória está desbloqueada.
-- **O que falta (Próximos passos imediatos):**
+- **Próximos passos imediatos:**
   1. Arte própria da tela final (`final-screen.png`); o Final Act ainda reusa o túnel e o sótão.
   2. Faixas em `public/assets/music/`.
-  3. Completar `LORE_DATA.md` onde ainda houver lacunas e não versionar `.js` emitidos ao lado dos `.ts`/`.tsx`.
+  3. Revisar o item do LRV por cima do sprite e decidir a limpeza de assets/dependências sem uso (`lucide-react`, fundos e ícones listados no log).
 
 ## Bugs / Bloqueios Conhecidos
-- (Resolvido) Falas "engolidas"/puladas: `useTypewriterText` resetava o estado da fala num efeito, deixando o 1º frame da nova fala com o estado da anterior (`textComplete=true`); clique nessa janela pulava a fala. Agora o reset é síncrono no render (padrão "prop anterior em estado"), afeta todas as cenas/estágios.
-- (Resolvido) Lint zerado: os 2 erros pré-existentes foram corrigidos. `HomeTransitionVeil.tsx` (`set-state-in-effect`) agora inicia o véu no render via padrão de borda (`sawPending`); `StageLoadingScreen.tsx` (`refs`) move a escrita de `onCompleteRef` para um efeito. `npm run lint` passa sem erros.
+- (Resolvido) Falas "engolidas" no typewriter e lint zerado (ver Log de Marcos).
+- (Resolvido) Divisor de falas descartava texto em decimais ("about 11.7 kg" cortava "...(about 11."): `toSentences` em `useSplitItemLines` agora só quebra em `.`/`?`/`!` seguido de espaço.
+- Retrato de celular (390×844): sprites se sobrepõem (pré-existente, não tratado).
 - Fundos dos Atos 0/1, dos 4 estágios e do Final Act (túnel, depois sótão) ligados; a tela final ainda sem arte própria.
-- Arquivos de áudio ainda não existem em `public/assets/music/` — fallback silencioso.
+- Arquivos de áudio ausentes em `public/assets/music/` (fallback silencioso).
 - Há `.js` emitidos ao lado dos `.ts`/`.tsx`; o Vite prioriza o fonte TypeScript.
 
 ## Log de Marcos
@@ -70,4 +65,15 @@
 - [2026-11-15 15:40] Lint zerado: corrigidos os 2 erros pré-existentes. `HomeTransitionVeil` inicia o véu no render via detecção de borda (`sawPending`), sem efeito; `StageLoadingScreen` move a escrita de `onCompleteRef.current` para um efeito `[onComplete]`. `npm run lint` passa sem erros; build ok.
 - [2026-11-15 15:46] Perfil (ECO) por equipamento: adicionada a fala de descrição do personagem como 1ª linha de cada estágio (`eagle/lrv/spirit/phoenix-profile`, `speakerId:'eco'`), verbatim do roteiro, exibida antes do equipamento entrar; usa o auto-fit padrão da barra; build/lint ok.
 - [2026-11-15 15:48] Perfil (ECO): texto passou a abrir com o nome do equipamento no formato `Nome (Profile): ...` (Eagle/LRV/Spirit/Phoenix); build/lint ok.
+- [2026-11-15 15:55] Commit `d7b580d` em `dev/arthur` (17 arquivos: perfis ECO, sprite por capacete, fix typewriter, lint zerado, Stage 4 art, + `player-without-helmet.png`). Push para `origin` falhou por autenticação (HTTPS sem token); pendente de credencial GitHub.
+- [2026-11-15 16:18] Hub do Ato 1: legenda padrão trocada de "Select a planet" para "Select a destination" (`HubScreen.tsx`), alinhando com o heading/placeholder "Choose a destination"; build ok.
+- [2026-11-15 16:24] Faixa preta superior (letterbox) nas cenas lineares para igualar o topo do hub: nova config central `SCENE.TOP_BAR_HEIGHT` (`17vh`) em `dialogueBox.ts`, consumida por `LinearSceneScreen` (Ato 0 / intro Ato 1 / Final Act); build/lint ok.
+- [2026-11-15 16:26] Faixa preta superior reduzida pela metade: `SCENE.TOP_BAR_HEIGHT` de `17vh` para `8.5vh` (afeta Ato 0 / intro Ato 1 / Final Act via config central).
+- [2026-11-15 16:29] Faixa preta superior estendida aos 4 estágios de gameplay (`StageScreen`), usando a mesma `SCENE.TOP_BAR_HEIGHT`; hub e EquipmentScene já tinham topo preto pelo layout; build/lint ok.
+- [2026-11-15 16:41] Diagnóstico (sem mudança de código): intro do Ato 1 "quebrada" era build antigo servido por dev servers presos em 5173/5174. Confirmado que a intro usa o mesmo `LinearSceneScreen`/fundo `object-cover` do Ato 0. Ação: encerrar servers antigos e recarregar.
+- [2026-11-15 16:50] Tela de seleção de destino padronizada ao topo: `DestinationChoice` (`HubScreen`) deixou de centralizar o letterbox e passou a usar a faixa `SCENE.TOP_BAR_HEIGHT` no topo (igual às demais cenas da intro do Ato 1 até destinos); build/lint ok.
+- [2026-11-15 17:21] Início da tarefa grande (7 partes: proporção do painel, novos itens LRV/Spirit, tela de item obtido, Memories por-item, sistema de save versionado, auditoria de diálogos, limpeza). Exploração completa do repo e plano definidos; baseline build OK / lint 0 / sem testes. Sem mudança de código: BLOQUEADO aguardando confirmação do usuário sobre mapeamento LRV→missão e descrição factual de "Pure Silica Mars".
+- [2026-11-15 17:23] Decisão do usuário: LRV = UM item único (1 sprite/1 ícone/1 descrição) para as 3 pedras juntas — não repete tela 3x. Ainda bloqueado: nome do item combinado do LRV + confirmação da descrição de "Pure Silica Mars". Sem mudança de código.
+- [2026-11-15 17:29] Partes 1 e 2 concluídas. P1: `SCENE.UPPER_PANEL_HEIGHT` central aplicada ao EquipmentScene (HUD do destino vira overlay). P2: itens LRV "Genesis Rock, Big Muley & Orange Soil" e Spirit "Pure Silica Mars" atualizados no roteiro e dados; novo catálogo `src/data/items.ts` + `ITEM_ICON_ASSETS` (placeholders documentados). build+lint ok. Falta ligar `items.ts` nas Partes 3/4.
+- [2026-11-15 18:50] Tarefa de 7 partes concluída: proporção central (SCENE.UPPER_PANEL_HEIGHT), itens novos (LRV/Spirit) no catálogo items.ts, tela de item obtido (ItemReward), Memories por item em chave separada, save versionado (saveSystem.ts) com Continue/New Game, auditoria (fala do LRV ajustada), limpeza (mocks, memories antigos, tipos e exports sem uso). Fix do divisor de falas em decimais. build/lint ok; playthrough headless completo sem erros.
 - [2026-11-15 19:14] Fundo do foguete em largura total na abertura da ECO e no início do Final Act (`bleedWidth` 158vw, −6vh); a partir de `final-return-note` o fundo troca para o sótão (`Grandpa's_House.webp`).

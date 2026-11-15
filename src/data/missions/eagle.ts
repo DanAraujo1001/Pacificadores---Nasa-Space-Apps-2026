@@ -1,5 +1,6 @@
 import type { StageScript } from '../../types/novel';
 import { BACKGROUND_ASSETS } from '../../config/sceneAssets';
+import { itemObtainedText } from '../items';
 
 /**
  * STAGE 1: THE MOON — EAGLE (Apollo 11 Lunar Module).
@@ -236,7 +237,8 @@ export const EAGLE_STAGE: StageScript = {
       id: 'eagle-clear-item',
       speakerId: 'eco',
       isItemDescription: true,
-      text: 'Item Obtained: Tranquility Base Plaque. Eagle Descent Stage (Apollo 11). The lunar module that landed in the Sea of Tranquility on July 20, 1969. Its descent stage remains on the Moon as an abandoned launchpad, carrying a plaque stating that humans came in peace for all mankind. The ascent stage (the upper half) lifted off, docked with the command module Columbia, and was later jettisoned into lunar orbit; after signal loss it is believed to have crashed on the lunar surface, with its exact impact site never confirmed (NASA estimates Mare Crisium, roughly 800 km / 500 miles from Tranquility Base).',
+      itemId: 'item-eagle',
+      text: itemObtainedText('item-eagle'),
     },
     {
       id: 'eagle-clear-farewell',

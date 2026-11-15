@@ -105,15 +105,17 @@ export const ALL_SPRITE_PATHS: string[] = Object.values(CHARACTER_SPRITES).flatM
   (pack) => Object.values(pack),
 );
 
-/** Atalhos legados: sempre a expressão `normal`. */
-export const SPRITE_ASSETS = {
-  protagonist: CHARACTER_SPRITES.protagonist.normal,
-  eco: CHARACTER_SPRITES.eco.normal,
-  grandpaTadeu: CHARACTER_SPRITES.grandpaTadeu.normal,
-  eagle: CHARACTER_SPRITES.eagle.normal,
-  lrv: CHARACTER_SPRITES.lrv.normal,
-  spirit: CHARACTER_SPRITES.spirit.normal,
-  phoenix: CHARACTER_SPRITES.phoenix.normal,
+/**
+ * Ícones/sprites dos ITENS de conquista (um por estágio). Os PNGs já existentes
+ * em `public/assets/icons/equipment/` (antes usados como thumbnail em
+ * `memories.ts`) alimentam a tela de item e o Memories. Enquanto um arquivo
+ * não existir, a UI usa um placeholder neutro com o nome do item.
+ */
+export const ITEM_ICON_ASSETS = {
+  eagle: "/assets/icons/equipment/Tranquility_base_plaque-Eagle.png",
+  lrv: "/assets/icons/equipment/Genesis_Rock_Big_Muley_Rock_Orange_Soil-LRV.png",
+  spirit: "/assets/icons/equipment/Pure_Silica_Mars-Spirit.png",
+  phoenix: "/assets/icons/equipment/Martian_Ice_Core-Phoenix.png",
 } as const;
 
 /** Planetas clicáveis nas janelas da cabine. */

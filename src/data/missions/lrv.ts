@@ -1,5 +1,6 @@
 import type { StageScript } from '../../types/novel';
 import { BACKGROUND_ASSETS } from '../../config/sceneAssets';
+import { itemObtainedText } from '../items';
 
 /**
  * STAGE 2: THE MOON — LRVs (Lunar Roving Vehicles).
@@ -208,13 +209,14 @@ export const LRV_STAGE: StageScript = {
     {
       id: 'lrv-clear-3',
       speakerId: 'lrv',
-      text: 'Here, take this. It’s a piece of me, so you never forget the crew.',
+      text: 'Here, take this. It’s the treasure we hauled back together, so you never forget the crew.',
     },
     {
       id: 'lrv-clear-item',
       speakerId: 'eco',
       isItemDescription: true,
-      text: 'Item Obtained: LRV Wire-Mesh Wheel. Lunar Roving Vehicle (LRV). Battery-powered four-wheeled rover used during the Apollo 15, 16, and 17 missions (1971-1972). It folded up to be stowed in the descent stage of the lunar module and ran on two non-rechargeable 36-volt silver-zinc batteries, with an individual electric motor on each wheel. Its wheels were made of woven steel-wire mesh with titanium chevrons for traction on lunar dust. All three rovers remain parked on the Moon. They vastly expanded the range astronauts could explore and collect samples from (about 65 km / 40 miles on battery power).',
+      itemId: 'item-lrv',
+      text: itemObtainedText('item-lrv'),
     },
     {
       id: 'lrv-clear-farewell',

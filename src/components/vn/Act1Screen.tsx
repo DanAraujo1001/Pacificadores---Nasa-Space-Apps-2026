@@ -40,6 +40,8 @@ export function Act1Screen() {
   const completedStageIds = useGameStore((state) => state.completedStageIds);
   const setScreen = useGameStore((state) => state.setScreen);
   const setWorld = useGameStore((state) => state.setWorld);
+  const setStagePosition = useGameStore((state) => state.setStagePosition);
+  const endRun = useGameStore((state) => state.endRun);
 
   // Equipamento escolhido, ainda na tela de contato (não persiste).
   const [enteringStage, setEnteringStage] = useState<StageId | null>(null);
@@ -70,6 +72,8 @@ export function Act1Screen() {
   const handleStageReady = useCallback(() => {
     const stage = enteringStage;
     if (!stage || useGameStore.getState().pendingFadeTo) return;
+    // Estágio novo: começa do início (sem posição salva de outro estágio).
+    setStagePosition(null);
     setStage(stage);
     setDialoguePhase("normal");
     setGameOver(false);
@@ -81,6 +85,7 @@ export function Act1Screen() {
     setDialoguePhase,
     setHubPhase,
     setStage,
+    setStagePosition,
   ]);
 
   const returnToHub = () => {
@@ -102,6 +107,7 @@ export function Act1Screen() {
   };
 
   const handleStageClear = () => {
+    setStagePosition(null);
     if (currentStage) {
       completeStage(currentStage);
       setDialoguePhase("clear"); // desbloqueia a lembrança associada
@@ -123,6 +129,8 @@ export function Act1Screen() {
   };
 
   const handleGameOver = () => {
+    // "Tentar de novo" reinicia o estágio do começo; o save também.
+    setStagePosition(null);
     setDialoguePhase("game-over");
     setGameOver(true);
   };
@@ -156,7 +164,11 @@ export function Act1Screen() {
     ) : (
       <LinearSceneScreen
         scene={FINAL_ACT_SCENE}
-        onComplete={() => setShowFinalScreen(true)}
+        onComplete={() => {
+          // Fim do jogo: encerra o save de progresso (Memories permanecem).
+          endRun();
+          setShowFinalScreen(true);
+        }}
       />
     );
   } else if (enteringStage) {

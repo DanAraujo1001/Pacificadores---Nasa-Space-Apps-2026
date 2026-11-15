@@ -1,12 +1,18 @@
-import type { MemoryItem } from "../../types/memory";
+import type { GameItem } from "../../data/items";
+import { ItemIcon } from "./ItemIcon";
 import { ThemeIcon } from "./ThemeIcon";
 
 interface MemorySlotProps {
-  memory: MemoryItem;
+  item: GameItem;
   unlocked: boolean;
 }
 
-export function MemorySlot({ memory, unlocked }: MemorySlotProps) {
+/**
+ * Moldura de um item no Memories. Obtido: ícone do item (ou placeholder com o
+ * nome), nome e descrição. Ainda não obtido: espaço bloqueado ("???"), como já
+ * era o padrão do Memories.
+ */
+export function MemorySlot({ item, unlocked }: MemorySlotProps) {
   return (
     <article
       className={`flex flex-col gap-2 rounded-sm border p-3 ${
@@ -16,19 +22,8 @@ export function MemorySlot({ memory, unlocked }: MemorySlotProps) {
       }`}
     >
       <div className="flex aspect-square items-center justify-center overflow-hidden rounded-sm bg-[#0E0C0F]/60">
-        {unlocked && memory.thumbnail ? (
-          <img
-            src={memory.thumbnail}
-            alt={memory.title}
-            className="size-full object-cover"
-            draggable={false}
-          />
-        ) : unlocked ? (
-          <ThemeIcon
-            src="/assets/icons/icon-star-1.svg"
-            className="h-10 w-8"
-            label={memory.title}
-          />
+        {unlocked ? (
+          <ItemIcon src={item.iconAsset} name={item.name} className="size-full" />
         ) : (
           <ThemeIcon
             src="/assets/icons/icon-bag.svg"
@@ -42,10 +37,10 @@ export function MemorySlot({ memory, unlocked }: MemorySlotProps) {
             className="font-display text-xs font-bold uppercase tracking-wide text-primary"
             style={{ fontFamily: '"Space Grotesk", sans-serif' }}
           >
-            {memory.title}
+            {item.name}
           </h3>
           <p className="mt-1 text-[11px] leading-snug text-foreground/80">
-            {memory.description}
+            {item.description}
           </p>
         </div>
       ) : (

@@ -11,10 +11,10 @@
  *     `FONT_MIN_PX` não reduz mais: registra aviso no console (não corta além
  *     do overflow, que fica contido pela caixa).
  *
- * Maior fala de referência do jogo (604 caracteres): a descrição do item
- * "LRV Wire-Mesh Wheel" (empatada com "Tranquility Base Plaque"), em
- * `src/data/missions/lrv.ts` / `eagle.ts`. A altura/fonte foram escolhidas para
- * essa fala caber inteira, sem rolagem e sem cortar.
+ * Maiores falas do jogo: as descrições de item (catálogo `src/data/items.ts`,
+ * ~600 caracteres, ex.: "Tranquility Base Plaque"). Elas não reduzem a fonte:
+ * são divididas em falas consecutivas que cabem na altura fixa
+ * (`useSplitItemLines`). As demais falas cabem na fonte padrão.
  *
  * Unidades relativas (rem/vw) para a caixa e a fonte escalarem juntas entre
  * resoluções, mantendo a proporção. Para ajustar, altere APENAS este arquivo.
@@ -91,6 +91,67 @@ export const DIALOGUE_BOX = {
   CHOICE_GAP_EM: 0.6,
   /** Preenchimento vertical (em `em`) de cada opção — escala com a fonte. */
   CHOICE_PADDING_Y_EM: 0.7,
+} as const;
+
+/**
+ * Enquadramento da CENA (letterbox) — CONFIGURAÇÃO ÚNICA.
+ *
+ * `TOP_BAR_HEIGHT` é a faixa preta no topo das cenas lineares (Ato 0, intro do
+ * Ato 1, Final Act), para combinar com o topo preto do hub do Ato 1 (onde a
+ * arte do cockpit, com proporção fixa, deixa uma faixa `#0E0C0F` acima dela).
+ * Relativa à viewport para manter a proporção entre resoluções.
+ */
+const TOP_BAR_HEIGHT = '8.5vh';
+
+export const SCENE = {
+  TOP_BAR_HEIGHT,
+  /**
+   * Altura do PAINEL SUPERIOR (área da cena: background + sprites) — proporção
+   * ÚNICA e central para TODAS as telas entre atos (Ato 0, seleção na nave,
+   * seleção de equipamento, estágios, telas de escolha, tela de item obtido,
+   * Ato Final). Referência: as cenas de diálogo (`LinearSceneScreen`/
+   * `StageScreen`), em que a área da cena é a viewport menos a barra fixa. Assim
+   * a proporção painel-superior : barra fica igual em todas as telas, sem alturas
+   * soltas por tela. Relativa à viewport (vh) para todas as resoluções.
+   *
+   * = 100vh menos a barra de diálogo fixa (`DIALOGUE_BOX.PANEL_HEIGHT`).
+   */
+  UPPER_PANEL_HEIGHT: `calc(100vh - (${DIALOGUE_BOX.PANEL_HEIGHT}))`,
+  /**
+   * Distância do rótulo do placeholder de fundo (ex.: "STAGE: SPIRIT (GUSEV
+   * CRATER)") a partir do topo: logo abaixo da faixa preta, fora do centro da
+   * cena, para nunca ficar sob o item em destaque nem sob os sprites.
+   */
+  PLACEHOLDER_LABEL_TOP: `calc(${TOP_BAR_HEIGHT} + 1rem)`,
+} as const;
+
+/**
+ * Tela de ITEM OBTIDO — CONFIGURAÇÃO ÚNICA da posição/tamanho do item em
+ * destaque e dos raios de brilho (consumida por `ItemReward`).
+ *
+ * O item fica centralizado na horizontal (entre o protagonista, à esquerda, e
+ * o equipamento, à direita) e na vertical dentro da faixa livre entre a faixa
+ * preta superior (`TOP`) e o topo da barra de diálogo (`BOTTOM`). Como essa
+ * faixa termina no topo da barra, nem o item nem os raios cobrem a barra. Os
+ * tamanhos são limitados pela altura e pela largura da viewport para o ícone
+ * caber no vão entre os sprites quando há vão (Eagle, Spirit, Phoenix). O item
+ * é desenhado à frente dos sprites porque o sprite do LRV ocupa o centro.
+ */
+export const ITEM_REWARD = {
+  /** Topo da faixa do item = fim da faixa preta superior. */
+  TOP: TOP_BAR_HEIGHT,
+  /** Base da faixa do item = topo da barra de diálogo fixa. */
+  BOTTOM: DIALOGUE_BOX.PANEL_HEIGHT,
+  /** Lado do ícone do item (quadrado). */
+  ICON_SIZE: 'min(20vh, 18vw, 13rem)',
+  /** Diâmetro da área dos raios, relativo ao ícone. */
+  RAYS_SCALE: 1.9,
+  /** Quantidade de raios (alternando longos e curtos). */
+  RAY_COUNT: 16,
+  /** Duração (s) de um ciclo da pulsação suave dos raios. */
+  PULSE_S: 2.4,
+  /** Duração (s) de uma volta completa da rotação lenta dos raios. */
+  ROTATE_S: 48,
 } as const;
 
 /**
