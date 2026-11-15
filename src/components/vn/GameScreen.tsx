@@ -4,7 +4,6 @@ import type { DialogueChoice, DialogueNode } from "../../types/novel";
 import { useGameStore } from "../../store/useGameStore";
 import { ChoiceButton } from "./ChoiceButton";
 import { DialogueBox } from "./DialogueBox";
-import { HomeButton } from "./HomeButton";
 import { ThemeIcon } from "./ThemeIcon";
 import { useTypewriterText } from "./useTypewriterText";
 
@@ -91,8 +90,6 @@ export function GameScreen() {
       }}
       role="presentation"
     >
-      <HomeButton />
-
       {/* Letterbox superior — desce o bloco de imagem */}
       <div className="h-16 shrink-0 bg-[#0E0C0F] md:h-20" aria-hidden="true" />
 

@@ -6,7 +6,7 @@ export function HomeButton() {
 
   return (
     <div
-      className="absolute left-4 top-4 z-30 md:left-6 md:top-6"
+      className="fixed left-4 top-4 z-40 md:left-6 md:top-6"
       onClick={(event) => event.stopPropagation()}
       onKeyDown={(event) => event.stopPropagation()}
     >

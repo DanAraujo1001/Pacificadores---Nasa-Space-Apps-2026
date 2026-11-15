@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { useGameStore } from "../../store/useGameStore";
 import { DialogueBox } from "./DialogueBox";
 import { DialoguePanel } from "./DialoguePanel";
-import { HomeButton } from "./HomeButton";
 import { useTypewriterText } from "./useTypewriterText";
 
 const STAGE_BG = "/assets/backgrounds/bg-example.png";
@@ -52,8 +51,6 @@ export function GameDialogueScreen() {
       }}
       role="presentation"
     >
-      <HomeButton />
-
       <div className="h-16 shrink-0 bg-[#0E0C0F] md:h-20" aria-hidden="true" />
 
       <div className="relative z-0 h-[min(60vh,620px)] w-full shrink-0 overflow-visible">
