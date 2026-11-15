@@ -14,10 +14,9 @@
   - Componentes VN reutilizáveis: `DialogueBox`, `ChoiceButton`, `ThemeIcon`, `CharacterSprite`, `SceneBackground`, `EquipmentButton`, hook `useTypewriterText`. Fallback de asset automático (placeholder nomeado).
   - Áudio automático (`resolveEvent` cobre prólogo/hub/estágios/stage-clear/game-over/final).
 - **O que falta (Próximos passos imediatos):**
-  1. Adicionar assets (ver `public/assets/README-ASSETS.md`): backgrounds do hub e dos 4 estágios, sprites eagle/lrv/spirit/phoenix (+ eco/grandpa), ícones de equipamento.
-  2. Confirmar decisões do roteiro: saída pós-Final Act (hoje → menu; falta tela de créditos/"Abandoned, Yet Never Forgotten"), tratamento de rubricas/narração, descrição de item (fala da ECO vs. inventário), sprite da ECO.
-  3. Arquivos reais em `public/assets/music/` e completar `LORE_DATA.md`.
-  4. Limpeza opcional: `GameScreen`/`GameDialogueScreen` (mocks) não são mais roteados.
+  1. `src/components/vn/FinalScreen.tsx` — tela final definitiva ("Abandoned, Yet Never Forgotten") para a saída pós-Final Act (hoje volta ao `menu`).
+  2. `public/assets/.../*` — adicionar os assets reais (ver `public/assets/README-ASSETS.md`): backgrounds hub + 4 estágios, sprites eagle/lrv/spirit/phoenix (+ eco/grandpa), ícones de equipamento e faixas em `public/assets/music/`.
+  3. `LORE_DATA.md` — completar; e confirmar decisões de roteiro pendentes (rubricas/narração, descrição de item como fala da ECO vs. inventário, sprite da ECO).
 
 ## Bugs / Bloqueios Conhecidos
 - Lint pré-existente em `src/components/vn/useTypewriterText.ts` (`react-hooks/set-state-in-effect`), não tratado (fora de escopo).
