@@ -9,6 +9,7 @@ import { ThemeIcon } from "./ThemeIcon";
 export function MenuScreen() {
   const setScreen = useGameStore((state) => state.setScreen);
   const setWorld = useGameStore((state) => state.setWorld);
+  const resetProgress = useGameStore((state) => state.resetProgress);
   const unlockedMemoryIds = useGameStore((state) => state.unlockedMemoryIds);
   const [menuOpen, setMenuOpen] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -92,7 +93,10 @@ export function MenuScreen() {
           <Button
             variant="primary"
             size="lg"
-            onPress={() => setScreen("prologue")}
+            onPress={() => {
+              resetProgress();
+              setScreen("prologue");
+            }}
             className="min-h-14 min-w-[260px] cursor-pointer rounded-sm border-0 bg-[#0E0C0F] px-12 py-5 text-lg font-semibold text-white transition-colors hover:bg-primary/90 data-[hovered=true]:bg-primary/90"
           >
             Play

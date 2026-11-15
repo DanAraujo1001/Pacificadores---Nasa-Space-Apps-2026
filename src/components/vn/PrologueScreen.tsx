@@ -1,10 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useGameStore } from "../../store/useGameStore";
-import { getCharacter, PROTAGONIST_NAME } from "../../config/characters";
-import {
-  PROLOGUE_SCENE,
-  PROTAGONIST_NAME_TOKEN,
-} from "../../data/missions/prologue";
+import { getCharacter, withProtagonistName } from "../../config/characters";
+import { PROLOGUE_SCENE } from "../../data/missions/prologue";
 import type { CharacterId, LinearScene } from "../../types/novel";
 import { CharacterSprite } from "./CharacterSprite";
 import { DialogueBox } from "./DialogueBox";
@@ -15,11 +12,6 @@ interface LinearSceneScreenProps {
   scene: LinearScene;
   /** Chamado ao avançar além da última fala da cena. */
   onComplete?: () => void;
-}
-
-/** Substitui o token de nome do protagonista pelo nome configurado. */
-function withName(text: string): string {
-  return text.split(PROTAGONIST_NAME_TOKEN).join(PROTAGONIST_NAME);
 }
 
 /**
@@ -48,7 +40,7 @@ export function LinearSceneScreen({
     return [...present];
   }, [scene.lines, lineIndex]);
 
-  const fullText = withName(line.text);
+  const fullText = withProtagonistName(line.text);
   const { visibleText, textComplete, skipToFullText } = useTypewriterText(
     fullText,
     line.id,

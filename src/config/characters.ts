@@ -9,6 +9,17 @@ import { SPRITE_ASSETS } from './sceneAssets';
 export const PROTAGONIST_NAME = 'Vanguard';
 
 /**
+ * Token usado nos dados de roteiro no lugar de `(Protagonist's Name)`.
+ * Substituído por `PROTAGONIST_NAME` em tempo de render.
+ */
+export const PROTAGONIST_NAME_TOKEN = '{PROTAGONIST_NAME}';
+
+/** Substitui o token de nome do protagonista pelo nome configurado. */
+export function withProtagonistName(text: string): string {
+  return text.split(PROTAGONIST_NAME_TOKEN).join(PROTAGONIST_NAME);
+}
+
+/**
  * Configuração central e única de posicionamento/identidade dos personagens.
  *
  * Regra de palco (obrigatória):
@@ -51,6 +62,35 @@ export const CHARACTERS: Record<
     side: 'right',
     spriteAsset: null,
     placeholderLabel: 'Narrator',
+  },
+  // Equipamentos (ACT 1): todos entram em cena à direita, como personagens novos.
+  eagle: {
+    id: 'eagle',
+    displayName: 'Eagle',
+    side: 'right',
+    spriteAsset: SPRITE_ASSETS.eagle,
+    placeholderLabel: 'Eagle',
+  },
+  lrv: {
+    id: 'lrv',
+    displayName: 'LRV',
+    side: 'right',
+    spriteAsset: SPRITE_ASSETS.lrv,
+    placeholderLabel: 'LRV',
+  },
+  spirit: {
+    id: 'spirit',
+    displayName: 'Spirit',
+    side: 'right',
+    spriteAsset: SPRITE_ASSETS.spirit,
+    placeholderLabel: 'Spirit',
+  },
+  phoenix: {
+    id: 'phoenix',
+    displayName: 'Phoenix',
+    side: 'right',
+    spriteAsset: SPRITE_ASSETS.phoenix,
+    placeholderLabel: 'Phoenix',
   },
 };
 

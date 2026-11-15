@@ -1,5 +1,4 @@
-import { GameDialogueScreen } from "./components/vn/GameDialogueScreen";
-import { GameScreen } from "./components/vn/GameScreen";
+import { Act1Screen } from "./components/vn/Act1Screen";
 import { LoadingScreen } from "./components/vn/LoadingScreen";
 import { MenuScreen } from "./components/vn/MenuScreen";
 import { PrologueScreen } from "./components/vn/PrologueScreen";
@@ -21,8 +20,7 @@ export function App() {
       {currentScreen === "loading" ? <LoadingScreen /> : null}
       {currentScreen === "menu" ? <MenuScreen /> : null}
       {currentScreen === "prologue" ? <PrologueScreen /> : null}
-      {currentScreen === "playing" ? <GameScreen /> : null}
-      {currentScreen === "dialogue" ? <GameDialogueScreen /> : null}
+      {currentScreen === "playing" ? <Act1Screen /> : null}
     </main>
   );
 }

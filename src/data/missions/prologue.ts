@@ -1,12 +1,8 @@
 import type { LinearScene } from '../../types/novel';
 import { BACKGROUND_ASSETS } from '../../config/sceneAssets';
+import { PROTAGONIST_NAME_TOKEN } from '../../config/characters';
 
-/**
- * Token substituído pelo nome do protagonista em tempo de render
- * (ver `PROTAGONIST_NAME` em `src/config/characters.ts`). No roteiro-fonte
- * (echoes_of_astra_game_script.md) aparece como `(Protagonist's Name)`.
- */
-export const PROTAGONIST_NAME_TOKEN = '{PROTAGONIST_NAME}';
+export { PROTAGONIST_NAME_TOKEN };
 
 /**
  * ACT 0: Real World (Prologue).

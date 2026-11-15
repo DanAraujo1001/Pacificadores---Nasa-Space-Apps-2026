@@ -31,7 +31,11 @@ export type CharacterId =
   | 'protagonist'
   | 'grandpa-tadeu'
   | 'eco'
-  | 'narrator';
+  | 'narrator'
+  | 'eagle'
+  | 'lrv'
+  | 'spirit'
+  | 'phoenix';
 
 /** Lado da tela onde o sprite do personagem é ancorado. */
 export type CharacterSide = 'left' | 'right';
@@ -109,4 +113,78 @@ export interface MissionScript {
   backgroundAsset: string;
   initialNodeId: string;
   nodes: Record<string, DialogueNode>;
+}
+
+/* -------------------------------------------------------------------------- */
+/*  ACT 1 — Estágios com escolhas                                             */
+/* -------------------------------------------------------------------------- */
+
+/** Uma opção de escolha dentro de um estágio. */
+export interface StageChoice {
+  id: string;
+  label: string;
+  /** true = resposta correta (avança); false = leva a game-over. */
+  correct: boolean;
+  /**
+   * Falas mostradas imediatamente após escolher (reação do personagem +
+   * eventual feedback da ECO). Transcritas verbatim do roteiro.
+   */
+  outcomeLines: ScriptLine[];
+}
+
+/** Um passo de escolha: falas introdutórias + as opções. */
+export interface StageChoiceStep {
+  kind: 'choice';
+  id: string;
+  /** Falas que antecedem as opções (ex.: pergunta do personagem). */
+  lines: ScriptLine[];
+  choices: StageChoice[];
+}
+
+/** Um passo puramente narrativo (sequência de falas). */
+export interface StageTalkStep {
+  kind: 'talk';
+  id: string;
+  lines: ScriptLine[];
+}
+
+export type StageStep = StageTalkStep | StageChoiceStep;
+
+/**
+ * Roteiro completo de um estágio do Ato 1 (um equipamento).
+ *
+ * `steps` é a sequência correta do estágio: alterna falas e escolhas. Ao
+ * acertar todas as escolhas, o jogador chega ao `clearLines` (Stage Clear) e o
+ * estágio é concluído. Errar qualquer escolha dispara game-over (reiniciar).
+ */
+export interface StageScript {
+  stageId: StageId;
+  world: WorldId;
+  /** Personagem-equipamento desta cena (lado direito). */
+  characterId: CharacterId;
+  backgroundAsset: string | null;
+  backgroundPlaceholderLabel: string;
+  steps: StageStep[];
+  /** Falas finais de sucesso (Stage Clear), incluindo o item obtido. */
+  clearLines: ScriptLine[];
+}
+
+/** Destino de missão jogável (Lua / Marte), sem a nave. */
+export type DestinationId = Exclude<WorldId, 'ship'>;
+
+/** Destino de missão (Lua / Marte) com seus equipamentos. */
+export interface DestinationConfig {
+  id: DestinationId;
+  label: string;
+  /** Estágios/equipamentos disponíveis neste destino. */
+  stageIds: StageId[];
+}
+
+/** Metadados de um equipamento para o hub (ícone + rótulo). */
+export interface EquipmentConfig {
+  stageId: StageId;
+  label: string;
+  world: DestinationId;
+  /** Ícone clicável do equipamento no hub (pode não existir ainda). */
+  iconAsset: string | null;
 }

@@ -15,6 +15,16 @@
 export const BACKGROUND_ASSETS = {
   /** ACT 0 — sótão com fotos antigas, maquetes e um capacete; chove lá fora. */
   act0Attic: '/assets/backgrounds/act0-attic.png',
+  /** ACT 1 — hub na nave: Lua e Marte à vista pela janela. */
+  hubShip: '/assets/backgrounds/act1-hub-ship.png',
+  /** STAGE 1 — Mar da Tranquilidade (Eagle / Apollo 11). */
+  stageEagle: '/assets/backgrounds/stage-eagle-tranquility.png',
+  /** STAGE 2 — planície lunar com as três buggies (LRVs). */
+  stageLrv: '/assets/backgrounds/stage-lrv-plain.png',
+  /** STAGE 3 — Cratera Gusev, Marte (Spirit). */
+  stageSpirit: '/assets/backgrounds/stage-spirit-gusev.png',
+  /** STAGE 4 — planície ártica marciana (Phoenix). */
+  stagePhoenix: '/assets/backgrounds/stage-phoenix-arctic.png',
 } as const;
 
 export const SPRITE_ASSETS = {
@@ -24,4 +34,20 @@ export const SPRITE_ASSETS = {
   eco: '/assets/sprites/eco/eco-normal.png',
   /** Sprite do Avô Tadeu (mentor do prólogo/epílogo). */
   grandpaTadeu: '/assets/sprites/grandpa-tadeu/grandpa-normal.png',
+  /** Sprite do Eagle (módulo lunar Apollo 11). */
+  eagle: '/assets/sprites/eagle/eagle-normal.png',
+  /** Sprite das LRVs (buggies lunares). */
+  lrv: '/assets/sprites/lrv/lrv-normal.png',
+  /** Sprite do Spirit (rover marciano). */
+  spirit: '/assets/sprites/spirit/spirit-normal.png',
+  /** Sprite do Phoenix (lander ártico marciano). */
+  phoenix: '/assets/sprites/phoenix/phoenix-normal.png',
+} as const;
+
+/** Ícones clicáveis dos equipamentos no hub (ACT 1). */
+export const EQUIPMENT_ICON_ASSETS = {
+  eagle: '/assets/icons/equipment/eagle.svg',
+  lrv: '/assets/icons/equipment/lrv.svg',
+  spirit: '/assets/icons/equipment/spirit.svg',
+  phoenix: '/assets/icons/equipment/phoenix.svg',
 } as const;
